@@ -1,0 +1,1423 @@
+generarReporteCasillasPequenas() {
+  // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
+  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Pequeña');
+
+  // Calcular el total del precio sumando los precios de todas las casillas pequeñas
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas pequeñas
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  // Crear una cadena para el reporte
+  let reporte = "Reporte de Casillas Pequeñas\n\n";
+
+  // Crea un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' indica orientación horizontal
+
+  const headers = [
+    '#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'
+  ];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Casillas Pequeñas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  // Agregar filas vacías para el total y dejar espacio para ello
+  const emptyRows = 1; // Ajustar la cantidad de filas vacías
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+  }
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Estado Pago:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasCajones() {
+  // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
+  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Cajon');
+
+  // Calcular el total del precio sumando los precios de todas las casillas de tipo "cajones"
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas de tipo "cajones"
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  // Crear una cadena para el reporte
+  let reporte = "Reporte de Casillas de Tipo Cajones\n\n";
+
+  // Crea un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' indica orientación horizontal
+
+  const headers = [
+    '#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'
+  ];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Casillas de Tipo Cajones';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  // Agregar filas vacías para el total y dejar espacio para ello
+  const emptyRows = 1; // Ajustar la cantidad de filas vacías
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+  }
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Estado Pago:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasGabetas() {
+  // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
+  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Gabeta');
+
+  // Calcular el total del precio sumando los precios de todas las casillas de tipo "gabeta"
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas de tipo "gabeta"
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  // Crear una cadena para el reporte
+  let reporte = "Reporte de Casillas de Tipo Gabeta\n\n";
+
+  // Crea un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' indica orientación horizontal
+
+  const headers = [
+    '#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'
+  ];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Casillas de Tipo Gabeta';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  // Agregar filas vacías para el total y dejar espacio para ello
+  const emptyRows = 1; // Ajustar la cantidad de filas vacías
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+  }
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Estado Pago:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasMedianas() {
+  // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
+  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Mediana');
+
+  // Calcular el total del precio sumando los precios de todas las casillas medianas
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas medianas
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  // Crear una cadena para el reporte
+  let reporte = "Reporte de Casillas Medianas\n\n";
+
+  // Crea un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' indica orientación horizontal
+
+  const headers = [
+    '#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'
+  ];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Casillas Medianas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  // Agregar filas vacías para el total y dejar espacio para ello
+  const emptyRows = 1; // Ajustar la cantidad de filas vacías
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+  }
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Estado Pago:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCompleto() {
+  // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
+  const dataForReport = this.list;
+
+  // Calcular el total del precio sumando los precios de todas las casillas
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas
+const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+  const estadoPago = parseFloat(alquiler.estado_pago);
+  return isNaN(estadoPago) ? total : total + estadoPago;
+}, 0);
+// Calcular el total de la suma de los precios y del estado de pago
+const totalSuma = totalPrice + totalEstadoPago;
+
+  // Crear una cadena para el reporte
+  let reporte = "Reporte de Alquileres\n\n";
+
+  // Crea un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' indica orientación horizontal
+
+  const headers = [
+    '#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'
+  ];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    // alquiler.cajero.nombre,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte General';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  // Agregar filas vacías para el total y dejar espacio para ello
+  const emptyRows = 1; // Ajustar la cantidad de filas vacías
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+  }
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total:', totalPrice.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+
+  // Guardar el archivo PDF
+  // const fileName = 'reporte_casillas_vigentes.pdf';
+  // doc.save(fileName);
+},
+generarReporteFechasPorVencer() {
+  // Obtener la fecha actual
+  const currentDate = new Date();
+  
+  // Obtener la fecha dentro de un mes
+  const oneMonthLater = new Date(currentDate);
+  oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+
+  const dataForReport = this.list.filter(alquiler => {
+    const finFecha = new Date(alquiler.fin_fecha);
+    return finFecha >= currentDate && finFecha <= oneMonthLater && alquiler.estado === 1;
+  });
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler', 'Tiempo Inicio', 'Tiempo Fin'];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    // alquiler.cajero.nombre,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  const emptyRows = 0;
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+  }
+
+  // Agregar título al reporte
+  const title = 'Reporte de Fechas por Vencer';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  doc.text(title, x, 10);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 20, // Ajustar la posición del contenido para dejar espacio al título
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCompletoFechas() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const dataForReport = this.list.filter(alquiler => {
+    const iniFecha = new Date(alquiler.ini_fecha);
+    return iniFecha >= fechaInicio && iniFecha <= fechaFin;
+  });
+
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas
+const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+  const estadoPago = parseFloat(alquiler.estado_pago);
+  return isNaN(estadoPago) ? total : total + estadoPago;
+}, 0);
+// Calcular el total de la suma de los precios y del estado de pago
+const totalSuma = totalPrice + totalEstadoPago;
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    // alquiler.cajero.nombre,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  const emptyRows = 0;
+  for (let i = 0; i < emptyRows; i++) {
+    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+    // Agregar una fila para mostrar el total del estado de pago
+  
+  }
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte General';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  body.push(['', '', '', '', '', 'Total:', totalPrice.toFixed(2),  '', '', '']);
+  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 10 + y, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+reportefechadeinicio() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const casillasVencidas = this.list.filter(alquiler => {
+    const iniFecha = new Date(alquiler.ini_fecha); // Usar ini_fecha en lugar de fin_fecha
+    return iniFecha >= fechaInicio && iniFecha <= fechaFin;
+  });
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observacion', 'Cliente', 'Casilla', 'Carnet', 'SECCION', 'Precio', 'Tamaño', 'Estado', 'Tiempo Inicio', 'Tiempo Fin'];
+  const body = casillasVencidas.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    // alquiler.cajero.nombre,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    alquiler.precio.precio,
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Fecha de Ingreso de Casillas Alquiladas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasVencidasEntreFechas() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const casillasVencidas = this.list.filter(alquiler => {
+    const finFecha = new Date(alquiler.fin_fecha);
+    return finFecha >= fechaInicio && finFecha <= fechaFin;
+  });
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación',  'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Estado', 'Tiempo Inicio', 'Tiempo Fin'];
+  const body = casillasVencidas.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    // alquiler.cajero.nombre,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    alquiler.precio.precio,
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte Casillas Vencidas Entre Fechas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasVigentes() {
+  // Obtener la fecha actual
+  const currentDate = new Date();
+
+  // Filtrar la lista para obtener solo las casillas vigentes a la fecha actual y en estado 1
+  const casillasVigentes = this.list.filter(alquiler => {
+    const finFecha = new Date(alquiler.fin_fecha);
+    return finFecha >= currentDate && alquiler.estado === 1;
+  });
+
+  // Calcular el total del precio
+  const totalPrecio = casillasVigentes.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Crear un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4');
+
+  // Definir encabezados y datos del reporte
+  const headers = [
+    '#', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Estado', 'Tiempo Inicio', 'Tiempo Fin'
+  ];
+
+  const body = casillasVigentes.map((alquiler, index) => [
+    index + 1,
+    // alquiler.cajero.nombre,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte Casillas Vigentes';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  // Agregar el total del precio al final del reporte
+  body.push(['', '', '', '', '', '', 'Total:', totalPrecio.toFixed(2), '', '', '']);
+
+  // Generar la tabla en el documento PDF
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasOcupadas() {
+  // Filtrar la lista para obtener solo las casillas ocupadas
+  const casillasOcupadas = this.list.filter(alquiler => alquiler.casilla.estado === 0);
+
+  // Crear un nuevo documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4');
+
+  const headers = [
+    '#',
+    'Cliente',
+    'Casilla',
+    'Sección',
+    'Tamaño',
+    'Estado',
+    'Tiempo Inicio',
+    'Tiempo Fin',
+  ];
+
+  const body = casillasOcupadas.map((alquiler, index) => [
+    index + 1,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.casilla.seccione_id,
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte Casillas Ocupadas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 }, // Ajusta el ancho de la primera columna según sea necesario
+      // Puedes ajustar los anchos de otras columnas si es necesario
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteFechasPasadas() {
+  const currentDate = new Date(); // Obtener la fecha actual
+  const dataForReport = this.list.filter(alquiler => {
+    // Filtrar los elementos con la fecha fin anterior a la fecha actual
+    const finFecha = new Date(alquiler.fin_fecha);
+    return finFecha < currentDate;
+  });
+
+  // Crear un documento PDF
+  const doc = new jsPDF('l', 'mm', 'a4');
+
+  const headers = [
+    '#',
+    'Cliente',
+    'Telefono',
+    'Casilla',
+    'Carnet',
+    'Sección',
+    'Precio',
+    'Tamaño',
+    'Estado',
+    'Tiempo Inicio',
+    'Tiempo Fin',
+  ];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.cliente.nombre,
+    alquiler.cliente.telefono,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    alquiler.precio.precio,
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte Casillas Vencidas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 15, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+
+  // Guardar el archivo PDF
+  // const fileName = 'reporte_fechas_pasadas.pdf';
+  // doc.save(fileName);
+},
+generarReporteCasillasPequenasFechas() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const dataForReport = this.list.filter(alquiler => {
+    const iniFecha = new Date(alquiler.ini_fecha);
+    return iniFecha >= fechaInicio && iniFecha <= fechaFin && alquiler.categoria.nombre === 'Pequeña';
+  });
+
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Casillas Pequeñas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2),  '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 10 + y, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCasillasMedianasFechas() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const dataForReport = this.list.filter(alquiler => {
+    const iniFecha = new Date(alquiler.ini_fecha);
+    return iniFecha >= fechaInicio && iniFecha <= fechaFin && alquiler.categoria.nombre === 'Mediana';
+  });
+
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Casillas Medianas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2),  '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 10 + y, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteGabetasFechas() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const dataForReport = this.list.filter(alquiler => {
+    const iniFecha = new Date(alquiler.ini_fecha);
+    return iniFecha >= fechaInicio && iniFecha <= fechaFin && alquiler.categoria.nombre === 'Gabeta';
+  });
+
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las gabetas
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Estado','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Gabetas';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2),  '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 10 + y, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+generarReporteCajonFechas() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
+
+  const fechaInicio = new Date(this.fechaInicio);
+  const fechaFin = new Date(this.fechaFin);
+
+  const dataForReport = this.list.filter(alquiler => {
+    const iniFecha = new Date(alquiler.ini_fecha);
+    return iniFecha >= fechaInicio && iniFecha <= fechaFin && alquiler.categoria.nombre === 'Cajon';
+  });
+
+  const totalPrice = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.precio.precio);
+  }, 0);
+
+  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las gabetas
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
+    const estadoPago = parseFloat(alquiler.estado_pago);
+    return isNaN(estadoPago) ? total : total + estadoPago;
+  }, 0);
+
+  // Calcular el total de la suma de los precios y del estado de pago
+  const totalSuma = totalPrice + totalEstadoPago;
+
+  const doc = new jsPDF('l', 'mm', 'a4');
+  const headers = ['#', 'Observación', 'Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Estado','Llaves Extra', 'Tiempo Inicio', 'Tiempo Fin'];
+
+  const body = dataForReport.map((alquiler, index) => [
+    index + 1,
+    alquiler.casilla.observacion,
+    alquiler.cliente.nombre,
+    alquiler.casilla.nombre,
+    alquiler.cliente.carnet,
+    alquiler.casilla.seccione_id,
+    parseFloat(alquiler.precio.precio),
+    alquiler.categoria.nombre,
+    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
+    alquiler.estado_pago,
+    alquiler.ini_fecha,
+    alquiler.fin_fecha,
+  ]);
+
+  // Agregar título al reporte con espaciado
+  const title = 'Reporte de Cajones';
+  const titleWidth = doc.getTextWidth(title);
+  const pageWidth = doc.internal.pageSize.width;
+  const x = (pageWidth - titleWidth) / 2;
+  const y = 10; // Ajustar el espaciado vertical aquí
+  doc.text(title, x, y);
+
+  
+
+  // Agregar una fila para mostrar el total del precio
+  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2),  '', '', '']);
+
+  // Agregar una fila para mostrar el total del estado de pago
+  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
+
+  // Agregar una fila para mostrar el total de la suma de precios y estado de pago
+  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+
+  doc.autoTable({
+    head: [headers],
+    body: body,
+    startY: 10 + y, // Ajustar la posición vertical del contenido
+    theme: 'striped',
+    margin: { top: 20 },
+    styles: {
+      fontSize: 8,
+      cellPadding: 3,
+      overflow: 'linebreak',
+      columnWidth: 'wrap',
+    },
+    columnStyles: {
+      0: { cellWidth: 10 },
+    },
+    didDrawCell: (data) => {
+      const cell = data.cell;
+      doc.setFontSize(10);
+      doc.setTextColor(50);
+
+      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
+        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
+          halign: 'left',
+          valign: 'top',
+        });
+      }
+    },
+  });
+
+  window.open(doc.output('bloburl'), '_blank');
+},
+    // Método para generar una alerta cuando una casilla está por vencer en un mes
+generarAlertaCasillasPorVencer() {
+  const currentDate = new Date();
+  const oneMonthAhead = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+
+  // Filtrar los alquileres por estado 1 y por fecha de finalización en el próximo mes
+  const casillasPorVencer = this.list.filter(alquiler => {
+    const finFecha = new Date(alquiler.fin_fecha);
+    return finFecha >= currentDate && finFecha < oneMonthAhead && alquiler.estado === 1;
+  });
+
+  const numeroCasillasPorVencer = casillasPorVencer.length;
+
+  if (numeroCasillasPorVencer > 0) {
+    alert(`Tienes ${numeroCasillasPorVencer} casilla(s) por vencer en un mes.`);
+  }
+},
