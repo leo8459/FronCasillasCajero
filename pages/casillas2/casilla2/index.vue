@@ -20,39 +20,33 @@
             <option v-for="n in 45" :value="n">Sección {{ n }}</option>
           </select>
         </div>
-        <!-- <div style="float: right; width: calc(8% - 5px); margin-bottom: 30px;">
-  <div style="border: 1px solid #000; padding: 3px; width: 95%;">
-    <p style="color: rgb(43, 255, 0); font-size: 10px;">estado libre <span style="color: rgb(0, 0, 0); font-size: 10px;">estado ocupado</span></p>
-    <p style="color: red; font-size: 10px;">estado mantenimiento <span style="color: rgb(255, 128, 0); font-size: 10px;">estado Con Correspondecia</span></p>
-  </div>
-</div>
-<div style="clear: both;"></div> -->
-
 
         <!-- Subdividir por categoría -->
         <div v-for="categoria in categorias" :key="categoria.id">
           <div class="text-center mb-4">
-            
             <h2>Casilla {{ categoria.nombre }}</h2>
           </div>
           <div class="d-flex justify-content-center align-items-center">
             <div class="row mt-4">
-              <div class="d-flex flex-wrap justify-content-center">
-               <div v-for="(item, index) in casillasOrdenadasPorCategoria(categoria.id)" :key="item.id" class="m-2"
-      :style="{
-        fontSize: '2rem',
-        width: isMediana(item.categoria_nombre) ? 'calc(20% - 10px)' : 'calc(110px - 5px)', // Ajusta el ancho dependiendo de si es mediana o no
-        transform: getIconSize(item.categoria_nombre),
-      }">
-
-      <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
-        <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
-      </div>
-      <div class="text-center">
-        <p class="casilla-nombre">{{ item.casilla_nombre }}</p>
-      </div>
-</div>
-
+              <div class="d-flex flex-wrap justify-content-center casillas-container">
+                <div
+                  v-for="(item, index) in casillasOrdenadasPorCategoria(categoria.id)"
+                  :key="item.id"
+                  :class="{'small-casilla': item.categoria_nombre === 'Pequeño'}"
+                  class="m-2"
+                  :style="{
+                    fontSize: '2rem',
+                    width: isMediana(item.categoria_nombre) ? 'calc(20% - 10px)' : 'calc(110px - 5px)', // Ajusta el ancho dependiendo de si es mediana o no
+                    transform: getIconSize(item.categoria_nombre),
+                  }"
+                >
+                  <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
+                    <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
+                  </div>
+                  <div class="text-center">
+                    <p class="casilla-nombre">{{ item.casilla_nombre }}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -72,7 +66,6 @@
           </div>
           <div class="modal-body">
             <p>Numero de Casilla: {{ casillaSeleccionada.casilla_nombre }}</p>
-            <!-- <p>Numero de Casilla: {{ casillaSeleccionada.llaves_id }}</p> -->
             <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
             <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
             <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
@@ -81,9 +74,6 @@
             <p>Carnet: {{ casillaSeleccionada.carnet }}</p>
           </div>
           <div class="modal-footer">
-            <!-- Condición para mostrar el botón solo si el estado no es 'Ocupado' -->
-
-
             <nuxt-link
               v-if="casillaSeleccionada.casilla_estado !== 0 && casillaSeleccionada.casilla_estado !== 2 && casillaSeleccionada.casilla_estado !== 3"
               :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
@@ -93,24 +83,17 @@
             <nuxtLink :to="url_editar + casillaSeleccionada.casilla_id" class="btn btn-info btn-sm py-2 px-4">
               Estado
             </nuxtLink>
-            
-
-
 
             <nuxt-link v-if="casillaSeleccionada.casilla_estado !== 1"
               :to="`${url_editar2}${casillaSeleccionada.alquiler_id}`" class="btn btn-info btn-sm py-2 px-4">
               <i class="fas fa-plus"></i> Renovar
             </nuxt-link>
 
-
-
             <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
-
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -121,179 +104,120 @@ export default {
     return {
       load: true,
       casillas: [],
-      apiUrl: 'ver1', // La ruta base
+      apiUrl: 'ver1',
       page: 'Casillas',
       modulo: 'agbc',
-      seccionSeleccionada: "1", // Valor por defecto
+      seccionSeleccionada: "1",
       url_nuevo: '/alquileres/alquilere/nuevo',
-      url_editar: '/casillas/casilla/estado/',//cambiar a editar
+      url_editar: '/casillas/casilla/estado/',
       url_editar2: '/alquileres/alquilere/renovar/',
-      url_editar3: '/casillas/casilla/img/',
-
       modalVisible: false,
       casillaSeleccionada: {},
-      busqueda: '', // Nuevo campo para almacenar el valor de búsqueda
+      busqueda: '',
       mostrarListaOpciones: false,
       opcionesBusqueda: [],
     };
   },
   computed: {
     categorias() {
-      // Obtener la lista única de categorías
       const categoriasUnicas = [...new Set(this.casillas.map((item) => item.categoria_nombre))];
-      // Mapear las categorías a un objeto con un ID y nombre
       return categoriasUnicas.map((nombre, index) => ({ id: index + 1, nombre }));
     },
     casillasOrdenadas() {
-      // Ordenar las casillas por el nombre de la categoría en orden inverso
       return this.casillas.slice().sort((a, b) => b.categoria_nombre.localeCompare(a.categoria_nombre));
     },
   },
   methods: {
-
-isMediana(categoria) {
-  return categoria === 'Mediana';
-},
-
+    isMediana(categoria) {
+      return categoria === 'Mediana';
+    },
     abrirElemento(id) {
-      // Encuentra el elemento correspondiente por su ID
       const elemento = this.casillas.find(item => item.casilla_id === id);
       if (elemento) {
-        // Aquí puedes realizar alguna acción, por ejemplo, abrir un modal con los detalles del elemento
         this.abrirModal(elemento);
-        // También puedes navegar a otra página con los detalles del elemento si lo prefieres
-        // this.$router.push(`/detalle/${id}`);
       } else {
         console.error('No se encontró el elemento correspondiente.');
       }
     },
-
-
     filtrarOpcionesBusqueda() {
-  if (this.busqueda.trim() === '') {
-    this.mostrarListaOpciones = false;
-    return;
-  }
-
-  const busquedaLowerCase = this.busqueda.toLowerCase().trim();
-  this.opcionesBusqueda = this.casillas
-    .filter(item => (
-      (item.casilla_nombre && item.casilla_nombre.toLowerCase().includes(busquedaLowerCase)) ||
-      (item.cliente_nombre && item.cliente_nombre.toLowerCase().includes(busquedaLowerCase)) ||
-      (item.carnet && item.carnet.toLowerCase().includes(busquedaLowerCase))
-    ))
-    .map(item => ({
-      id: item.casilla_id, // Ajusta el ID según tus necesidades
-      nombre: `${item.casilla_nombre} - ${item.cliente_nombre}`, // Ajusta el texto según tus necesidades
-    }));
-
-  this.mostrarListaOpciones = true;
-},
-
-
-    
-
-
-    abrirImagen(imagen) {
-    const rutaImagen = `/assets/imagenes/${imagen}`;
-    window.open(rutaImagen, '_self'); // Cambia '_blank' por '_self' si quieres que se abra en la misma ventana.
-  },
-
-  // Asumamos que añades un método que se llame al hacer clic en tu botón
-  handleButtonClick(casillaId) {
-    if (casillaId === 5 || casillaId === 7) {
-      this.abrirImagen('seccion.jpg');
-    } else {
-      // Para el caso general, abre la imagen "logo.png"
-      this.abrirImagen('seccion.jpg');
-    }
-  },
-
-
-  buscarCasilla(event) {
-  if (event.key === 'Enter') {
-    const busquedaLowerCase = this.busqueda.toLowerCase().trim();
-    if (busquedaLowerCase === '') {
-      // Si la búsqueda está vacía, restaura la lista completa de casillas
-      this.cargarDatos();
-    } else {
-      const casillasFiltradas = this.casillas.filter(item => {
-        // Filtrar las casillas por casilla_nombre, cliente_nombre o carnet que no sean null y que contengan el texto de búsqueda
-        return (
+      if (this.busqueda.trim() === '') {
+        this.mostrarListaOpciones = false;
+        return;
+      }
+      const busquedaLowerCase = this.busqueda.toLowerCase().trim();
+      this.opcionesBusqueda = this.casillas
+        .filter(item => (
           (item.casilla_nombre && item.casilla_nombre.toLowerCase().includes(busquedaLowerCase)) ||
           (item.cliente_nombre && item.cliente_nombre.toLowerCase().includes(busquedaLowerCase)) ||
           (item.carnet && item.carnet.toLowerCase().includes(busquedaLowerCase))
-        );
-      });
-
-      if (casillasFiltradas.length > 0) {
-        // Si se encuentran casillas que coinciden, muestra todas las coincidencias
-        this.mostrarCasillasFiltradas(casillasFiltradas);
+        ))
+        .map(item => ({
+          id: item.casilla_id,
+          nombre: `${item.casilla_nombre} - ${item.cliente_nombre}`,
+        }));
+      this.mostrarListaOpciones = true;
+    },
+    abrirImagen(imagen) {
+      const rutaImagen = `/assets/imagenes/${imagen}`;
+      window.open(rutaImagen, '_self');
+    },
+    handleButtonClick(casillaId) {
+      if (casillaId === 5 || casillaId === 7) {
+        this.abrirImagen('seccion.jpg');
       } else {
-        // Si no se encuentra ninguna coincidencia, mostrar un mensaje o realizar alguna acción según necesites
-        console.log('No se encontró ninguna casilla con ese nombre o cliente.');
+        this.abrirImagen('seccion.jpg');
       }
-    }
-  }
-},
-
-mostrarCasillasFiltradas(casillasFiltradas) {
-  // Muestra las casillas filtradas
-  this.modalVisible = true;
-  this.casillaSeleccionada = casillasFiltradas[0] || null; // Establece la primera casilla filtrada o null si no hay coincidencias
-  this.casillas = casillasFiltradas;
-},
-
-
-
-
-
-
-
-
-
-
-
-casillasOrdenadasPorCategoria(categoriaId) {
-  // Filtrar las casillas por la categoría actual
-  const casillasCategoria = this.casillas.filter((item) => item.categoria_nombre === this.categorias[categoriaId - 1].nombre);
-  
-  // Ordenar las casillas por el número de casilla
-  return casillasCategoria.sort((a, b) => parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre));
-},
-
-
-async cargarDatos() {
-  try {
-    const res = await this.$api.$get(`${this.apiUrl}/${this.seccionSeleccionada}`);
-    console.log('Datos recuperados de la API:', res);
-
-    // Verifica que la respuesta tenga la propiedad 'casillas' y es un array
-    if (res && Array.isArray(res.casillas)) {
-      // Asigna las casillas recuperadas al arreglo 'casillas' del componente
-      this.casillas = res.casillas;
-
-      // Ordena las casillas por categoría y luego por número de casilla
-      this.casillas.sort((b, a) => {
-        // Primero ordena por categoría
-        const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
-        if (categoriaComparison !== 0) return categoriaComparison;
-
-        // Si las categorías son iguales, ordena por número de casilla
-        return parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre);
-      });
-    } else {
-      console.error('La respuesta de la API no contiene el formato esperado.');
-    }
-
-  } catch (error) {
-    console.error('Error al recuperar los datos de la API:', error);
-  } finally {
-    this.load = false;
-  }
-},
-
-
+    },
+    buscarCasilla(event) {
+      if (event.key === 'Enter') {
+        const busquedaLowerCase = this.busqueda.toLowerCase().trim();
+        if (busquedaLowerCase === '') {
+          this.cargarDatos();
+        } else {
+          const casillasFiltradas = this.casillas.filter(item => {
+            return (
+              (item.casilla_nombre && item.casilla_nombre.toLowerCase().includes(busquedaLowerCase)) ||
+              (item.cliente_nombre && item.cliente_nombre.toLowerCase().includes(busquedaLowerCase)) ||
+              (item.carnet && item.carnet.toLowerCase().includes(busquedaLowerCase))
+            );
+          });
+          if (casillasFiltradas.length > 0) {
+            this.mostrarCasillasFiltradas(casillasFiltradas);
+          } else {
+            console.log('No se encontró ninguna casilla con ese nombre o cliente.');
+          }
+        }
+      }
+    },
+    mostrarCasillasFiltradas(casillasFiltradas) {
+      this.modalVisible = true;
+      this.casillaSeleccionada = casillasFiltradas[0] || null;
+      this.casillas = casillasFiltradas;
+    },
+    casillasOrdenadasPorCategoria(categoriaId) {
+      const casillasCategoria = this.casillas.filter((item) => item.categoria_nombre === this.categorias[categoriaId - 1].nombre);
+      return casillasCategoria.sort((a, b) => parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre));
+    },
+    async cargarDatos() {
+      try {
+        const res = await this.$api.$get(`${this.apiUrl}/${this.seccionSeleccionada}`);
+        console.log('Datos recuperados de la API:', res);
+        if (res && Array.isArray(res.casillas)) {
+          this.casillas = res.casillas;
+          this.casillas.sort((b, a) => {
+            const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
+            if (categoriaComparison !== 0) return categoriaComparison;
+            return parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre);
+          });
+        } else {
+          console.error('La respuesta de la API no contiene el formato esperado.');
+        }
+      } catch (error) {
+        console.error('Error al recuperar los datos de la API:', error);
+      } finally {
+        this.load = false;
+      }
+    },
     abrirModal(item) {
       this.casillaSeleccionada = item;
       this.modalVisible = true;
@@ -304,15 +228,15 @@ async cargarDatos() {
     getIconColorClass(estado) {
       switch (estado) {
         case 1:
-          return 'text-success'; // Estado "Disponible"
+          return 'text-success';
         case 2:
-          return 'text-brown'; // Estado "Con Correspondecia" (nuevo color café)
+          return 'text-brown';
         case 3:
-          return 'text-danger'; // Estado "Con Correspondecia" (nuevo color café)
-          case 4:
-          return 'text-warning'; // Estado "Vencido" (nuevo color amarillo)
+          return 'text-danger';
+        case 4:
+          return 'text-warning';
         default:
-          return 'text-black'; // Otros estados
+          return 'text-black';
       }
     },
     getIconSize(categoria) {
@@ -353,8 +277,8 @@ async cargarDatos() {
           return 'Con Correspondecia';
         case 3:
           return 'Mantenimiento';
-          case 4:
-          return 'Vencido'; // Nuevo estado "Vencido"
+        case 4:
+          return 'Vencido';
         default:
           return 'Desconocido';
       }
@@ -367,9 +291,6 @@ async cargarDatos() {
 </script>
 
 <style scoped>
-
-
-
 ul {
   list-style: none;
   padding: 0;
@@ -377,55 +298,27 @@ ul {
   position: absolute;
   background-color: #ffffff;
   border: 1px solid #ccc;
-  max-height: 150px; /* Establece una altura máxima para la lista */
-  overflow-y: auto; /* Agrega desplazamiento vertical si la lista excede la altura máxima */
+  max-height: 150px;
+  overflow-y: auto;
 }
 
 ul li {
   padding: 5px 10px;
   cursor: pointer;
-}
-
-
-
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-}
-
-ul li {
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-ul li:hover {
-  background-color: #f0f0f0;
 }
 
 .label-container {
   position: absolute;
   top: 10px;
-  /* Ajusta la posición vertical según tus necesidades */
   right: 1000px;
-  /* Ajusta la posición horizontal según tus necesidades */
   background-color: #f0f0f0;
-  /* Ajusta el color de fondo según tus preferencias */
   padding: 5px;
-  /* Ajusta el espaciado interior según tus preferencias */
   border: 1px solid #ccc;
-  /* Ajusta los bordes según tus preferencias */
   border-radius: 5px;
-  /* Añade bordes redondeados si lo deseas */
 }
 
 .label-text {
   font-size: 10px;
-  /* Ajusta el tamaño de fuente según tus preferencias */
 }
 
 .circle-icon {
@@ -456,10 +349,19 @@ p {
 .casilla-nombre {
   font-size: 1rem;
 }
-/* Estilo para el elemento */
+
 .elemento {
   float: right;
   width: calc(16% - 10px);
 }
 
+.casillas-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: calc(10 * (110px - 5px)); /* Ajusta 110px según el ancho calculado de las casillas */
+}
+
+.small-casilla {
+  width: calc(12.5% - 5px); /* 100% / 8 = 12.5% */
+}
 </style>
