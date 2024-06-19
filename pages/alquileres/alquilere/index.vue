@@ -7,13 +7,11 @@
           <div class="col-2"></div>
           <div class="contenedor">
             <div class="busqueda">
-              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre"
-                @input="buscar" />
+              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre" @input="buscar" />
             </div>
-
           </div>
 
-         <!-- Botón para abrir el modal -->
+          <!-- Botón para abrir el modal -->
           <div class="btn-group mr-2">
             <button class="btn btn-info" @click="modalVisible2 = true">
               <i class="fas fa-file-pdf"></i> Reportes Por Fechas
@@ -38,7 +36,6 @@
                     <!-- Input para seleccionar la fecha de fin -->
                     <input type="date" v-model="fechaFin" class="form-control" placeholder="Fecha de fin" />
 
-
                     <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
                     <button @click="generarReporteCasillasVencidasEntreFechas" class="btn btn-fx btn-info">
                       Casillas Vencidas
@@ -50,29 +47,25 @@
                     <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
                     <button @click="generarReporteCompletoFechas" class="btn btn-fx btn-info">
                       reporte general
-                     </button>
-                     <button @click="generarReporteCasillasPequenasFechas" class="btn btn-fx btn-info">
+                    </button>
+                    <button @click="generarReporteCasillasPequenasFechas" class="btn btn-fx btn-info">
                       reporte Casillas Pequeñas
-                     </button>
-                     <button @click="generarReporteCasillasMedianasFechas" class="btn btn-fx btn-info">
+                    </button>
+                    <button @click="generarReporteCasillasMedianasFechas" class="btn btn-fx btn-info">
                       reporte Casillas Medianas
-                     </button>
-                     <button @click="generarReporteGabetasFechas" class="btn btn-fx btn-info">
+                    </button>
+                    <button @click="generarReporteGabetasFechas" class="btn btn-fx btn-info">
                       reporte Casillas Gabetas
-                     </button>
-                     <button @click="generarReporteCajonFechas" class="btn btn-fx btn-info">
+                    </button>
+                    <button @click="generarReporteCajonFechas" class="btn btn-fx btn-info">
                       reporte Casillas Cajones
-                     </button>
-                     
+                    </button>
+
                   </div>
                 </div>
-                <!-- Puedes agregar más contenido al cuerpo del modal si es necesario -->
               </div>
             </div>
           </div>
-
-         
-             
 
           <!-- Botón para abrir el modal -->
           <div class="btn-group mr-2">
@@ -94,14 +87,12 @@
                 <div class="modal-body">
                   <div class="d-flex flex-column align-items-center">
                     <!-- Botones de reporte -->
-                    <button @click="generarReporteDeCasillas" class="btn btn-sm btn-primary mb-2">
-                      Reporte ssss
-                    </button>
+
                     <button @click="generarReporteCompleto" class="btn btn-sm btn-primary mb-2">
                       Reporte General
                     </button>
                     <button @click="generarReporteCasillasOcupadas" class="btn btn-sm btn-primary mb-2">
-                       Casillas Ocupadas
+                      Casillas Ocupadas
                     </button>
                     <button @click="generarReporteFechasPasadas" class="btn btn-sm btn-primary mb-2">
                       Casillas vencidas
@@ -124,8 +115,6 @@
                     <button @click="generarReporteCasillasCajones" class="btn btn-sm btn-primary mb-2">
                       Casillas Cajones recaudado
                     </button>
-                    
-                    
                   </div>
                 </div>
                 <!-- Puedes agregar más contenido al cuerpo del modal si es necesario -->
@@ -138,7 +127,6 @@
                 <table class="table">
                   <thead>
                     <th class="py-0 px-1">#</th>
-                    <!-- <th class="py-0 px-1">Ventanilla</th> -->
                     <th class="py-0 px-1">Cliente</th>
                     <th class="py-0 px-1">Telefono</th>
                     <th class="py-0 px-1">Casilla</th>
@@ -148,18 +136,15 @@
                     <th class="py-0 px-1">Tamaño</th>
                     <th class="py-0 px-1">Estado</th>
                     <th class="py-0 px-1">Total Llave Extra</th>
-                                        <th class="py-0 px-1">Multas</th>
+                    <th class="py-0 px-1">Multas</th>
                     <th class="py-0 px-1">Tiempo Inicio</th>
                     <th class="py-0 px-1">Tiempo Fin</th>
                     <th class="py-0 px-1">Estado</th>
                     <th class="py-0 px-1"></th>
                   </thead>
                   <tbody>
-                    <tr v-for="(m, i) in paginatedList">
-                      <!-- <tr v-for="(m, i) in filteredList" :key="m.id"> -->
-
-                      <td class="py-0 px-1">{{ i + 1 }}</td>
-                      <!-- <td class="py-0 px-1">{{ m.cajero.nombre }}</td> -->
+                    <tr v-for="(m, i) in paginatedList" :key="m.id">
+                      <td class="py-0 px-1">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                       <td class="py-0 px-1">{{ m.cliente.nombre }}</td>
                       <td class="py-0 px-1">{{ m.cliente.telefono }}</td>
                       <td class="py-0 px-1">{{ m.casilla.nombre }}</td>
@@ -167,38 +152,13 @@
                       <td class="py-0 px-1">{{ m.casilla.seccione_id }}</td>
                       <td class="py-0 px-1">{{ m.precio.precio }}</td>
                       <td class="py-0 px-1">{{ m.categoria.nombre }}</td>
-                      <td class="py-0 px-1" :class="m.casilla.estado === 1
-  ? 'Libre'
-  : m.casilla.estado === 2
-    ? 'Con Correspondecia'
-    : m.casilla.estado === 3
-      ? 'Mantenimiento'
-      : m.casilla.estado === 4
-        ? 'Vencido'
-        : 'Ocupado'
-">
-  {{
-    m.casilla.estado === 1
-      ? "Libre"
-      : m.casilla.estado === 2
-        ? "Con Correspondecia"
-        : m.casilla.estado === 3
-          ? "Mantenimiento"
-          : m.casilla.estado === 4
-            ? "Vencido"
-            : "Ocupado"
-  }}
-</td>
-
+                      <td class="py-0 px-1" :class="formatoEstado(m.casilla.estado)">
+                        {{ formatoEstado(m.casilla.estado) }}
+                      </td>
                       <td class="py-0 px-1">{{ m.estado_pago }}</td>
-                                            <td class="py-0 px-1">{{ m.nombre }}</td>
-
+                      <td class="py-0 px-1">{{ m.nombre }}</td>
                       <td class="py-0 px-1">{{ m.ini_fecha }}</td>
                       <td class="py-0 px-1">{{ m.fin_fecha }}</td>
-
-                      <!-- <td class="py-0 px-1" :class="m.estado === 1 ? 'activo' : 'Mantenimiento'">
-                        {{ m.estado === 1 ? 'Activo' : 'Mantenimiento' }}
-                      </td> -->
                       <td class="py-0 px-1">
                         <nuxtLink :to="url_editar + m.id" class="btn btn-info btn-sm py-1 px-2">
                           <i class="fas fa-pen"></i>
@@ -210,10 +170,19 @@
                     </tr>
                   </tbody>
                 </table>
+                <div class="pagination">
+                  <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-primary">
+                    &laquo;
+                  </button>
+                  <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }" class="page-number">
+                    {{ page }}
+                  </span>
+                  <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
+                    &raquo;
+                  </button>
+                </div>
               </div>
             </div>
-            <paginate :page-count="Math.ceil(list.length / pageSize)" :click-handler="paginateHandler" :prev-text="'⇦'"
-              :next-text="'⇨'" :container-class="'pagination justify-content-between'"></paginate>
           </div>
         </div>
       </div>
@@ -222,24 +191,11 @@
 </template>
 
 <script>
-import Paginate from "vuejs-paginate";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-
 export default {
-  components: {
-    Paginate,
-  },
   name: "IndexPage",
-  head() {
-    return {
-      title: this.modulo,
-      searchTerm: "", // Nuevo dato para almacenar el término de búsqueda
-      filteredList: [], // Lista filtrada que mostrará los resultados de búsqueda
-    };
-  },
-
   data() {
     return {
       load: true,
@@ -249,34 +205,16 @@ export default {
       modulo: "AGBC",
       url_nuevo: "/alquileres/alquilere/nuevo",
       url_editar: "/alquileres/alquilere/editar/",
-      casillasOcupadas: [], // Agregamos la propiedad casillasOcupadas
+      casillasOcupadas: [],
       currentPage: 1,
       pageSize: 10,
-      searchTerm: "", // Nuevo dato para almacenar el término de búsqueda
-      filteredList: [], // Lista filtrada que mostrará los resultados de búsqueda
-      modalVisible: false, // Asegúrate de agregar modalVisible aquí
-      modalVisible2: false, // Asegúrate de agregar modalVisible aquí
-      fechaInicio: '', // Variable para almacenar la fecha de inicio seleccionada
-      fechaFin: '',    // Variable para almacenar la fecha de fin seleccionada
-      alertShown: false, // Variable para verificar si la alerta ya se ha mostrado
-columns: [
-        { label: '#', field: 'index' },
-        // { label: 'Ventanilla', field: 'ventanilla' },
-        { label: 'Cliente', field: 'cliente' },
-        { label: 'Telefono', field: 'telefono' },
-        { label: 'Casilla', field: 'casilla' },
-        { label: 'Carnet', field: 'carnet' },
-        { label: 'SECCION', field: 'seccion' },
-        { label: 'Precio', field: 'precio' },
-        { label: 'Tamaño', field: 'tamaño' },
-        { label: 'Estado', field: 'estado' },
-        { label: 'Total Llave Extra', field: 'llave_extra' },
-        { label: 'Multas', field: 'multas' },
-        { label: 'Tiempo Inicio', field: 'inicio' },
-        { label: 'Tiempo Fin', field: 'fin' },
-        { label: 'Estado', field: 'estado' },
-        { label: '', field: 'acciones' },
-        ]
+      searchTerm: "",
+      filteredList: [],
+      modalVisible: false,
+      modalVisible2: false,
+      fechaInicio: '',
+      fechaFin: '',
+      alertShown: false,
     };
   },
   computed: {
@@ -285,47 +223,43 @@ columns: [
       const end = start + this.pageSize;
       return this.filteredList.slice(start, end);
     },
-  },
+    totalPages() {
+      return Math.ceil(this.filteredList.length / this.pageSize);
+    },
+    pages() {
+      const totalPages = this.totalPages;
+      const currentPage = this.currentPage;
+      let pages = [];
 
+      if (totalPages <= 7) {
+        for (let i = 1; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        if (currentPage <= 4) {
+          for (let i = 1; i <= 5; i++) {
+            pages.push(i);
+          }
+          pages.push('...', totalPages);
+        } else if (currentPage > totalPages - 4) {
+          pages.push(1, '...');
+          for (let i = totalPages - 4; i <= totalPages; i++) {
+            pages.push(i);
+          }
+        } else {
+          pages.push(1, '...');
+          for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+            pages.push(i);
+          }
+          pages.push('...', totalPages);
+        }
+      }
 
-
-  methods: {
-    generarReporteDeCasillas() {
-    const doc = new jsPDF('p', 'mm', 'a4');
-    const headers = ['#','Casilla', 'Tamaño', 'Estado', 'asdasd'];
-
-    const data = this.list.map((alquiler, index) => [
-    index + 1,
-      alquiler.casilla.nombre,
-      alquiler.casilla.estado,
-      alquiler.categoria.nombre,
-      this.formatoEstado(alquiler.casilla.estado)
-    ]);
-
-    doc.text('Reporte de Casillas', 14, 16);
-    doc.autoTable({
-      head: [headers],
-      body: data,
-      startY: 20,
-      styles: { fontSize: 11, cellPadding: 2, overflow: 'linebreak', cellWidth: 'wrap' },
-      columnStyles: { 0: { cellWidth: 40 }, 1: { cellWidth: 30 }, 2: { cellWidth: 60 } }
-    });
-
-    window.open(doc.output('bloburl'), '_blank');
-  },
-
-  formatoEstado(estado) {
-    switch (estado) {
-      case 1: return 'libre';
-      case 2: return 'Con Correspondencia';
-      case 3: return 'Mantenimiento';
-      case 4: return 'Vencido';
-      default: return 'Ocupado';
+      return pages;
     }
-
   },
-
-generarReporteCasillasPequenas() {
+  methods: {
+    generarReporteCasillasPequenas() {
   // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
   const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Pequeña');
 
@@ -1844,10 +1778,7 @@ generarAlertaCasillasPorVencer() {
     alert(`Tienes ${numeroCasillasPorVencer} casilla(s) por vencer en un mes.`);
   }
 },
-    // Método para generar una alerta cuando una casilla está por vencer en un mes
-
     buscar() {
-      // Realizar la búsqueda en la lista completa y almacenar los resultados en filteredList
       if (this.searchTerm.trim() === "") {
         this.filteredList = this.list;
       } else {
@@ -1864,18 +1795,10 @@ generarAlertaCasillasPorVencer() {
             (typeof item.casilla.seccione_id === 'string' && item.casilla.seccione_id.toLowerCase().includes(searchTermLower)) ||
             (item.precio && typeof item.precio.precio === 'string' && item.precio.precio.toLowerCase().includes(searchTermLower)) ||
             (item.categoria && item.categoria.nombre && item.categoria.nombre.toLowerCase().includes(searchTermLower))
-            // Agrega aquí más campos si es necesario
           );
         });
+        this.currentPage = 1; // Reset the page to 1 after search
       }
-    },
-
-
-
-
-
-    paginateHandler(pageNumber) {
-      this.currentPage = pageNumber;
     },
     async GET_DATA(path) {
       const res = await this.$api.$get(path);
@@ -1888,7 +1811,8 @@ generarAlertaCasillasPorVencer() {
         console.log(res);
         await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
           this.list = v[0];
-          this.casillasOcupadas = this.list.map((item) => item.casilla.nombre); // Actualizamos casillasOcupadas
+          this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
+          this.filteredList = this.list; // Reset filtered list after deletion
         });
       } catch (e) {
         console.log(e);
@@ -1904,55 +1828,74 @@ generarAlertaCasillasPorVencer() {
           showDenyButton: false,
           showCancelButton: true,
           confirmButtonText: "Eliminar",
-          cancelButtonText: "Cancelar", // Agrega esta línea para definir el texto del botón Cancelar
+          cancelButtonText: "Cancelar",
         })
         .then(async (result) => {
-          /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
             await self.EliminarItem(id);
           }
         });
     },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    goToPage(page) {
+      if (page !== '...') {
+        this.currentPage = page;
+      }
+    },
+    formatoEstado(estado) {
+      switch (estado) {
+        case 1: return 'libre';
+        case 2: return 'Con Correspondencia';
+        case 3: return 'Mantenimiento';
+        case 4: return 'Vencido';
+        default: return 'Ocupado';
+      }
+    },
   },
   mounted() {
-  this.$nextTick(async () => {
-    try {
-      // Obtener la fecha actual y convertirla al formato ISO de fecha (YYYY-MM-DD)
-      const currentDate = new Date().toISOString().split('T')[0];
-      // Establecer la fecha actual como valor inicial para fechaInicio
-      this.fechaInicio = currentDate;
-
-      await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-        // Filtrar la lista para incluir solo los elementos en estado 1 de alquiler
-        this.list = v[0].filter(item => item.estado === 1 );
-        this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
-        this.filteredList = this.list;
-      });
-
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.load = false;
-    }
-  });
-  this.$nextTick(async () => {
-    try {
-      await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-        // Filtrar la lista para incluir solo los elementos en estado 1 de alquiler
-        this.list = v[0].filter(item => item.estado === 1);
-        this.casillasOcupadas = this.list.map((item) => item.casilla.nombre); // Inicializamos casillasOcupadas
-        this.filteredList = this.list; // Inicializar la lista filtrada con la lista completa al cargar
-      });
-
-      // Llama al método para generar alertas de casillas por vencer
-      this.generarAlertaCasillasPorVencer();
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.load = false;
-    }
-  });
-},
-
+    this.$nextTick(async () => {
+      try {
+        await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
+          this.list = v[0].filter(item => item.estado === 1);
+          this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
+          this.filteredList = this.list;
+        });
+        this.generarAlertaCasillasPorVencer();
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.load = false;
+      }
+    });
+  },
 };
 </script>
+
+<style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.pagination button {
+  margin: 0 10px;
+}
+.pagination .page-number {
+  margin: 0 5px;
+  cursor: pointer;
+}
+.pagination .page-number.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+</style>
