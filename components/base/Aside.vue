@@ -38,8 +38,8 @@
               </li>
               <li class="nav-item">
                 <nuxtLink class="nav-link" to="/clientes/cliente">
-                  <span class="sidenav-mini-icon"> clientes </span>
-                  <span class="sidenav-normal"> clientes </span>
+                  <span class="sidenav-mini-icon"> Clientes </span>
+                  <span class="sidenav-normal"> Clientes </span>
                 </nuxtLink>
               </li>
 
@@ -52,15 +52,15 @@
 
               <li class="nav-item">
                 <nuxtLink class="nav-link" to="/casillas2/casilla2">
-                  <span class="sidenav-mini-icon"> casillas </span>
-                  <span class="sidenav-normal"> casillas </span>
+                  <span class="sidenav-mini-icon"> Casillas </span>
+                  <span class="sidenav-normal"> Casillas </span>
                 </nuxtLink>
               </li>
 
               <li class="nav-item">
                 <nuxtLink class="nav-link" to="/alquileres/alquilere">
-                  <span class="sidenav-mini-icon"> alquileres </span>
-                  <span class="sidenav-normal"> alquileres </span>
+                  <span class="sidenav-mini-icon"> Alquileres </span>
+                  <span class="sidenav-normal"> Alquileres </span>
                 </nuxtLink>
               </li>
               <!-- <li class="nav-item">
