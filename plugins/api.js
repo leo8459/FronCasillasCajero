@@ -10,7 +10,7 @@ export default function ({ $axios }, inject) {
 
   // Set baseURL to something different
 
-  let url ='http://localhost:/backagbc/public/cajero/'
+  let url ='http://172.65.10.33:8000/cajero/'
   api.url =url
   api.setBaseURL(url) 
   // Inject to context as $api
