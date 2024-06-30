@@ -75,7 +75,7 @@ export default {
       },
       apiUrl: "alquileres",
       page: "alquileres",
-      modulo: "Agbc",
+      modulo: "AGBC",
       clientes: [],
       casillas: [],
       categorias: [],
@@ -95,13 +95,9 @@ export default {
     this.$nextTick(async () => {
 
       try {
-        await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios'),]).then((v) => {
+        await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('casillas')]).then((v) => {
           this.model = v[0];
-          this.clientes = v[1];
-          this.casillas = v[2];
-          this.categorias = v[3];
-          this.precios = v[4];
-
+          this.casillas = v[1];
 
           // if (this.clientes.length) {
           //   this.model.cliente_id = this.clientes[0].id

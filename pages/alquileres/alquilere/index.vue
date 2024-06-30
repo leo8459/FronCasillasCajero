@@ -10,7 +10,12 @@
               <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre" @input="buscar" />
             </div>
           </div>
-
+ <!-- Botón para abrir el modal de casillas por vencer -->
+ <div class="btn-group mr-2">
+            <button class="btn btn-info" @click="mostrarCasillasPorVencer">
+              <i class="fas fa-exclamation-triangle"></i> Casillas por Vencer
+            </button>
+          </div>
           <!-- Botón para abrir el modal -->
           <div class="btn-group mr-2">
             <button class="btn btn-info" @click="modalVisible2 = true">
@@ -128,6 +133,7 @@
                   <thead>
                     <th class="py-0 px-1">#</th>
                     <th class="py-0 px-1">Cliente</th>
+                    <th class="py-0 px-1">Cajero</th>
                     <th class="py-0 px-1">Telefono</th>
                     <th class="py-0 px-1">Casilla</th>
                     <th class="py-0 px-1">Carnet</th>
@@ -146,6 +152,7 @@
                     <tr v-for="(m, i) in paginatedList" :key="m.id">
                       <td class="py-0 px-1">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                       <td class="py-0 px-1">{{ m.cliente.nombre }}</td>
+                      <td class="py-0 px-1">{{ m.cajero ? m.cajero.nombre : 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.cliente.telefono }}</td>
                       <td class="py-0 px-1">{{ m.casilla.nombre }}</td>
                       <td class="py-0 px-1">{{ m.cliente.carnet }}</td>
@@ -215,6 +222,7 @@ export default {
       fechaInicio: '',
       fechaFin: '',
       alertShown: false,
+      casillasPorVencer: [],
     };
   },
   computed: {
@@ -579,9 +587,6 @@ generarReporteCasillasGabetas() {
 
   window.open(doc.output('bloburl'), '_blank');
 },
-
-
-
 generarReporteCasillasMedianas() {
   // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
   const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Mediana');
@@ -1778,6 +1783,18 @@ generarAlertaCasillasPorVencer() {
     alert(`Tienes ${numeroCasillasPorVencer} casilla(s) por vencer en un mes.`);
   }
 },
+mostrarCasillasPorVencer() {
+      const currentDate = new Date();
+      const oneMonthAhead = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+
+      // Filtrar las casillas por vencer
+      this.casillasPorVencer = this.list.filter(alquiler => {
+        const finFecha = new Date(alquiler.fin_fecha);
+        return finFecha >= currentDate && finFecha < oneMonthAhead && alquiler.estado === 1;
+      });
+
+      this.modalCasillasPorVencer = true;
+    },
     buscar() {
       if (this.searchTerm.trim() === "") {
         this.filteredList = this.list;

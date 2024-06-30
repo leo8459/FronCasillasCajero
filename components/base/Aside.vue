@@ -32,8 +32,8 @@
 
             <li class="nav-item">
                 <nuxtLink class="nav-link" to="/llaves/llave">
-                  <span class="sidenav-mini-icon"> llaves </span>
-                  <span class="sidenav-normal"> llaves </span>
+                  <span class="sidenav-mini-icon"> Llaves </span>
+                  <span class="sidenav-normal"> Llaves </span>
                 </nuxtLink>
               </li>
               <li class="nav-item">
@@ -59,8 +59,8 @@
 
               <li class="nav-item">
                 <nuxtLink class="nav-link" to="/alquileres/alquilere">
-                  <span class="sidenav-mini-icon"> Alquileres </span>
-                  <span class="sidenav-normal"> Alquileres </span>
+                  <span class="sidenav-mini-icon"> Alquilados </span>
+                  <span class="sidenav-normal"> Alquilados </span>
                 </nuxtLink>
               </li>
               <!-- <li class="nav-item">

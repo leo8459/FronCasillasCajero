@@ -84,14 +84,6 @@
                         <option v-for="m in precios" :value="m.id">{{ m.precio }}</option>
                       </select>
                     </div>
-
-                    
-
-
-
-
-
-
                   </div>
                 </CrudCreate>
               </div>
@@ -117,6 +109,7 @@ export default {
         ini_fecha: '',
         fin_fecha: '',
         estado: '',
+        cajero_id: '',// Asignar cajero_id al modelo
       },
       apiUrl: 'alquileres',
       page: 'alquileres',
@@ -128,23 +121,15 @@ export default {
       casillas: [],
       categorias: [],
       precios: [],
+      user:{   // Asignar cajero_id al modelo
+        cajero: []// LLAMAR DATO DEL CAJERO
+      },// Asignar cajero_id al modelo
     };
   },
 
   methods: {
 
-    async saveAlquiler() {
-    // Asignar el ID del cajero al modelo antes de guardar
-    this.model.cajero_id = this.loggedCajeroId;
-
-    try {
-      // Aquí va tu lógica para guardar el alquiler
-      // Puedes usar this.model para acceder a los datos del alquiler
-      // Por ejemplo: await this.$api.post('ruta/para/guardar/alquiler', this.model);
-    } catch (error) {
-      console.error('Error al guardar el alquiler:', error);
-    }
-  },
+  
   
     async searchClients() {
       // Realizar la búsqueda de clientes basada en la consulta de búsqueda
@@ -278,6 +263,9 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
+      let user = localStorage.getItem('userAuth')  // Asignar cajero_id al modelo
+      this.user = JSON.parse(user)                // Asignar cajero_id al modelo
+      this.model.cajero_id = this.user.cajero.id; // Asignar cajero_id al modelo
       try {
         await Promise.all([this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios')]).then((v) => {
           this.clientes = v[0];

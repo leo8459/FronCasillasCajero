@@ -484,12 +484,6 @@ export default {
   /* Ajusta la forma en que la imagen se ajusta dentro del contenedor */
 }
 
-/* Define el estilo para el color de "Ganadores" aquí */
-.text-color-ganadores {
-  color: #FFA500;
-  /* Cambia el color según tus preferencias */
-}
-
 .fs-4 {
   font-size: 1.5rem;
   /* Cambia el tamaño según tus preferencias */

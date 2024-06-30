@@ -4,7 +4,6 @@
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
         <div class="row justify-content-center">
-
           <div class="col-sm-8 col-12">
             <div class="card">
               <div class="card-header">
@@ -15,68 +14,60 @@
                   <div slot="body" class="row">
                     <div class="form-group col-12">
                       <label for="">Numero de Llaves</label>
-                      <input type="text" name="" v-model="model.nombre" class="form-control" id="" />
+                      <input type="text" v-model="model.nombre" class="form-control" />
                     </div>
-
-                    
-
-
+                  </div>
+                </CrudUpdate>
               </div>
-              </CrudUpdate>
             </div>
           </div>
         </div>
       </div>
+    </AdminTemplate>
   </div>
-  </AdminTemplate>
-</div></template>
+</template>
 
 <script>
 export default {
   name: "IndexPage",
   head() {
     return {
-      title: "Secciones",
+      title: "Llaves",
     };
-    ;
   },
   data() {
     return {
       load: true,
-
       model: {
         nombre: '',
-       
-
       },
       apiUrl: "llaves",
-      page: "llaves",
-      modulo: "Agbc",
+      page: "Llaves",
+      modulo: "AGBC",
     };
   },
   methods: {
     async GET_DATA(path) {
-      const res = await this.$api.$get(path);
-      return res
+      try {
+        const res = await this.$api.$get(path);
+        return res.data; // Asegúrate de que devuelva el objeto de datos directamente
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+      }
     },
-
   },
   mounted() {
     this.$nextTick(async () => {
-
       try {
-        await Promise.all([this.GET_DATA(this.apiUrl + '/' + this.$route.params.id)]).then((v) => {
-          this.model = v[0]
-        })
+        const data = await this.GET_DATA(this.apiUrl + '/' + this.$route.params.id);
+        this.model = { ...this.model, ...data }; // Asigna el objeto de datos, manteniendo las propiedades existentes
       } catch (e) {
-        console.log(e);
+        console.error(e);
       } finally {
-        this.load = false
+        this.load = false;
       }
-
-
-
     });
-  }
+  },
 };
 </script>

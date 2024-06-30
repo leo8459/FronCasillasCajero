@@ -61,7 +61,7 @@
                     </div>
 
 
-
+{{ user.cajero.id }}
                     <!-- <div class="form-group col-12">
                       <label for="">Estado de Casilla</label>
                       <select v-model="model.casilla_estado" class="form-control">
@@ -121,7 +121,9 @@ export default {
         casilla_estado: '',
         categoria_id: '',
         precio_id: '',
-        estado: ''
+        estado: '',
+        cajero_id: '',// Asignar cajero_id al modelo
+
 
       },
       apiUrl: "alquileres",
@@ -131,7 +133,9 @@ export default {
       casillas: [],
       categorias: [],
       precios: [],
-
+      user:{   // Asignar cajero_id al modelo
+        cajero: []// LLAMAR DATO DEL CAJERO
+      },// Asignar cajero_id al modelo
 
     };
   },
@@ -155,10 +159,6 @@ export default {
         this.tiemposFiltrados = this.precios.map(precio => precio.tiempo);
       }
     },
-
-
-
-
     updateFechaTermino() {
       const selectedPrecio = this.precios.find(precio => precio.id === this.model.precio_id);
 
@@ -196,9 +196,6 @@ export default {
 
       }
     },
-
-
-    
     // Nuevo método para actualizar los tiempos basados en el tamaño seleccionado
     updateTiemposBySize() {
       if (this.model.categoria_id === 'ID_TU_TAMAÑO_PEQUEÑA') {
@@ -218,9 +215,6 @@ export default {
         this.tiemposFiltrados = this.precios.map(precio => precio.tiempo);
       }
     },
-
-
-
     async GET_DATA(path) {
       const res = await this.$api.$get(path);
       return res
@@ -240,10 +234,10 @@ export default {
   },
 
   mounted() {
-
-
-
     this.$nextTick(async () => {
+      let user = localStorage.getItem('userAuth')  // Asignar cajero_id al modelo
+      this.user = JSON.parse(user)                // Asignar cajero_id al modelo
+      this.model.cajero_id = this.user.cajero.id; // Asignar cajero_id al modelo
       try {
       await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios'),]).then((v) => {
         this.model = v[0];
@@ -251,6 +245,7 @@ export default {
         this.casillas = v[2];
         this.categorias = v[3];
         this.precios = v[4];
+
 
         // Si deseas establecer el tiempo en vacío por defecto
         this.model.precio_id = null;
@@ -263,9 +258,6 @@ export default {
     } finally {
       this.load = false
     }
-
-
-
     });
   }
 };
