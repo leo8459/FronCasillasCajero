@@ -43,11 +43,24 @@
 
 
                     <div class="form-group col-12">
-    <label for="">Tiempo</label>
-<select name="" id="" class="form-control" v-model="model.precio_id" @change="updateFechaTermino" :disabled="tiempoSeleccionado">
-      <option v-for="m in precios" :value="m.id">{{ m.tiempo }}</option>
-    </select>
-  </div>
+                      <label for="">Tiempo</label>
+                      <select name="" id="" class="form-control" v-model="model.precio_id" @change="updateFechaTermino"
+                        :disabled="tiempoSeleccionado">
+                        <option v-for="m in precios" :value="m.id">{{ m.tiempo }}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-12">
+                      <label for="">Multas</label>
+                      <input type="text" v-model="model.nombre" class="form-control" id="">
+                    </div>
+
+
+
+
+                    <div class="form-group col-12">
+                      <label for="">Llaves Extras</label>
+                      <input type="text" v-model="model.estado_pago" class="form-control" id="">
+                    </div>
 
 
                     <div class="form-group col-12">
@@ -61,7 +74,7 @@
                     </div>
 
 
-{{ user.cajero.id }}
+                    {{ user.cajero.id }}
                     <!-- <div class="form-group col-12">
                       <label for="">Estado de Casilla</label>
                       <select v-model="model.casilla_estado" class="form-control">
@@ -133,7 +146,7 @@ export default {
       casillas: [],
       categorias: [],
       precios: [],
-      user:{   // Asignar cajero_id al modelo
+      user: {   // Asignar cajero_id al modelo
         cajero: []// LLAMAR DATO DEL CAJERO
       },// Asignar cajero_id al modelo
 
@@ -142,7 +155,7 @@ export default {
   methods: {
 
 
-    
+
 
     async updateCategoria() {
       // Obtén la casilla seleccionada
@@ -190,9 +203,9 @@ export default {
         // Actualizar model.fin_fecha con la fecha de finalización calculada
         const year = String(fechaFin.getFullYear()).padStart(2, '0');
         const month = String(fechaFin.getMonth() + 1).padStart(2, '0');
-        const day = String(fechaFin.getDate()+ 1).padStart(2, '0');
+        const day = String(fechaFin.getDate() + 1).padStart(2, '0');
         this.model.fin_fecha = `${year}-${month}-${day}`;
-              this.tiempoSeleccionado = true;
+        this.tiempoSeleccionado = true;
 
       }
     },
@@ -235,29 +248,29 @@ export default {
 
   mounted() {
     this.$nextTick(async () => {
-      let user = localStorage.getItem('userAuth')  // Asignar cajero_id al modelo
-      this.user = JSON.parse(user)                // Asignar cajero_id al modelo
-      this.model.cajero_id = this.user.cajero.id; // Asignar cajero_id al modelo
+      let user = localStorage.getItem('userAuth')  // Obtener datos del usuario autenticado
+      this.user = JSON.parse(user);                // Parsear los datos del usuario
+      this.model.cajero_id = this.user.cajero.id;  // Asignar cajero_id al modelo
       try {
-      await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios'),]).then((v) => {
-        this.model = v[0];
-        this.clientes = v[1];
-        this.casillas = v[2];
-        this.categorias = v[3];
-        this.precios = v[4];
+        await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios'),]).then((v) => {
+          this.model = v[0];
+          this.clientes = v[1];
+          this.casillas = v[2];
+          this.categorias = v[3];
+          this.precios = v[4];
 
 
-        // Si deseas establecer el tiempo en vacío por defecto
-        this.model.precio_id = null;
+          // Si deseas establecer el tiempo en vacío por defecto
+          this.model.precio_id = null;
 
-        // Actualiza la fecha de término basada en el tiempo inicial
-        this.updateFechaTermino();
-      })
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.load = false
-    }
+          // Actualiza la fecha de término basada en el tiempo inicial
+          this.updateFechaTermino();
+        })
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.load = false
+      }
     });
   }
 };
