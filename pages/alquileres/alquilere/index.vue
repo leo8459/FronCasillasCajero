@@ -46,9 +46,7 @@
                       Casillas Vencidas
                     </button>
                     <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
-                    <button @click="reportefechadeinicio" class="btn btn-fx btn-info">
-                      Fecha de Ingreso de Casillas Alquiladas
-                    </button>
+                   
                     <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
                     <button @click="generarReporteCompletoFechas" class="btn btn-fx btn-info">
                       reporte general
@@ -751,63 +749,6 @@ generarReporteCompletoFechas() {
 
 
 
-reportefechadeinicio() {
-  if (!this.fechaInicio || !this.fechaFin) {
-    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
-    return;
-  }
-
-  const fechaInicio = new Date(this.fechaInicio);
-  const fechaFin = new Date(this.fechaFin);
-
-  const casillasVencidas = this.list.filter(alquiler => {
-    const iniFecha = new Date(alquiler.ini_fecha); // Usar ini_fecha en lugar de fin_fecha
-    return iniFecha >= fechaInicio && iniFecha <= fechaFin;
-  });
-
-  // Calcular los totales
-  const totalCasillasAlquiladas = casillasVencidas.length;
-  const totalPrice = casillasVencidas.reduce((total, alquiler) => total + parseFloat(alquiler.precio.precio || 0), 0);
-  const totalEstadoPago = casillasVencidas.reduce((total, alquiler) => total + parseFloat(alquiler.estado_pago || 0), 0);
-  const totalMultas = casillasVencidas.reduce((total, alquiler) => total + parseFloat(alquiler.nombre || 0), 0);
-  const totalHabilitacion = casillasVencidas.reduce((total, alquiler) => total + parseFloat(alquiler.habilitacion || 0), 0);
-  const totalSuma = totalPrice + totalEstadoPago + totalMultas + totalHabilitacion;
-
-  const doc = new jsPDF('l', 'mm', 'a4');
-  
-  // Añadir el título
-  const title = 'Fecha de Ingreso de Casillas Alquiladas';
-  const titleWidth = doc.getTextWidth(title);
-  const pageWidth = doc.internal.pageSize.width;
-  const x = (pageWidth - titleWidth) / 2;
-  const y = 10;
-  doc.text(title, x, y);
-
-  // Añadir tabla de totales
-  const totalHeaders = ['Descripción', 'Monto', 'Cantidad'];
-  const totalBody = [
-    ['Casillas Alquiladas', '', totalCasillasAlquiladas],
-    ['Total Precio', totalPrice.toFixed(2), ''],
-    ['Total Llaves Extras', totalEstadoPago.toFixed(2), ''],
-    ['Total Multas', totalMultas.toFixed(2), ''],
-    ['Total Habilitación', totalHabilitacion.toFixed(2), ''],
-    ['Total Suma', totalSuma.toFixed(2), '']
-  ];
-
-  doc.autoTable({
-    head: [totalHeaders],
-    body: totalBody,
-    startY: y + 10, // Posicionar la tabla de totales después del título
-    theme: 'grid',
-    styles: { fontSize: 10, cellPadding: 2 },
-    columnStyles: { 
-      1: { halign: 'right' }, // Alinear montos a la derecha
-      2: { halign: 'center' }  // Alinear cantidades al centro
-    }
-  });
-
-  window.open(doc.output('bloburl'), '_blank');
-},
 
 generarReporteCasillasVencidasEntreFechas() {
   if (!this.fechaInicio || !this.fechaFin) {

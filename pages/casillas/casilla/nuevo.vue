@@ -24,20 +24,20 @@
                     </div>
                     
                     <div class="form-group col-12">
-                      <label for="">categorias</label>
+                      <label for="">Categorias</label>
                       <select name="" id="" class="form-control" v-model="model.categoria_id">
                         <option v-for="m in categorias" :value="m.id">{{ m.nombre }}</option>
                       </select>
                     </div>
 
                     <div class="form-group col-12">
-                      <label for="">secciones</label>
+                      <label for="">Secciones</label>
                       <select name="" id="" class="form-control" v-model="model.seccione_id">
                         <option v-for="m in secciones" :value="m.id">{{ m.nombre }}</option>
                       </select>
                     </div>
                     <div class="form-group col-12">
-                      <label for="">llaves</label>
+                      <label for="">Llaves</label>
                       <select name="" id="" class="form-control" v-model="model.llaves_id">
                         <option v-for="m in llaves" :value="m.id">{{ m.nombre }}</option>
                       </select>
@@ -71,7 +71,7 @@ export default {
 
       },
       apiUrl: 'casillas',
-      page: 'casillas',
+      page: 'Casillas',
       modulo: 'AGBC',
       load: true,
       categorias:[],

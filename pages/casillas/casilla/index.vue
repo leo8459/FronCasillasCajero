@@ -23,7 +23,7 @@
                     <th class="py-0 px-1">Codigo Casilla</th>
                     <th class="py-0 px-1">Categoria</th>
                     <th class="py-0 px-1">Seccion</th>
-                    <th class="py-0 px-1">estado</th>
+                    <th class="py-0 px-1">Estado</th>
                     <!-- <th class="py-0 px-1">llaves</th> -->
                     <th class="py-0 px-1"></th>
                   </thead>
@@ -88,8 +88,8 @@ export default {
       load: true,
       list: [],
       apiUrl: 'casillas',
-      page: 'casillas',
-      modulo: 'agbc',
+      page: 'Casillas',
+      modulo: 'AGBC',
       url_nuevo: '/casillas/casilla/nuevo',
       url_editar: '/casillas/casilla/editar/',
       currentPage: 1,

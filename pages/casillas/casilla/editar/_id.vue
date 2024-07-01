@@ -8,7 +8,7 @@
           <div class="col-sm-8 col-12">
             <div class="card">
               <div class="card-header">
-                <h3>Actualizar</h3>
+                <h3>Actualizar Casilla</h3>
               </div>
               <div class="card-body">
                 <CrudUpdate :model="model" :apiUrl="apiUrl">
@@ -21,7 +21,7 @@
 
 
                     <div class="form-group col-12">
-                      <label for="">secciones</label>
+                      <label for="">Secciones</label>
                       <select name="" id="" class="form-control" v-model="model.seccione_id">
                         <option v-for="m in secciones" :value="m.id">{{ m.nombre }}</option>
                       </select>
@@ -89,8 +89,8 @@ export default {
 
       },
       apiUrl: "casillas",
-      page: "casillas",
-      modulo: "Agbc",
+      page: "Casillas",
+      modulo: "AGBC",
       categorias: [],
       secciones: [],
     };

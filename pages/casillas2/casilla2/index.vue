@@ -106,7 +106,7 @@ export default {
       casillas: [],
       apiUrl: 'ver1',
       page: 'Casillas',
-      modulo: 'agbc',
+      modulo: 'AGBC',
       seccionSeleccionada: "1",
       url_nuevo: '/alquileres/alquilere/nuevo',
       url_editar: '/casillas/casilla/estado/',

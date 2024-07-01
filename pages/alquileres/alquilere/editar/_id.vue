@@ -8,7 +8,7 @@
           <div class="col-sm-8 col-12">
             <div class="card">
               <div class="card-header">
-                <h3>Actualizar</h3>
+                <h3>Actualizar Alquileres</h3>
               </div>
               <div class="card-body">
                 <CrudUpdate :model="model" :apiUrl="apiUrl">
@@ -74,7 +74,7 @@ export default {
 
       },
       apiUrl: "alquileres",
-      page: "alquileres",
+      page: "Alquileres",
       modulo: "AGBC",
       clientes: [],
       casillas: [],

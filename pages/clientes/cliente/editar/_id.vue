@@ -8,7 +8,7 @@
           <div class="col-sm-8 col-12">
             <div class="card">
               <div class="card-header">
-                <h3>Actualizar</h3>
+                <h3>Actualizar Cliente</h3>
               </div>
               <div class="card-body">
                 <CrudUpdate :model="model" :apiUrl="apiUrl">
@@ -21,7 +21,7 @@
                     
 
                     <div class="form-group col-12">
-                      <label for="">email</label>
+                      <label for="">Email</label>
                       <input type="text" name="" v-model="model.email" class="form-control" id="" />
                     </div>
 
@@ -31,7 +31,7 @@
                     </div> -->
 
                     <div class="form-group col-12">
-                      <label for="">carnet</label>
+                      <label for="">Carnet</label>
                       <input type="text" name="" v-model="model.carnet" class="form-control" id="" />
                     </div>
  
@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group col-12">
-                      <label for="">telefono</label>
+                      <label for="">Telefono</label>
                       <input type="text" name="" v-model="model.telefono" class="form-control" id="" />
                     </div>
             
@@ -88,8 +88,8 @@ export default {
 
       },
       apiUrl: "clientes",
-      page: "clientes",
-      modulo: "Agbc",
+      page: "Clientes",
+      modulo: "AGBC",
     };
   },
   methods: {
