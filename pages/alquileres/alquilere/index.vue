@@ -207,7 +207,7 @@ export default {
       load: true,
       list: [],
       apiUrl: "alquileres",
-      page: "alquileres",
+      page: "Alquileres",
       modulo: "AGBC",
       url_nuevo: "/alquileres/alquilere/nuevo",
       url_editar: "/alquileres/alquilere/editar/",
