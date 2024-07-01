@@ -12,26 +12,20 @@
               </div>
               <div class="card-body">
                 <CrudCreate :model="model" :apiUrl="apiUrl">
-
-
-
-
                   <div slot="body" class="row">
-
-
-
                     <!-- Nuevo campo de entrada para el cliente con funcionalidad de búsqueda -->
-    <div class="form-group col-12">
-      <label for="">Cliente</label>
-      <input type="text" v-model="searchQuery" @input="searchClients" @keyup.enter="autocompleteFirstResult" class="form-control" id="">
-      <!-- Mostrar coincidencias debajo del campo de búsqueda -->
-      <div v-if="searchResults.length" class="search-results">
-        <ul>
-          <li v-for="client in searchResults" @click="selectClient(client)" @mouseover="highlightClient(client)">{{ client.nombre }}</li>
-        </ul>
-      </div>
-    </div>
-
+                    <div class="form-group col-12">
+                      <label for="">Cliente</label>
+                      <input type="text" v-model="searchQuery" @input="searchClients"
+                        @keyup.enter="autocompleteFirstResult" class="form-control" id="">
+                      <!-- Mostrar coincidencias debajo del campo de búsqueda -->
+                      <div v-if="searchResults.length" class="search-results">
+                        <ul>
+                          <li v-for="client in searchResults" @click="selectClient(client)"
+                            @mouseover="highlightClient(client)">{{ client.nombre }}</li>
+                        </ul>
+                      </div>
+                    </div>
 
                     <div class="form-group col-12">
                       <label for="">Casilla</label>
@@ -40,9 +34,6 @@
                         <option v-for="m in casillas" :value="m.id">{{ m.nombre }}</option>
                       </select>
                     </div>
-
-
-
 
                     <div class="form-group col-12">
                       <label for="">Tamaño</label>
@@ -61,21 +52,29 @@
                         <option v-for="m in precios" :value="m.id">{{ m.tiempo }}</option>
                       </select>
                     </div>
-                    
+
                     <div class="form-group col-12">
                       <label for="">Fecha final</label>
                       <input type="date" v-model="model.fin_fecha" class="form-control" :min="model.ini_fecha" disabled>
                     </div>
 
-
                     <div class="form-group col-12">
                       <label for="">Llaves Extras</label>
                       <input type="text" v-model="model.estado_pago" class="form-control" id="">
                     </div>
-                    
+
                     <div class="form-group col-12">
                       <label for="">Multas</label>
                       <input type="text" v-model="model.nombre" class="form-control" id="">
+                    </div>
+                    
+                    <div class="form-group col-12">
+                      <label for="">Apertura</label>
+                      <input type="date" v-model="model.apertura" class="form-control" :min="apertura" disabled>
+                    </div>
+                    <div class="form-group col-12">
+                      <label for="">Habilitacion</label>
+                      <input type="text" v-model="model.habilitacion" class="form-control" id="">
                     </div>
 
                     <div class="form-group col-12">
@@ -108,29 +107,28 @@ export default {
         estado_pago: '',
         ini_fecha: '',
         fin_fecha: '',
+        apertura: '',
+        habilitacion: '',
         estado: '',
-        cajero_id: '',// Asignar cajero_id al modelo
+        cajero_id: '', // Asignar cajero_id al modelo
       },
       apiUrl: 'alquileres',
       page: 'alquileres',
       modulo: 'AGBC',
       load: true,
       searchQuery: '', // Añade esta línea
-    searchResults: [], // Añade esta línea
+      searchResults: [], // Añade esta línea
       clientes: [],
       casillas: [],
       categorias: [],
       precios: [],
-      user:{   // Asignar cajero_id al modelo
-        cajero: []// LLAMAR DATO DEL CAJERO
-      },// Asignar cajero_id al modelo
+      user: { // Asignar cajero_id al modelo
+        cajero: [] // LLAMAR DATO DEL CAJERO
+      }, // Asignar cajero_id al modelo
     };
   },
 
   methods: {
-
-  
-  
     async searchClients() {
       // Realizar la búsqueda de clientes basada en la consulta de búsqueda
       if (this.searchQuery.trim() !== '') {
@@ -150,7 +148,7 @@ export default {
       this.searchResults = [];
     },
 
-   autocompleteFirstResult(event) {
+    autocompleteFirstResult(event) {
       // Verificar si se presionó la tecla Enter
       if (event.key === 'Enter' && this.searchResults.length > 0) {
         // Autocompletar con el primer resultado de la lista
@@ -171,7 +169,7 @@ export default {
       // Opcional: Realizar alguna acción cuando se pase el mouse sobre un cliente en la lista
     },
 
-     async updateCategoria() {
+    async updateCategoria() {
       // Obtén la casilla seleccionada
       const selectedCasilla = this.casillas.find(casilla => casilla.id === this.model.casilla_id);
 
@@ -186,7 +184,6 @@ export default {
         this.tiemposFiltrados = this.precios.map(precio => precio.tiempo);
       }
     },
-
 
     // Nuevo método para actualizar los tiempos basados en el tamaño seleccionado
     updateTiemposBySize() {
@@ -207,11 +204,11 @@ export default {
         this.tiemposFiltrados = this.precios.map(precio => precio.tiempo);
       }
     },
+
     async GET_DATA(path) {
       const res = await this.$api.$get(path);
       return res;
     },
-
 
     updateFechaTermino() {
       const selectedPrecio = this.precios.find(precio => precio.id === this.model.precio_id);
@@ -248,10 +245,8 @@ export default {
         this.model.fin_fecha = `${year}-${month}-${day}`;
       }
     }
-
   },
   computed: {
-
     // Obtener la fecha actual en formato ISO (YYYY-MM-DD)
     minFecha() {
       const now = new Date();
@@ -263,9 +258,18 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
-      let user = localStorage.getItem('userAuth')  // Asignar cajero_id al modelo
-      this.user = JSON.parse(user)                // Asignar cajero_id al modelo
+      let user = localStorage.getItem('userAuth'); // Asignar cajero_id al modelo
+      this.user = JSON.parse(user); // Asignar cajero_id al modelo
       this.model.cajero_id = this.user.cajero.id; // Asignar cajero_id al modelo
+      
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
+
+      this.model.apertura = formattedDate; // Asignar la fecha actual a la apertura
+
       try {
         await Promise.all([this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios')]).then((v) => {
           this.clientes = v[0];
@@ -290,13 +294,7 @@ export default {
         }
 
         // Establecer la fecha inicial en el modelo con la fecha actual
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
         this.model.ini_fecha = formattedDate;
-      // this.model.ini_fecha = '2023-01-01';
 
         // Llamar al método updateFechaTermino cuando se cambie el valor de model.precio_id
         this.$watch('model.precio_id', this.updateFechaTermino);
@@ -307,10 +305,10 @@ export default {
         this.load = false;
       }
     });
-  },
-
+  }
 };
 </script>
+
 <style>
 /* Estilos para los resultados de búsqueda */
 .search-results {

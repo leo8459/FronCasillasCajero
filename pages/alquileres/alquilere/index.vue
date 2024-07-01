@@ -143,6 +143,8 @@
                     <th class="py-0 px-1">Estado</th>
                     <th class="py-0 px-1">Total Llave Extra</th>
                     <th class="py-0 px-1">Multas</th>
+                    <th class="py-0 px-1">Habilitacion</th>
+                    <th class="py-0 px-1">Dia Pago</th>
                     <th class="py-0 px-1">Tiempo Inicio</th>
                     <th class="py-0 px-1">Tiempo Fin</th>
                     <th class="py-0 px-1">Estado</th>
@@ -164,6 +166,8 @@
                       </td>
                       <td class="py-0 px-1">{{ m.estado_pago }}</td>
                       <td class="py-0 px-1">{{ m.nombre }}</td>
+                      <td class="py-0 px-1">{{ m.habilitacion }}</td>
+                      <td class="py-0 px-1">{{ m.apertura }}</td>
                       <td class="py-0 px-1">{{ m.ini_fecha }}</td>
                       <td class="py-0 px-1">{{ m.fin_fecha }}</td>
                       <td class="py-0 px-1">
@@ -268,112 +272,64 @@ export default {
   },
   methods: {
     generarReporteCasillasPequenas() {
-  // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
+  // Filtrar los datos por la categoría 'Pequeña'
   const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Pequeña');
+  
+  // Calcular los totales
+  const totalCasillasAlquiladas = dataForReport.length;
 
-  // Calcular el total del precio sumando los precios de todas las casillas pequeñas
   const totalPrice = dataForReport.reduce((total, alquiler) => {
-    return total + parseFloat(alquiler.precio.precio);
+    return total + parseFloat(alquiler.precio.precio || 0);
   }, 0);
-
-  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas pequeñas
+  
   const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
-    const estadoPago = parseFloat(alquiler.estado_pago);
-    return isNaN(estadoPago) ? total : total + estadoPago;
+    return total + parseFloat(alquiler.estado_pago || 0);
+  }, 0);
+  
+  const totalMultas = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.multa || 0);
   }, 0);
 
-  // Calcular el total del valor numérico de los nombres sumando los valores numéricos de todas las observaciones de las casillas pequeñas
-const totalNombreValue = dataForReport.reduce((total, alquiler) => {
-  const nombreValue = parseFloat(alquiler.nombre) || 0;
-  return total + nombreValue;
-}, 0);
+  const totalHabilitacion = dataForReport.reduce((total, alquiler) => {
+    return total + parseFloat(alquiler.habilitacion || 0);
+  }, 0);
+  
+  const totalSuma = totalPrice + totalEstadoPago + totalMultas + totalHabilitacion;
 
-
-  // Calcular el total de la suma de los precios, del estado de pago y de la longitud de los nombres
-  const totalSuma = totalPrice + totalEstadoPago + totalNombreValue;
-
-  // Crear una cadena para el reporte
-  let reporte = "Reporte de Casillas Pequeñas\n\n";
-
-  // Crea un nuevo documento PDF
-  const doc = new jsPDF('l', 'mm', 'a4'); // 'l' indica orientación horizontal
-
-  const headers = [
-    '#','Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra','Multas', 'Tiempo Inicio', 'Tiempo Fin'
-  ];
-
-  const body = dataForReport.map((alquiler, index) => [
-    index + 1,
-    alquiler.cliente.nombre,
-    alquiler.casilla.nombre,
-    alquiler.cliente.carnet,
-    alquiler.casilla.seccione_id,
-    parseFloat(alquiler.precio.precio),
-    alquiler.categoria.nombre,
-    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondencia' : 'Ocupado',
-    alquiler.estado_pago,
-    alquiler.nombre,
-    alquiler.ini_fecha,
-    alquiler.fin_fecha,
-  ]);
-
-  // Agregar título al reporte con espaciado
+  const doc = new jsPDF('l', 'mm', 'a4');
+  
+  // Añadir el título
   const title = 'Reporte de Casillas Pequeñas';
   const titleWidth = doc.getTextWidth(title);
   const pageWidth = doc.internal.pageSize.width;
   const x = (pageWidth - titleWidth) / 2;
-  const y = 10; // Ajustar el espaciado vertical aquí
+  const y = 10;
   doc.text(title, x, y);
 
-  // Agregar filas vacías para el total y dejar espacio para ello
-  const emptyRows = 1; // Ajustar la cantidad de filas vacías
-  for (let i = 0; i < emptyRows; i++) {
-    body.push(['', '', '', '', '', '', '', '', '', '', '', '']);
-  }
-
-  // Agregar una fila para mostrar el total del precio
-  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2), '', '', '']);
-
-  // Agregar una fila para mostrar el total del estado de pago
-  body.push(['', '', '', '', '', 'Total Llaves Extras:', totalEstadoPago.toFixed(2), '', '', '']);
-
-  // Agregar una fila para mostrar el total de la longitud de los nombres
-  body.push(['', '', '', '', '', 'Total Multas:', totalNombreValue, '', '', '']);
-
-  // Agregar una fila para mostrar el total de la suma de precios, estado de pago y longitud de los nombres
-  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+  // Añadir tabla de totales
+  const totalHeaders = ['Descripción', 'Monto'];
+  const totalBody = [
+    ['Casillas Alquiladas', totalCasillasAlquiladas],
+    ['Total Precio', totalPrice.toFixed(2)],
+    ['Total Llaves Extras', totalEstadoPago.toFixed(2)],
+    ['Total Multas', totalMultas.toFixed(2)],
+    ['Total Habilitación', totalHabilitacion.toFixed(2)],
+    ['Total Suma', totalSuma.toFixed(2)]
+  ];
 
   doc.autoTable({
-    head: [headers],
-    body: body,
-    startY: 15, // Ajustar la posición vertical del contenido
-    theme: 'striped',
-    margin: { top: 20 },
-    styles: {
-      fontSize: 6,
-      cellPadding: 1,
-      overflow: 'linebreak',
-      columnWidth: 'wrap',
-    },
-    columnStyles: {
-      0: { cellWidth: 10 },
-    },
-    didDrawCell: (data) => {
-      const cell = data.cell;
-      doc.setFontSize(10);
-      doc.setTextColor(50);
-
-      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
-        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
-          halign: 'left',
-          valign: 'top',
-        });
-      }
-    },
+    head: [totalHeaders],
+    body: totalBody,
+    startY: y + 10, // Posicionar la tabla de totales después del título
+    theme: 'grid',
+    styles: { fontSize: 10, cellPadding: 2 },
+    columnStyles: { 1: { halign: 'right' } } // Alinear montos a la derecha
   });
 
   window.open(doc.output('bloburl'), '_blank');
 },
+
+
 generarReporteCasillasCajones() {
   // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
   const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Cajon');
@@ -1359,102 +1315,103 @@ generarReporteCasillasPequenasFechas() {
     return;
   }
 
-  const fechaInicio = new Date(this.fechaInicio);
-  const fechaFin = new Date(this.fechaFin);
+  // Importar moment y moment-timezone
+  const moment = require('moment-timezone');
+
+  // Convertir las fechas de inicio y fin a objetos Date y ajustar la zona horaria
+  const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
+  const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
   const dataForReport = this.list.filter(alquiler => {
-    const iniFecha = new Date(alquiler.ini_fecha);
-    return iniFecha >= fechaInicio && iniFecha <= fechaFin && alquiler.categoria.nombre === 'Pequeña';
+    const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
+    return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Pequeña';
   });
 
+  // Verificar los datos filtrados
+  console.log("Data for Report:", dataForReport);
+
+  const totalCasillasAlquiladas = dataForReport.length;
+
   const totalPrice = dataForReport.reduce((total, alquiler) => {
-    return total + parseFloat(alquiler.precio.precio);
+    console.log("Precio:", alquiler.precio.precio);
+    return total + parseFloat(alquiler.precio.precio || 0);
   }, 0);
 
-  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas
   const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
-    const estadoPago = parseFloat(alquiler.estado_pago);
-    return isNaN(estadoPago) ? total : total + estadoPago;
+    console.log("Estado Pago:", alquiler.estado_pago);
+    return total + parseFloat(alquiler.estado_pago || 0);
   }, 0);
 
-  // Calcular el total de las multas sumando los valores de las multas de todas las casillas
   const totalMultas = dataForReport.reduce((total, alquiler) => {
-    const multas = parseFloat(alquiler.nombre) || 0;
-    return total + multas;
+    console.log("Multas:", alquiler.multa);
+    return total + parseFloat(alquiler.multa || 0);
   }, 0);
 
-  // Calcular el total de la suma de los precios, estado de pago y multas
-  const totalSuma = totalPrice + totalEstadoPago + totalMultas;
+  const totalHabilitacion = dataForReport.reduce((total, alquiler) => {
+    console.log("Habilitación:", alquiler.habilitacion);
+    return total + parseFloat(alquiler.habilitacion || 0);
+  }, 0);
+
+  const totalSuma = totalPrice + totalEstadoPago + totalMultas + totalHabilitacion;
+
+  console.log("Totales:", {
+    totalCasillasAlquiladas,
+    totalPrice,
+    totalEstadoPago,
+    totalMultas,
+    totalHabilitacion,
+    totalSuma
+  });
 
   const doc = new jsPDF('l', 'mm', 'a4');
-  const headers = ['#','Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra','Multas', 'Tiempo Inicio', 'Tiempo Fin'];
+  
+  // Formatear las fechas para el título
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const fechaInicioStr = moment(fechaInicio).format('DD [de] MMMM [de] YYYY');
+  const fechaFinStr = moment(fechaFin).format('DD [de] MMMM [de] YYYY');
 
-  const body = dataForReport.map((alquiler, index) => [
-    index + 1,
-    alquiler.cliente.nombre,
-    alquiler.casilla.nombre,
-    alquiler.cliente.carnet,
-    alquiler.casilla.seccione_id,
-    parseFloat(alquiler.precio.precio),
-    alquiler.categoria.nombre,
-    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
-    alquiler.estado_pago,
-    alquiler.nombre,
-    alquiler.ini_fecha,
-    alquiler.fin_fecha,
-  ]);
-
-  // Agregar título al reporte con espaciado
-  const title = 'Reporte de Casillas Pequeñas';
+  // Añadir el título con las fechas
+  const title = `Reporte de Casillas Pequeñas (${fechaInicioStr} - ${fechaFinStr})`;
   const titleWidth = doc.getTextWidth(title);
   const pageWidth = doc.internal.pageSize.width;
   const x = (pageWidth - titleWidth) / 2;
-  const y = 10; // Ajustar el espaciado vertical aquí
+  const y = 10;
   doc.text(title, x, y);
 
-  // Agregar una fila para mostrar el total del precio
-  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2),  '', '', '']);
-
-  // Agregar una fila para mostrar el total del estado de pago
-  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
-
-  // Agregar una fila para mostrar el total de las multas
-  body.push(['', '', '', '', '', 'Total Multas:', totalMultas.toFixed(2), '', '', '']);
-
-  // Agregar una fila para mostrar el total de la suma de precios, estado de pago y multas
-  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+  // Añadir tabla de totales
+  const totalHeaders = ['Descripción', 'Monto'];
+  const totalBody = [
+    ['Casillas Alquiladas', totalCasillasAlquiladas],
+    ['Total Precio', totalPrice.toFixed(2)],
+    ['Total Llaves Extras', totalEstadoPago.toFixed(2)],
+    ['Total Multas', totalMultas.toFixed(2)],
+    ['Total Habilitación', totalHabilitacion.toFixed(2)],
+    ['Total Suma', totalSuma.toFixed(2)]
+  ];
 
   doc.autoTable({
-    head: [headers],
-    body: body,
-    startY: 10 + y, // Ajustar la posición vertical del contenido
-    theme: 'striped',
-    margin: { top: 20 },
-    styles: {
-      fontSize: 6,
-      cellPadding: 2,
-      overflow: 'linebreak',
-      columnWidth: 'wrap',
-    },
-    columnStyles: {
-      0: { cellWidth: 10 },
-    },
-    didDrawCell: (data) => {
-      const cell = data.cell;
-      doc.setFontSize(10);
-      doc.setTextColor(50);
-
-      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
-        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
-          halign: 'left',
-          valign: 'top',
-        });
-      }
-    },
+    head: [totalHeaders],
+    body: totalBody,
+    startY: y + 10, // Posicionar la tabla de totales después del título
+    theme: 'grid',
+    styles: { fontSize: 10, cellPadding: 2 },
+    columnStyles: { 1: { halign: 'right' } } // Alinear montos a la derecha
   });
 
   window.open(doc.output('bloburl'), '_blank');
 },
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 generarReporteCasillasMedianasFechas() {
@@ -1463,98 +1420,87 @@ generarReporteCasillasMedianasFechas() {
     return;
   }
 
-  const fechaInicio = new Date(this.fechaInicio);
-  const fechaFin = new Date(this.fechaFin);
+  // Importar moment y moment-timezone
+  const moment = require('moment-timezone');
+
+  // Convertir las fechas de inicio y fin a objetos Date y ajustar la zona horaria
+  const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
+  const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
   const dataForReport = this.list.filter(alquiler => {
-    const iniFecha = new Date(alquiler.ini_fecha);
-    return iniFecha >= fechaInicio && iniFecha <= fechaFin && alquiler.categoria.nombre === 'Mediana';
+    const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
+    return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Mediana';
   });
 
+  // Verificar los datos filtrados
+  console.log("Data for Report:", dataForReport);
+
+  const totalCasillasAlquiladas = dataForReport.length;
+
   const totalPrice = dataForReport.reduce((total, alquiler) => {
-    return total + parseFloat(alquiler.precio.precio);
+    console.log("Precio:", alquiler.precio.precio);
+    return total + parseFloat(alquiler.precio.precio || 0);
   }, 0);
 
-  // Calcular el total del estado de pago sumando los valores del estado de pago de todas las casillas
   const totalEstadoPago = dataForReport.reduce((total, alquiler) => {
-    const estadoPago = parseFloat(alquiler.estado_pago);
-    return isNaN(estadoPago) ? total : total + estadoPago;
+    console.log("Estado Pago:", alquiler.estado_pago);
+    return total + parseFloat(alquiler.estado_pago || 0);
   }, 0);
 
-  // Calcular el total de las multas sumando los valores de las multas de todas las casillas
   const totalMultas = dataForReport.reduce((total, alquiler) => {
-    const multas = parseFloat(alquiler.nombre) || 0;
-    return total + multas;
+    console.log("Multas:", alquiler.multa);
+    return total + parseFloat(alquiler.multa || 0);
   }, 0);
 
-  // Calcular el total de la suma de los precios, estado de pago y multas
-  const totalSuma = totalPrice + totalEstadoPago + totalMultas;
+  const totalHabilitacion = dataForReport.reduce((total, alquiler) => {
+    console.log("Habilitación:", alquiler.habilitacion);
+    return total + parseFloat(alquiler.habilitacion || 0);
+  }, 0);
+
+  const totalSuma = totalPrice + totalEstadoPago + totalMultas + totalHabilitacion;
+
+  console.log("Totales:", {
+    totalCasillasAlquiladas,
+    totalPrice,
+    totalEstadoPago,
+    totalMultas,
+    totalHabilitacion,
+    totalSuma
+  });
 
   const doc = new jsPDF('l', 'mm', 'a4');
-  const headers = ['#','Cliente', 'Casilla', 'Carnet', 'Sección', 'Precio', 'Tamaño', 'Alquiler','Llaves Extra','Multas', 'Tiempo Inicio', 'Tiempo Fin'];
+  
+  // Formatear las fechas para el título
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const fechaInicioStr = moment(fechaInicio).format('DD [de] MMMM [de] YYYY');
+  const fechaFinStr = moment(fechaFin).format('DD [de] MMMM [de] YYYY');
 
-  const body = dataForReport.map((alquiler, index) => [
-    index + 1,
-    alquiler.cliente.nombre,
-    alquiler.casilla.nombre,
-    alquiler.cliente.carnet,
-    alquiler.casilla.seccione_id,
-    parseFloat(alquiler.precio.precio),
-    alquiler.categoria.nombre,
-    alquiler.casilla.estado === 1 ? 'Libre' : alquiler.casilla.estado === 2 ? 'Con Correspondecia' : 'Ocupado',
-    alquiler.estado_pago,
-    alquiler.nombre,
-    alquiler.ini_fecha,
-    alquiler.fin_fecha,
-  ]);
-
-  // Agregar título al reporte con espaciado
-  const title = 'Reporte de Casillas Medianas';
+  // Añadir el título con las fechas
+  const title = `Reporte de Casillas Medianas (${fechaInicioStr} - ${fechaFinStr})`;
   const titleWidth = doc.getTextWidth(title);
   const pageWidth = doc.internal.pageSize.width;
   const x = (pageWidth - titleWidth) / 2;
-  const y = 10; // Ajustar el espaciado vertical aquí
+  const y = 10;
   doc.text(title, x, y);
 
-  // Agregar una fila para mostrar el total del precio
-  body.push(['', '', '', '', '', 'Total Precio:', totalPrice.toFixed(2),  '', '', '']);
-
-  // Agregar una fila para mostrar el total del estado de pago
-  body.push(['', '', '', '', '', 'Total Llaves Extra:', totalEstadoPago.toFixed(2), '', '', '']);
-
-  // Agregar una fila para mostrar el total de las multas
-  body.push(['', '', '', '', '', 'Total Multas:', totalMultas.toFixed(2), '', '', '']);
-
-  // Agregar una fila para mostrar el total de la suma de precios, estado de pago y multas
-  body.push(['', '', '', '', '', 'Total Suma:', totalSuma.toFixed(2), '', '', '']);
+  // Añadir tabla de totales
+  const totalHeaders = ['Descripción', 'Monto'];
+  const totalBody = [
+    ['Casillas Alquiladas', totalCasillasAlquiladas],
+    ['Total Precio', totalPrice.toFixed(2)],
+    ['Total Llaves Extras', totalEstadoPago.toFixed(2)],
+    ['Total Multas', totalMultas.toFixed(2)],
+    ['Total Habilitación', totalHabilitacion.toFixed(2)],
+    ['Total Suma', totalSuma.toFixed(2)]
+  ];
 
   doc.autoTable({
-    head: [headers],
-    body: body,
-    startY: 10 + y, // Ajustar la posición vertical del contenido
-    theme: 'striped',
-    margin: { top: 20 },
-    styles: {
-      fontSize: 6,
-      cellPadding: 2,
-      overflow: 'linebreak',
-      columnWidth: 'wrap',
-    },
-    columnStyles: {
-      0: { cellWidth: 10 },
-    },
-    didDrawCell: (data) => {
-      const cell = data.cell;
-      doc.setFontSize(10);
-      doc.setTextColor(50);
-
-      if (cell.height > 10 && doc.getTextWidth(cell.text) > cell.width - 10) {
-        doc.autoTableText(cell.text, cell.x + 2, cell.y + 2, {
-          halign: 'left',
-          valign: 'top',
-        });
-      }
-    },
+    head: [totalHeaders],
+    body: totalBody,
+    startY: y + 10, // Posicionar la tabla de totales después del título
+    theme: 'grid',
+    styles: { fontSize: 10, cellPadding: 2 },
+    columnStyles: { 1: { halign: 'right' } } // Alinear montos a la derecha
   });
 
   window.open(doc.output('bloburl'), '_blank');
