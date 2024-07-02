@@ -63,6 +63,13 @@
                   <span class="sidenav-normal"> Alquilados </span>
                 </nuxtLink>
               </li>
+
+              <li class="nav-item">
+                <nuxtLink class="nav-link" to="/alquileres2d/alquilere2d">
+                  <span class="sidenav-mini-icon"> Alquilados2d </span>
+                  <span class="sidenav-normal"> Alquilados2d </span>
+                </nuxtLink>
+              </li>
               <!-- <li class="nav-item">
                    <nuxtLink
                      class="nav-link"
