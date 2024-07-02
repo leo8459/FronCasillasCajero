@@ -21,7 +21,7 @@
               <h2>Sección {{ seccion.nombre }}</h2>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Pequeña')" :key="'small-' + item.id"
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Pequeña')" :key="item.id ? 'small-' + item.id : 'small-' + index"
                 class="casilla-item small-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -32,7 +32,7 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Mediana')" :key="'medium-' + item.id"
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Mediana')" :key="item.id ? 'medium-' + item.id : 'medium-' + index"
                 class="casilla-item medium-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -43,7 +43,7 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')" :key="'large1-' + item.id"
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')" :key="item.id ? 'large1-' + item.id : 'large1-' + index"
                 class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')" :key="'large2-' + item.id"
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')" :key="item.id ? 'large2-' + item.id : 'large2-' + index"
                 class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -74,7 +74,7 @@
               <h2>Sección {{ seccion.nombre }}</h2>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Pequeña')" :key="'small-23-' + item.id" class="casilla-item small-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Pequeña')" :key="item.id ? 'small-23-' + item.id : 'small-23-' + index" class="casilla-item small-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -84,7 +84,7 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Mediana')" :key="'medium-23-' + item.id" class="casilla-item medium-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Mediana')" :key="item.id ? 'medium-23-' + item.id : 'medium-23-' + index" class="casilla-item medium-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -94,7 +94,7 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')" :key="'large1-23-' + item.id" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')" :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -104,7 +104,7 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')" :key="'large2-23-' + item.id" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')" :key="item.id ? 'large2-23-' + item.id : 'large2-23-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>

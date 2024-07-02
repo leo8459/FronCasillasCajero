@@ -126,6 +126,7 @@
               <div class="card-body">
                 <table class="table">
                   <thead>
+                    {{ user }}
                     <th class="py-0 px-1">#</th>
                     <th class="py-0 px-1">Cliente</th>
                     <th class="py-0 px-1">Cajero</th>
@@ -222,6 +223,10 @@ export default {
       fechaFin: '',
       alertShown: false,
       casillasPorVencer: [],
+      cajero_id: '', // Asignar cajero_id al modelo
+      user: { // Asignar cajero_id al modelo
+        cajero: [] // LLAMAR DATO DEL CAJERO
+      }, // Asignar cajero_id al modelo
     };
   },
   computed: {
@@ -266,9 +271,15 @@ export default {
     }
   },
   methods: {
+    filtrarPorUsuario() {
+      const userId = this.user.cajero.id;
+      return this.list.filter(alquiler => alquiler.cajero_id === userId);
+    },
+
+    
     generarReporteCasillasPequenas() {
   // Filtrar los datos por la categoría 'Pequeña'
-  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Pequeña');
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Pequeña');
   
   // Calcular los totales
   const totalCasillasAlquiladas = dataForReport.length;
@@ -331,8 +342,8 @@ export default {
 
 generarReporteCasillasCajones() {
   // Filtrar los datos por la categoría 'Cajon'
-  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Cajon');
-  
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Cajon');
+
   // Calcular los totales
   const totalCasillasAlquiladas = dataForReport.length;
 
@@ -393,8 +404,8 @@ generarReporteCasillasCajones() {
 
 generarReporteCasillasGabetas() {
   // Filtrar los datos por la categoría 'Gabeta'
-  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Gabeta');
-  
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Gabeta');
+
   // Calcular los totales
   const totalCasillasAlquiladas = dataForReport.length;
 
@@ -454,8 +465,8 @@ generarReporteCasillasGabetas() {
 
 generarReporteCasillasMedianas() {
   // Filtrar los datos por la categoría 'Mediana'
-  const dataForReport = this.list.filter(alquiler => alquiler.categoria.nombre === 'Mediana');
-  
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Mediana');
+
   // Calcular los totales
   const totalCasillasAlquiladas = dataForReport.length;
 
@@ -516,7 +527,7 @@ generarReporteCasillasMedianas() {
 
 generarReporteCompleto() {
   // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
-  const dataForReport = this.list;
+  const dataForReport = this.filtrarPorUsuario();
 
   // Calcular los totales
   const totalCasillasAlquiladas = dataForReport.length;
@@ -669,7 +680,7 @@ generarReporteCompletoFechas() {
   const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
   const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
-  const dataForReport = this.list.filter(alquiler => {
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => {
     const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
     return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin;
   });
@@ -759,7 +770,7 @@ generarReporteCasillasVencidasEntreFechas() {
   const fechaInicio = new Date(this.fechaInicio);
   const fechaFin = new Date(this.fechaFin);
 
-  const casillasVencidas = this.list.filter(alquiler => {
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => {
     const finFecha = new Date(alquiler.fin_fecha);
     return finFecha >= fechaInicio && finFecha <= fechaFin;
   });
@@ -930,10 +941,10 @@ generarReporteCasillasPequenasFechas() {
   const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
   const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
-  const dataForReport = this.list.filter(alquiler => {
-    const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
-    return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Pequeña';
-  });
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => {
+        const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
+        return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Pequeña';
+      });
 
   // Verificar los datos filtrados
   console.log("Data for Report:", dataForReport);
@@ -1025,7 +1036,7 @@ generarReporteCasillasMedianasFechas() {
   const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
   const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
-  const dataForReport = this.list.filter(alquiler => {
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => {
     const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
     return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Mediana';
   });
@@ -1127,7 +1138,7 @@ generarReporteGabetasFechas() {
   const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
   const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
-  const dataForReport = this.list.filter(alquiler => {
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => {
     const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
     return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Gabeta';
   });
@@ -1210,7 +1221,7 @@ generarReporteCajonFechas() {
   const fechaInicio = moment.tz(this.fechaInicio, 'America/La_Paz').startOf('day').toDate();
   const fechaFin = moment.tz(this.fechaFin, 'America/La_Paz').endOf('day').toDate();
 
-  const dataForReport = this.list.filter(alquiler => {
+  const dataForReport = this.filtrarPorUsuario().filter(alquiler => {
     const aperturaFecha = moment.tz(alquiler.apertura, 'America/La_Paz').toDate();
     return aperturaFecha >= fechaInicio && aperturaFecha <= fechaFin && alquiler.categoria.nombre === 'Cajon';
   });
@@ -1394,13 +1405,18 @@ mostrarCasillasPorVencer() {
   },
   mounted() {
     this.$nextTick(async () => {
+      
       try {
+        
         await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
           this.list = v[0].filter(item => item.estado === 1);
           this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
           this.filteredList = this.list;
         });
         this.generarAlertaCasillasPorVencer();
+        let user = localStorage.getItem('userAuth'); // Asignar cajero_id al modelo
+      this.user = JSON.parse(user); // Asignar cajero_id al modelo
+      this.model.cajero_id = this.user.cajero.id; // Asignar cajero_id al modelo
       } catch (e) {
         console.log(e);
       } finally {
