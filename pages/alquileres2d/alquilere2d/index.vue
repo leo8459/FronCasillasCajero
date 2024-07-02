@@ -430,7 +430,7 @@ p {
 }
 
 .small-casilla {
-  width: calc(8.5% - 5px);
+  width: calc(10% - 5px);
   /* 8 casillas por fila */
 }
 
@@ -448,7 +448,7 @@ p {
   display: flex-wrap;
   flex-direction: column;
   align-items: center;
-  margin: 15px;
+  margin: 10px;
 }
 
 .row {
