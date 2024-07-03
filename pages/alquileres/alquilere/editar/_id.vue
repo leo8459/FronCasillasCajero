@@ -99,16 +99,12 @@ export default {
           this.model = v[0];
           this.casillas = v[1];
 
-          // if (this.clientes.length) {
-          //   this.model.cliente_id = this.clientes[0].id
-          // }
-          // if (this.casillas.length) {
-          //   this.model.casilla_id = this.casillas[0].id
-          // }
-          // if (this.categorias.length) {
-          //   this.model.categoria_id = this.categorias[0].id
-          // }
-        })
+         // Cargar el estado de la casilla en el modelo
+         let casilla = this.casillas.find(c => c.id === this.model.casilla_id);
+        if (casilla) {
+          this.model.casilla_estado = casilla.estado;
+        }
+      });
       } catch (e) {
         console.log(e);
       } finally {
