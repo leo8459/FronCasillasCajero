@@ -3,30 +3,74 @@
     <JcLoader :load="load"></JcLoader>
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
+        
+
+        <!-- Casillas Pequeñas -->
         <div class="row">
-          <!-- Global Alquileres Hoy -->
+          <!-- Pequeñas Alquiladas Hoy -->
+         
+          <!-- Casillas Pequeñas -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-blue">
               <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Alquileres Hoy</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.alquileresHoy }}</h6>
+                      <p class="text-sm mb-0 text-capitalize">Casillas Pequeñas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.pequeñas }}</h5>
                     </div>
                   </div>
                   <div class="col-4 text-end">
                     <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-calendar-day text-lg opacity-10" aria-hidden="true"></i>
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Pequeñas Alquiladas Hoy -->
+          <!-- Casillas Pequeñas Ocupadas -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-blue">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Pequeñas Ocupadas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.pequeñasocupadas }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Pequeñas Libres -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-blue">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Pequeñas Libres</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.pequeñaslibres1 }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-blue">
               <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
@@ -44,10 +88,95 @@
               </div>
             </div>
           </div>
-          <!-- Medianas Alquiladas Hoy -->
+          <!-- Ingresos Pequeñas -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-blue">
               <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Pequeñas</strong></p>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.total_multas_pequenas }}</h6>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Casillas Medianas -->
+        <div class="row">
+        
+          <!-- Casillas Medianas -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-green">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Medianas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.medianas }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Medianas Ocupadas -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-green">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Medianas Ocupadas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.medianasocupadas }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Medianas Libres -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-green">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Medianas Libres</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.medianaslibres }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- Medianas Alquiladas Hoy -->
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+              <div class="card bg-light-green">
+                <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
@@ -64,10 +193,95 @@
               </div>
             </div>
           </div>
-          <!-- Gabetas Alquiladas Hoy -->
+          <!-- Ingresos Medianas -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-green">
               <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Medianas</strong></p>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.total_multas_medianas }}</h6>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gabetas -->
+        <div class="row">
+        
+          <!-- Casillas Gabetas -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-yellow">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.gabetas }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Gabetas Ocupadas -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-yellow">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Ocupadas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.gabetaocupadas }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Gabetas Libres -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-yellow">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Libres</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.gabetaslibres }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- Gabetas Alquiladas Hoy -->
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+              <div class="card bg-light-yellow">
+                <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
@@ -84,10 +298,95 @@
               </div>
             </div>
           </div>
-          <!-- Cajones Alquiladas Hoy -->
+          <!-- Ingresos Gabetas -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-yellow">
               <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Gabetas</strong></p>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.total_multas_gabeta }}</h6>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cajones -->
+        <div class="row">
+        
+          <!-- Casillas Cajones -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-red">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Cajones</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.cajones }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Cajones Ocupadas -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-red">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Cajones Ocupadas</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.cajonocupadas }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Casillas Cajones Libres -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-red">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize">Casillas Cajones Libres</p>
+                      <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.cajoneslibres }}</h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <!-- Cajones Alquiladas Hoy -->
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+              <div class="card bg-light-red">
+                <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
@@ -104,82 +403,42 @@
               </div>
             </div>
           </div>
-          <!-- Ingresos Pequeñas -->
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Pequeñas</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.ingresosPequeñas }}
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Ingresos Medianas -->
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Medianas</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.ingresosMedianas }}
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Ingresos Gabetas -->
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Gabetas</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.ingresosGabetas }}</h6>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <!-- Ingresos Cajones -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-red">
               <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
                       <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Cajones</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.ingresosCajones }}</h6>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.total_multas_cajon }}</h6>
                     </div>
                   </div>
                   <div class="col-4 text-end">
                     <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
                       <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Global Alquileres Hoy -->
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card bg-light-white">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-capitalize"><strong>Alquileres Hoy</strong></p>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.alquileresHoy }}</h6>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="fas fa-calendar-day text-lg opacity-10" aria-hidden="true"></i>
                     </div>
                   </div>
                 </div>
@@ -188,13 +447,13 @@
           </div>
           <!-- Ingresos Totales -->
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
+            <div class="card bg-light-white">
               <div class="card-body p-3">
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
                       <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Totales</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.ingresosTotal }}</h6>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.total_multas }}</h6>
                     </div>
                   </div>
                   <div class="col-4 text-end">
@@ -206,403 +465,18 @@
               </div>
             </div>
           </div>
-
-
-
-
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        <strong>Alquileres</strong>
-                      </p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">
-                        {{ dashboard.alquileres }}
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="text-center">
+              <h6>
+                <span class="font-weight-bold text-blue fs-4">Bienvenido al sistema de</span>
+                <span class="text-color-ganadores fs-4">Recaudacion de Casillas AGBC</span>
+              </h6>
             </div>
           </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        <strong>Users</strong>
-                      </p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">
-                        {{ dashboard.users }}
-                      </h6>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-user-shield text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        <strong>Clientes</strong>
-                      </p>
-                      <h5 class="text-danger text-center font-weight-bolder mb-0">
-                        {{ dashboard.clientes }}
-
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-user text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.casillas }}
-
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Pequeñas
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.pequeñas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Pequeñas Ocupadas
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.pequeñasocupadas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Pequeñas libres
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.pequeñaslibres1 }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Medianas
-
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.medianas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Medianas Ocupadas
-
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.medianasocupadas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Medianas libres
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.medianaslibres }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Cajones
-
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.cajones }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Cajones Ocupadas
-
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.cajonocupadas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Cajones libres
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.cajoneslibres }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Gabetas
-
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.gabetas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Gabetas Ocupadas
-
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.gabetaocupadas }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-              <div class="card-body p-3">
-                <div class="row">
-                  <div class="col-8">
-                    <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">
-                        Casillas Gabetas libres
-                      </p>
-                      <h5 class="text-info text-center font-weight-bolder mb-0">
-                        {{ dashboard.gabetaslibres }}
-                      </h5>
-                    </div>
-                  </div>
-                  <div class="col-4 text-end">
-                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                      <i class="fas fa-box text-lg opacity-10" aria-hidden="true"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card-body p-3">
-            <div class="row">
-              <div class="text-center">
-                <h6>
-                  <span class="font-weight-bold text-blue fs-4">Bienvenido al sistema de</span>
-                  <span class="text-color-ganadores fs-4">Recaudacion de Casillas AGBC</span>
-                </h6>
-              </div>
-            </div>
-            <div class="row justify-content-center mt-3">
-              <img src="/assets/imagenes/logo.png" alt="Logo Casillas AGBC" class="logo-image">
-            </div>
+          <div class="row justify-content-center mt-3">
+            <img src="/assets/imagenes/logo.png" alt="Logo Casillas AGBC" class="logo-image">
           </div>
         </div>
       </div>
@@ -625,11 +499,11 @@ export default {
         users: 10,
         clientes: 10,
         casillas: 10,
-        alquileresHoy: 0, // Inicializa la nueva variable
-        pequeñasHoy: 0, // Inicializa la nueva variable
-        medianasHoy: 0, // Inicializa la nueva variable
-        gabetasHoy: 0, // Inicializa la nueva variable
-        cajonesHoy: 0, // Inicializa la nueva variable
+        alquileresHoy: 0,
+        pequeñasHoy: 0,
+        medianasHoy: 0,
+        gabetasHoy: 0,
+        cajonesHoy: 0,
         pequeñas: 0,
         medianas: 0,
         gabetas: 0,
@@ -642,17 +516,15 @@ export default {
         medianaslibres: 0,
         gabetaslibres: 0,
         cajoneslibres: 0,
-        ingresosPequeñas: 0,
-        ingresosMedianas: 0,
-        ingresosGabetas: 0,
-        ingresosCajones: 0,
-        ingresosTotal: 0,
+        total_multas_pequenas: 0,
+        total_multas_medianas: 0,
+        total_multas_gabeta: 0,
+        total_multas_cajon: 0,
+        total_multas: 0,
       },
-
     };
   },
   methods: {
-
     async GET_DATA(path) {
       const res = await this.$api.$get(path);
       return res;
@@ -667,9 +539,8 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
-      // Realiza la llamada a la API y actualiza los datos
       try {
-        const data = await this.GET_DATA('/dashboard'); // Ruta correcta del controlador
+        const data = await this.GET_DATA('/dashboard');
         this.dashboard.alquileres = data.alquileres;
         this.dashboard.users = data.users;
         this.dashboard.clientes = data.clientes;
@@ -683,59 +554,45 @@ export default {
         this.dashboard.medianaslibres = data.medianaslibres;
         this.dashboard.gabetaslibres = data.gabetaslibres;
         this.dashboard.cajoneslibres = data.cajoneslibres;
-        this.dashboard.categorias = data.categorias; // Asigna las categorías obtenidas
+        this.dashboard.categorias = data.categorias;
         this.dashboard.pequeñasocupadas = data.pequeñasocupadas;
         this.dashboard.medianasocupadas = data.medianasocupadas;
         this.dashboard.gabetaocupadas = data.gabetaocupadas;
         this.dashboard.cajonocupadas = data.cajonocupadas;
-        this.dashboard.alquileresHoy = data.alquileresHoy; // Asigna el nuevo dato
-        this.dashboard.pequeñasHoy = data.pequeñasHoy; // Asigna el nuevo dato
-        this.dashboard.medianasHoy = data.medianasHoy; // Asigna el nuevo dato
-        this.dashboard.gabetasHoy = data.gabetasHoy; // Asigna el nuevo dato
-        this.dashboard.cajonesHoy = data.cajonesHoy; // Asigna el nuevo dato
-        this.dashboard.ingresosPequeñas = data.ingresosPequeñas; // Asigna el nuevo dato
-        this.dashboard.ingresosMedianas = data.ingresosMedianas; // Asigna el nuevo dato
-        this.dashboard.ingresosGabetas = data.ingresosGabetas; // Asigna el nuevo dato
-        this.dashboard.ingresosCajones = data.ingresosCajones; // Asigna el nuevo dato
-        this.dashboard.ingresosTotal = data.ingresosTotal; // Asigna el nuevo dato
-        // Obtener el total de casillas sin importar su estado
+        this.dashboard.alquileresHoy = data.alquileresHoy;
+        this.dashboard.pequeñasHoy = data.pequeñasHoy;
+        this.dashboard.medianasHoy = data.medianasHoy;
+        this.dashboard.gabetasHoy = data.gabetasHoy;
+        this.dashboard.cajonesHoy = data.cajonesHoy;
+        this.dashboard.total_multas_pequenas = data.total_multas_pequenas;
+        this.dashboard.total_multas_medianas = data.total_multas_medianas;
+        this.dashboard.total_multas_gabeta = data.total_multas_gabeta;
+        this.dashboard.total_multas_cajon = data.total_multas_cajon;
+        this.dashboard.total_multas = data.total_multas;
         const totalCasillas = data.pequeñas + data.medianas + data.cajones + data.gabetas;
         this.dashboard.casillas = totalCasillas;
       } catch (error) {
         console.error("Error al obtener datos del servidor:", error);
-        // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
-
       }
     });
   },
-
-
 };
 </script>
 
-
-
 <style scoped>
-.logo-image {
-  width: 100%;
-  /* Hace que la imagen ocupe todo el ancho disponible */
-  height: auto;
-  /* Ajusta la altura automáticamente para mantener la proporción original */
-  object-fit: cover;
-  /* Ajusta la forma en que la imagen se ajusta dentro del contenedor */
+.bg-light-blue {
+  background-color: #e3f2fd;
 }
-
-.fs-4 {
-  font-size: 1.5rem;
-  /* Cambia el tamaño según tus preferencias */
+.bg-light-green {
+  background-color: #e8f5e9;
 }
-
-.ganador-image {
-  width: 100px;
-  /* Cambia el ancho según tus preferencias */
-  height: 100px;
-  /* Cambia la altura según tus preferencias */
-  object-fit: cover;
-  /* Ajusta la forma en que la imagen se ajusta dentro del contenedor */
+.bg-light-yellow {
+  background-color: #fffde7;
+}
+.bg-light-red {
+  background-color: #ffebee;
+}
+.bg-light-white {
+  background-color: #ffffff;
 }
 </style>
