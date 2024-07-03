@@ -12,7 +12,7 @@
           </div>
  <!-- Botón para abrir el modal de casillas por vencer -->
  <div class="btn-group mr-2">
-            <button class="btn btn-info" @click="mostrarCasillasPorVencer">
+            <button class="btn btn-info" @click="generarReporteFechasPorVencer">
               <i class="fas fa-exclamation-triangle"></i> Casillas por Vencer
             </button>
           </div>
