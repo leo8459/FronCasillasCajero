@@ -290,31 +290,30 @@ export default {
     this.load = true;
 
     try {
-      for (let id of this.selectedIds) {
-        let alquiler = this.list.find(m => m.id === id);
-        if (alquiler) {
-          alquiler.casilla_estado = 2; // Cambiar estado a "Con Correspondencia"
-          await this.$api.$put(`${this.apiUrl}/${id}`, alquiler);
-
-          // Enviar correo al cliente
-          let cliente = alquiler.cliente;
-          if (cliente) {
-            await this.$api.$post('ruta_para_enviar_correo', { email: cliente.email });
-          }
-        }
-      }
-      alert("Los registros seleccionados se han actualizado correctamente.");
-      // Recargar los datos después de la actualización
-      this.GET_DATA(this.apiUrl).then(v => {
-        this.list = v;
-        this.filteredList = this.list;
+      const response = await this.$api.$post('http://127.0.0.1:8000/cajero/update-casillas-seleccionadas', {
+        ids: this.selectedIds
       });
+
+      if (response.status === 'success') {
+        alert(response.message);
+        // Recargar los datos después de la actualización
+        await this.GET_DATA(this.apiUrl).then(v => {
+          this.list = v;
+          this.filteredList = this.list;
+        });
+      } else {
+        alert(response.message);
+      }
     } catch (error) {
       console.error(error);
       alert("Hubo un error al actualizar los registros.");
     } finally {
       this.load = false;
     }
+  },
+  async GET_DATA(path) {
+    const res = await this.$api.$get(path);
+    return res;
   },
     toggleDropdown() {
       this.dropdownVisible = !this.dropdownVisible;
