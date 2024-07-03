@@ -112,7 +112,8 @@
 </style>
 
 <script>
-const anime = require('animejs'); // Change from import to require
+import anime from 'animejs/lib/anime.es.js';
+// const anime = require('animejs'); // Si estás usando require, asegúrate de que animejs esté correctamente instalado y disponible
 
 export default {
   data() {
