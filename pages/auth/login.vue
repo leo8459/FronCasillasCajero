@@ -112,7 +112,7 @@
 </style>
 
 <script>
-import anime from 'animejs/lib/anime.es.js';
+const anime = require('animejs'); // Change from import to require
 
 export default {
   data() {
