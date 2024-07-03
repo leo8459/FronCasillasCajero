@@ -3,6 +3,7 @@
     <JcLoader :load="load"></JcLoader>
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
+        
         <div class="row justify-content-end text-right">
           <div class="col-12 col-md-4">
             <label for="searchInput">Buscar por nombre:</label>
@@ -13,14 +14,46 @@
               </li>
             </ul>
           </div>
-        </div>
+          
+</div>
+
         <div class="col-2">
           <label for="seccionSelector">Selecciona una sección:</label>
           <select v-model="seccionSeleccionada" id="seccionSelector" @change="cargarDatos">
             <option v-for="n in 45" :value="n">Sección {{ n }}</option>
           </select>
         </div>
-
+        <div class="col-12 col-md-4 mt-2 d-flex justify-content-start">
+      <div class="dropdown-custom">
+        <button class="dropdown-button" @click="toggleDropdown">Estados de Casillas</button>
+        <div class="dropdown-content" v-if="dropdownVisible">
+          <table class="table table-bordered status-table">
+            <tbody>
+              <tr>
+                <td class="status-red">Color rojo</td>
+                <td class="status-red">Mantenimiento</td>
+              </tr>
+              <tr>
+                <td class="status-orange">Color naranja</td>
+                <td class="status-orange">Con Correspondencia</td>
+              </tr>
+              <tr>
+                <td class="status-black">Color negro</td>
+                <td class="status-black">Ocupado</td>
+              </tr>
+              <tr>
+                <td class="status-green">Color Verde</td>
+                <td class="status-green">Libre</td>
+              </tr>
+              <tr>
+                <td class="status-yellow">Color amarillo</td>
+                <td class="status-yellow">Vencido</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
         <!-- Subdividir por categoría -->
         <div v-for="categoria in categorias" :key="categoria.id">
           <div class="text-center mb-4">
@@ -102,6 +135,7 @@ export default {
   name: "IndexPage",
   data() {
     return {
+      dropdownVisible: false,
       load: true,
       casillas: [],
       apiUrl: 'ver1',
@@ -128,6 +162,9 @@ export default {
     },
   },
   methods: {
+    toggleDropdown() {
+      this.dropdownVisible = !this.dropdownVisible;
+    },
     isMediana(categoria) {
       return categoria === 'Mediana';
     },
@@ -363,5 +400,72 @@ p {
 
 .small-casilla {
   width: calc(12.5% - 5px); /* 100% / 8 = 12.5% */
+}
+.status-table {
+  width: auto;
+  font-size: 0.7rem; /* Hacemos la tabla más pequeña */
+}
+
+.status-table td {
+  padding: 3px 5px; /* Reducimos el padding para hacer la tabla más compacta */
+  text-align: center;
+}
+
+.status-red {
+  background-color: red;
+  color: white;
+}
+
+.status-orange {
+  background-color: orange;
+  color: black;
+}
+
+.status-black {
+  background-color: black;
+  color: white;
+}
+
+.status-green {
+  background-color: green;
+  color: black;
+}
+
+.status-yellow {
+  background-color: yellow;
+  color: black;
+}
+
+.dropdown-custom {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 10px; /* Reducimos el tamaño del botón */
+  font-size: 14px; /* Reducimos el tamaño de la fuente */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* Borde redondeado */
+}
+
+.dropdown-button:hover {
+  background-color: #3e8e41;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px; /* Ajustamos el ancho mínimo */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 5px; /* Borde redondeado */
+}
+
+.dropdown-custom .dropdown-content {
+  display: block;
 }
 </style>

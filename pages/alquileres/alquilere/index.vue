@@ -126,7 +126,6 @@
               <div class="card-body">
                 <table class="table">
                   <thead>
-                    {{ user }}
                     <th class="py-0 px-1">#</th>
                     <th class="py-0 px-1">Cliente</th>
                     <th class="py-0 px-1">Cajero</th>
@@ -143,7 +142,6 @@
                     <th class="py-0 px-1">Dia Pago</th>
                     <th class="py-0 px-1">Tiempo Inicio</th>
                     <th class="py-0 px-1">Tiempo Fin</th>
-                    <th class="py-0 px-1">Estado</th>
                     <th class="py-0 px-1"></th>
                   </thead>
                   <tbody>
@@ -222,6 +220,7 @@ export default {
       fechaInicio: '',
       fechaFin: '',
       alertShown: false,
+      dropdownVisible: false,
       casillasPorVencer: [],
       cajero_id: '', // Asignar cajero_id al modelo
       user: { // Asignar cajero_id al modelo
@@ -271,6 +270,9 @@ export default {
     }
   },
   methods: {
+    toggleDropdown() {
+      this.dropdownVisible = !this.dropdownVisible;
+    },
     filtrarPorUsuario() {
       const userId = this.user.cajero.id;
       return this.list.filter(alquiler => alquiler.cajero_id === userId);
@@ -1444,5 +1446,72 @@ mostrarCasillasPorVencer() {
 .pagination .page-number.active {
   font-weight: bold;
   text-decoration: underline;
+}
+.status-table {
+  width: auto;
+  font-size: 0.7rem; /* Hacemos la tabla más pequeña */
+}
+
+.status-table td {
+  padding: 3px 5px; /* Reducimos el padding para hacer la tabla más compacta */
+  text-align: center;
+}
+
+.status-red {
+  background-color: red;
+  color: white;
+}
+
+.status-orange {
+  background-color: orange;
+  color: black;
+}
+
+.status-black {
+  background-color: black;
+  color: white;
+}
+
+.status-green {
+  background-color: green;
+  color: black;
+}
+
+.status-yellow {
+  background-color: yellow;
+  color: black;
+}
+
+.dropdown-custom {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 10px; /* Reducimos el tamaño del botón */
+  font-size: 14px; /* Reducimos el tamaño de la fuente */
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; /* Borde redondeado */
+}
+
+.dropdown-button:hover {
+  background-color: #3e8e41;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px; /* Ajustamos el ancho mínimo */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 5px; /* Borde redondeado */
+}
+
+.dropdown-custom .dropdown-content {
+  display: block;
 }
 </style>
