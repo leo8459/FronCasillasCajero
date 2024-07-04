@@ -205,6 +205,7 @@
 <script>
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import Swal from 'sweetalert2';
 
 export default {
   name: "IndexPage",
@@ -279,38 +280,58 @@ export default {
   },
   methods: {
     toggleSelectAll(event) {
-    this.selectedIds = event.target.checked ? this.paginatedList.map(m => m.id) : [];
-  },
-  async updateSelected() {
-    if (this.selectedIds.length === 0) {
-      alert("Por favor, seleccione al menos un registro.");
-      return;
-    }
-
-    this.load = true;
-
-    try {
-      const response = await this.$api.$post('http://127.0.0.1:8000/cajero/update-casillas-seleccionadas', {
-        ids: this.selectedIds
-      });
-
-      if (response.status === 'success') {
-        alert(response.message);
-        // Recargar los datos después de la actualización
-        await this.GET_DATA(this.apiUrl).then(v => {
-          this.list = v;
-          this.filteredList = this.list;
+      this.selectedIds = event.target.checked ? this.paginatedList.map(m => m.id) : [];
+    },
+    async updateSelected() {
+      if (this.selectedIds.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Atención',
+          text: 'Por favor, seleccione al menos un registro.',
         });
-      } else {
-        alert(response.message);
+        return;
       }
-    } catch (error) {
-      console.error(error);
-      alert("Hubo un error al actualizar los registros.");
-    } finally {
-      this.load = false;
-    }
-  },
+
+      this.load = true;
+
+      try {
+        const response = await this.$api.$post('http://127.0.0.1:8000/cajero/update-casillas-seleccionadas', {
+          ids: this.selectedIds
+        });
+
+        if (response.status === 'success') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: response.message,
+          });
+          // Recargar los datos después de la actualización
+          await this.GET_DATA(this.apiUrl).then(v => {
+            this.list = v;
+            this.filteredList = this.list;
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.message,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al actualizar los registros.',
+        });
+      } finally {
+        this.load = false;
+      }
+    },
+    async GET_DATA(path) {
+      const res = await this.$api.$get(path);
+      return res;
+    },
   async GET_DATA(path) {
     const res = await this.$api.$get(path);
     return res;
