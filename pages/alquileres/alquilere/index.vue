@@ -4,10 +4,10 @@
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
         <div class="btn-group mr-2">
-  <button class="btn btn-warning" @click="updateSelected">
-    <i class="fas fa-edit"></i> Actualizar Seleccionados
-  </button>
-</div>
+          <button class="btn btn-warning" @click="updateSelected">
+            <i class="fas fa-edit"></i> Actualizar Seleccionados
+          </button>
+        </div>
         <div class="row justify-content-end">
           <div class="col-2"></div>
           <div class="contenedor">
@@ -192,6 +192,15 @@
                   <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
                     &raquo;
                   </button>
+                  <div class="d-flex justify-content-end">
+  <div class="btn-group">
+    <button class="btn btn-warning" @click="updateSelected">
+      <i class="fas fa-edit"></i> Actualizar Seleccionados
+    </button>
+  </div>
+</div>
+
+
                 </div>
               </div>
             </div>
@@ -332,10 +341,10 @@ export default {
       const res = await this.$api.$get(path);
       return res;
     },
-  async GET_DATA(path) {
-    const res = await this.$api.$get(path);
-    return res;
-  },
+    async GET_DATA(path) {
+      const res = await this.$api.$get(path);
+      return res;
+    },
     toggleDropdown() {
       this.dropdownVisible = !this.dropdownVisible;
     },

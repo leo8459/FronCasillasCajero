@@ -24,7 +24,6 @@
                     <th class="py-0 px-1">email</th>
                     <th class="py-0 px-1">carnet</th>
                     <th class="py-0 px-1">Direccion</th>
-                    <th class="py-0 px-1">Pago por Habilitacion</th>
                     <th class="py-0 px-1">telefono</th>
                     <th class="py-0 px-1"></th>
                   </thead>
@@ -35,7 +34,6 @@
                       <td class="py-0 px-1">{{ m.email }}</td>
                       <td class="py-0 px-1">{{ m.carnet }}</td>
                       <td class="py-0 px-1">{{ m.direccion }}</td>
-                      <td class="py-0 px-1">{{ m.habilitacion_casilla }}</td>
                       <td class="py-0 px-1">{{ m.telefono }}</td>
                       <td class="py-0 px-1">
                         <div class="btn-group">

@@ -24,36 +24,13 @@
           </select>
         </div>
         <div class="col-12 col-md-4 mt-2 d-flex justify-content-start">
-      <div class="dropdown-custom">
-        <button class="dropdown-button" @click="toggleDropdown">Estados de Casillas</button>
-        <div class="dropdown-content" v-if="dropdownVisible">
-          <table class="table table-bordered status-table">
-            <tbody>
-              <tr>
-                <td class="status-red">Color rojo</td>
-                <td class="status-red">Mantenimiento</td>
-              </tr>
-              <tr>
-                <td class="status-orange">Color naranja</td>
-                <td class="status-orange">Con Correspondencia</td>
-              </tr>
-              <tr>
-                <td class="status-black">Color negro</td>
-                <td class="status-black">Ocupado</td>
-              </tr>
-              <tr>
-                <td class="status-green">Color Verde</td>
-                <td class="status-green">Libre</td>
-              </tr>
-              <tr>
-                <td class="status-yellow">Color amarillo</td>
-                <td class="status-yellow">Vencido</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="status-container">
+            <div class="status-item" v-for="status in estadosCasillas" :key="status.color">
+              <span>{{ status.nombre }}</span>
+              <div :class="['status-square', status.colorClass]"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
         <!-- Subdividir por categoría -->
         <div v-for="categoria in categorias" :key="categoria.id">
           <div class="text-center mb-4">
@@ -150,6 +127,13 @@ export default {
       busqueda: '',
       mostrarListaOpciones: false,
       opcionesBusqueda: [],
+      estadosCasillas: [
+        { colorClass: 'status-red', nombre: 'Mantenimiento' },
+        { colorClass: 'status-orange', nombre: 'Con Correspondencia' },
+        { colorClass: 'status-black', nombre: 'Ocupado' },
+        { colorClass: 'status-green', nombre: 'Libre' },
+        { colorClass: 'status-yellow', nombre: 'Vencido' }
+      ],
     };
   },
   computed: {
@@ -467,5 +451,74 @@ p {
 
 .dropdown-custom .dropdown-content {
   display: block;
+}
+.status-red {
+  background-color: red;
+  color: white;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
+}
+
+.status-orange {
+  background-color: orange;
+  color: black;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
+}
+
+.status-black {
+  background-color: black;
+  color: white;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
+}
+
+.status-green {
+  background-color: green;
+  color: black;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
+}
+
+.status-yellow {
+  background-color: yellow;
+  color: black;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  border: 1px solid #ccc; /* Borde alrededor de cada ítem */
+  padding: 5px; /* Espacio alrededor del contenido del ítem */
+  border-radius: 5px; /* Borde redondeado */
+}
+
+.status-item span {
+  margin-right: 5px; /* Espacio entre el texto y el cuadro */
+  font-size: 12px; /* Tamaño de la fuente para el texto */
 }
 </style>

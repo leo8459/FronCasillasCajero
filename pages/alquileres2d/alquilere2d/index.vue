@@ -3,37 +3,16 @@
     <JcLoader :load="load"></JcLoader>
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
+        <button @click="abrirModalMapa" class="btn btn-primary">Ver Mapa</button>
+
         <div class="col-12 col-md-4 mt-2 d-flex justify-content-start">
-      <div class="dropdown-custom">
-        <button class="dropdown-button" @click="toggleDropdown">Estados de Casillas</button>
-        <div class="dropdown-content" v-if="dropdownVisible">
-          <table class="table table-bordered status-table">
-            <tbody>
-              <tr>
-                <td class="status-red">Color rojo</td>
-                <td class="status-red">Mantenimiento</td>
-              </tr>
-              <tr>
-                <td class="status-orange">Color naranja</td>
-                <td class="status-orange">Con Correspondencia</td>
-              </tr>
-              <tr>
-                <td class="status-black">Color negro</td>
-                <td class="status-black">Ocupado</td>
-              </tr>
-              <tr>
-                <td class="status-green">Color Verde</td>
-                <td class="status-green">Libre</td>
-              </tr>
-              <tr>
-                <td class="status-yellow">Color amarillo</td>
-                <td class="status-yellow">Vencido</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="status-container">
+            <div class="status-item" v-for="status in estadosCasillas" :key="status.color">
+              <span>{{ status.nombre }}</span>
+              <div :class="['status-square', status.colorClass]"></div>
+            </div>
+          </div>
         </div>
-      </div>
-  </div>
         <div class="row justify-content-end text-right">
           <div class="col-12 col-md-4">
             <label for="searchInput">Buscar por nombre:</label>
@@ -44,7 +23,6 @@
               </li>
             </ul>
           </div>
-          
         </div>
         <div class="sections-container">
           <!-- Primera fila de secciones (1 a 22) -->
@@ -191,6 +169,23 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal para el Mapa -->
+    <div v-if="modalMapaVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Mapa de Sección</h5>
+            <button type="button" class="close" @click="cerrarModalMapa">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <img src="@/pages/auth/img/2.png" alt="Mapa de Sección" style="width: 100%;">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -210,9 +205,17 @@ export default {
       url_editar2: '/alquileres/alquilere/renovar/',
       modalVisible: false,
       casillaSeleccionada: {},
+      modalMapaVisible: false,
       busqueda: '',
       mostrarListaOpciones: false,
       opcionesBusqueda: [],
+      estadosCasillas: [
+        { colorClass: 'status-red', nombre: 'Mantenimiento' },
+        { colorClass: 'status-orange', nombre: 'Con Correspondencia' },
+        { colorClass: 'status-black', nombre: 'Ocupado' },
+        { colorClass: 'status-green', nombre: 'Libre' },
+        { colorClass: 'status-yellow', nombre: 'Vencido' }
+      ]
     };
   },
   computed: {
@@ -332,6 +335,12 @@ export default {
     },
     cerrarModal() {
       this.modalVisible = false;
+    },
+    abrirModalMapa() {
+      this.modalMapaVisible = true;
+    },
+    cerrarModalMapa() {
+      this.modalMapaVisible = false;
     },
     getIconColorClass(estado) {
       switch (estado) {
@@ -462,29 +471,30 @@ p {
   display: flex;
   flex-wrap: wrap;
   overflow-x: auto;
-  margin-bottom: 50px;
+  margin-bottom: 0px; /* Reducir margen inferior entre contenedores de casillas */
 }
 
 .small-casilla {
-  width: calc(10% - 5px);
-  /* 8 casillas por fila */
+  width: calc(12.5% - 0px); /* 8 casillas pequeñas por fila */
+  margin: 0; /* Eliminar margen */
+  padding: 0; /* Eliminar padding */
+  box-sizing: border-box; /* Asegurarse de que el padding y el borde se incluyan en el tamaño total */
 }
 
-.medium-casilla {
-  width: calc(20% - 5px);
-  /* 4 casillas por fila */
-}
-
-.large-casilla {
-  width: calc(20% - 5px);
-  /* 4 casillas por fila */
+.medium-casilla, .large-casilla {
+  width: calc(25% - 0px); /* 4 casillas medianas, gabetas y cajones por fila */
+  margin: 0; /* Eliminar margen */
+  padding: 0; /* Eliminar padding */
+  box-sizing: border-box; /* Asegurarse de que el padding y el borde se incluyan en el tamaño total */
 }
 
 .casilla-item {
-  display: flex-wrap;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10px;
+  margin: 0; /* Eliminar margen */
+  padding: 0; /* Eliminar padding */
+  box-sizing: border-box; /* Asegurarse de que el padding y el borde se incluyan en el tamaño total */
 }
 
 .row {
@@ -526,6 +536,7 @@ p {
   border: 5px solid #ccc;
   display: inline-block;
 }
+
 .status-table {
   width: auto;
   font-size: 0.7rem; /* Hacemos la tabla más pequeña */
@@ -539,58 +550,70 @@ p {
 .status-red {
   background-color: red;
   color: white;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-orange {
   background-color: orange;
   color: black;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-black {
   background-color: black;
   color: white;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-green {
   background-color: green;
   color: black;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-yellow {
   background-color: yellow;
   color: black;
-}
-
-.dropdown-custom {
-  position: relative;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
   display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
-.dropdown-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 8px 10px; /* Reducimos el tamaño del botón */
-  font-size: 14px; /* Reducimos el tamaño de la fuente */
-  border: none;
-  cursor: pointer;
+.status-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  border: 1px solid #ccc; /* Borde alrededor de cada ítem */
+  padding: 5px; /* Espacio alrededor del contenido del ítem */
   border-radius: 5px; /* Borde redondeado */
 }
 
-.dropdown-button:hover {
-  background-color: #3e8e41;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 200px; /* Ajustamos el ancho mínimo */
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  border-radius: 5px; /* Borde redondeado */
-}
-
-.dropdown-custom .dropdown-content {
-  display: block;
+.status-item span {
+  margin-right: 5px; /* Espacio entre el texto y el cuadro */
+  font-size: 12px; /* Tamaño de la fuente para el texto */
 }
 </style>
