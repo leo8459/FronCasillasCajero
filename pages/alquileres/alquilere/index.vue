@@ -3,17 +3,11 @@
     <JcLoader :load="load"></JcLoader>
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
-        <div class="btn-group mr-2">
-          <button class="btn btn-warning" @click="updateSelected">
-            <i class="fas fa-edit"></i> Actualizar Seleccionados
-          </button>
-        </div>
         <div class="row justify-content-end">
           <div class="col-2"></div>
           <div class="contenedor">
             <div class="busqueda">
-              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre"
-                @input="buscar" />
+              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre" @input="buscar" />
             </div>
           </div>
           <!-- Botón para abrir el modal de casillas por vencer -->
@@ -55,19 +49,19 @@
 
                     <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
                     <button @click="generarReporteCompletoFechas" class="btn btn-fx btn-info">
-                      reporte general
+                      Reporte General
                     </button>
                     <button @click="generarReporteCasillasPequenasFechas" class="btn btn-fx btn-info">
-                      reporte Casillas Pequeñas
+                      Reporte Casillas Pequeñas
                     </button>
                     <button @click="generarReporteCasillasMedianasFechas" class="btn btn-fx btn-info">
-                      reporte Casillas Medianas
+                      Reporte Casillas Medianas
                     </button>
                     <button @click="generarReporteGabetasFechas" class="btn btn-fx btn-info">
-                      reporte Casillas Gabetas
+                      Reporte Casillas Gabetas
                     </button>
                     <button @click="generarReporteCajonFechas" class="btn btn-fx btn-info">
-                      reporte Casillas Cajones
+                      Reporte Casillas Cajones
                     </button>
 
                   </div>
@@ -185,22 +179,26 @@
                   <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-primary">
                     &laquo;
                   </button>
-                  <span v-for="page in pages" :key="page" @click="goToPage(page)"
-                    :class="{ active: page === currentPage }" class="page-number">
+                  <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }" class="page-number">
                     {{ page }}
                   </span>
                   <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
                     &raquo;
                   </button>
-                  <div class="d-flex justify-content-end">
-  <div class="btn-group">
-    <button class="btn btn-warning" @click="updateSelected">
-      <i class="fas fa-edit"></i> Actualizar Seleccionados
-    </button>
-  </div>
+                  <div class="d-flex justify-content-between">
+                    <div class="btn-group">
+                      <button class="btn btn-warning" @click="updateSelected">
+                        <i class="fas fa-edit"></i> Mandar mensajes
+                      </button>
+                    </div>
+                    <!-- Botón para cambiar todas las casillas con correspondencia a ocupadas -->
+<div class="btn-group mr-2">
+  <button class="btn btn-warning" @click="updateAllToOcupadas">
+    <i class="fas fa-exclamation-triangle"></i> Cambiar Todas a Ocupadas
+  </button>
 </div>
 
-
+                  </div>
                 </div>
               </div>
             </div>
@@ -288,6 +286,41 @@ export default {
     }
   },
   methods: {
+    async updateAllToOcupadas() {
+    this.load = true;
+
+    try {
+      const response = await this.$axios.$post('http://127.0.0.1:8000/cajero/update-all-to-ocupadas');
+
+      if (response.status === 'success') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: response.message,
+        });
+        // Recargar los datos después de la actualización
+        await this.GET_DATA(this.apiUrl).then(v => {
+          this.list = v;
+          this.filteredList = this.list;
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: response.message,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al actualizar los registros.',
+      });
+    } finally {
+      this.load = false;
+    }
+},
     toggleSelectAll(event) {
       this.selectedIds = event.target.checked ? this.paginatedList.map(m => m.id) : [];
     },
@@ -341,10 +374,6 @@ export default {
       const res = await this.$api.$get(path);
       return res;
     },
-    async GET_DATA(path) {
-      const res = await this.$api.$get(path);
-      return res;
-    },
     toggleDropdown() {
       this.dropdownVisible = !this.dropdownVisible;
     },
@@ -352,8 +381,6 @@ export default {
       const userId = this.user.cajero.id;
       return this.list.filter(alquiler => alquiler.cajero_id === userId);
     },
-
-
     generarReporteCasillasPequenas() {
       // Filtrar los datos por la categoría 'Pequeña'
       const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Pequeña');
@@ -414,9 +441,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
-
     generarReporteCasillasCajones() {
       // Filtrar los datos por la categoría 'Cajon'
       const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Cajon');
@@ -477,8 +501,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
     generarReporteCasillasGabetas() {
       // Filtrar los datos por la categoría 'Gabeta'
       const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Gabeta');
@@ -539,7 +561,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
     generarReporteCasillasMedianas() {
       // Filtrar los datos por la categoría 'Mediana'
       const dataForReport = this.filtrarPorUsuario().filter(alquiler => alquiler.categoria.nombre === 'Mediana');
@@ -600,8 +621,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
     generarReporteCompleto() {
       // Obtener los datos para el reporte (se utiliza this.list para obtener todos los datos)
       const dataForReport = this.filtrarPorUsuario();
@@ -662,14 +681,7 @@ export default {
       });
 
       window.open(doc.output('bloburl'), '_blank');
-
-      // Guardar el archivo PDF
-      // const fileName = 'reporte_casillas_vigentes.pdf';
-      // doc.save(fileName);
     },
-
-
-    //
     generarReporteFechasPorVencer() {
       // Obtener la fecha actual
       const currentDate = new Date();
@@ -834,10 +846,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
-
-
     generarReporteCasillasVencidasEntreFechas() {
       if (!this.fechaInicio || !this.fechaFin) {
         alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
@@ -895,7 +903,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
     generarReporteCasillasVigentes() {
       // Obtener la fecha actual
       const currentDate = new Date();
@@ -949,9 +956,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
-
     generarReporteFechasPasadas() {
       const currentDate = new Date(); // Obtener la fecha actual
       const dataForReport = this.list.filter(alquiler => {
@@ -1004,7 +1008,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
     generarReporteCasillasPequenasFechas() {
       if (!this.fechaInicio || !this.fechaFin) {
         alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
@@ -1099,7 +1102,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
     generarReporteCasillasMedianasFechas() {
       if (!this.fechaInicio || !this.fechaFin) {
         alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
@@ -1198,10 +1200,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
-
-
     generarReporteGabetasFechas() {
       if (!this.fechaInicio || !this.fechaFin) {
         alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
@@ -1283,8 +1281,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
     generarReporteCajonFechas() {
       if (!this.fechaInicio || !this.fechaFin) {
         alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
@@ -1366,9 +1362,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-
-
-    // Método para generar una alerta cuando una casilla está por vencer en un mes
     generarAlertaCasillasPorVencer() {
       const currentDate = new Date();
       const oneMonthAhead = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
@@ -1382,7 +1375,11 @@ export default {
       const numeroCasillasPorVencer = casillasPorVencer.length;
 
       if (numeroCasillasPorVencer > 0) {
-        alert(`Tienes ${numeroCasillasPorVencer} casilla(s) por vencer en un mes.`);
+        Swal.fire({
+          icon: 'warning',
+          title: 'Atención',
+          text: `Tienes ${numeroCasillasPorVencer} casilla(s) por vencer en un mes.`,
+        });
       }
     },
     mostrarCasillasPorVencer() {

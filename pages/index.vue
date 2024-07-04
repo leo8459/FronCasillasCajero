@@ -30,8 +30,8 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Clientes</strong></p>
-                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.clientes }}</h6>
+                      <p class="text-sm mb-0 text-capitalize"><strong>Casillas Alquiladas</strong></p>
+                      <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.alquileres }}</h6>
                     </div>
                   </div>
                   <div class="col-4 text-end">
