@@ -292,7 +292,7 @@ export default {
     this.load = true;
 
     try {
-      const response = await this.$axios.$post('http://127.0.0.1:8000/cajero/update-all-to-ocupadas');
+      const response = await this.$api.$post('update-all-to-ocupadas');
 
       if (response.status === 'success') {
         Swal.fire({
@@ -339,7 +339,7 @@ export default {
       this.load = true;
 
       try {
-        const response = await this.$api.$post('http://127.0.0.1:8000/cajero/update-casillas-seleccionadas', {
+        const response = await this.$api.$post('update-casillas-seleccionadas', {
           ids: this.selectedIds
         });
 
