@@ -70,7 +70,12 @@
                   <span class="sidenav-normal"> Alquilados </span>
                 </nuxtLink>
               </li>
-
+              <li class="nav-item">
+                <nuxtLink class="nav-link" to="/reservas/reserva">
+                  <span class="sidenav-mini-icon"> Reservar </span>
+                  <span class="sidenav-normal"> Reservar </span>
+                </nuxtLink>
+              </li>
           
               <!-- <li class="nav-item">
                    <nuxtLink
