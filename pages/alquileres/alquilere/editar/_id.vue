@@ -26,7 +26,10 @@
                       <label for="">Llaves Extras</label>
                       <input type="text" v-model="model.estado_pago" class="form-control" id="">
                     </div>
-
+                    <div class="form-group col-12">
+                      <label for="">Apertura</label>
+                      <input type="date" v-model="model.apertura" class="form-control" :min="apertura" >
+                    </div>
                     <div class="form-group col-6">
                       <label for="">Estado de Casilla</label>
                       <select v-model="model.casilla_estado" class="form-control">
@@ -70,7 +73,9 @@ export default {
         casilla_estado: '',
         categoria_id: '',
         precio_id: '',
-        estado: ''
+        estado: '',
+        apertura: '',
+
 
       },
       apiUrl: "alquileres",
@@ -98,7 +103,9 @@ export default {
         await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('casillas')]).then((v) => {
           this.model = v[0];
           this.casillas = v[1];
+          const formattedDate = `${year}-${month}-${day}`;
 
+this.model.apertura = formattedDate; // Asignar la fecha actual a la apertura
          // Cargar el estado de la casilla en el modelo
          let casilla = this.casillas.find(c => c.id === this.model.casilla_id);
         if (casilla) {
