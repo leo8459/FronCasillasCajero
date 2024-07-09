@@ -30,6 +30,10 @@
                       <label for="">Apertura</label>
                       <input type="date" v-model="model.apertura" class="form-control" :min="apertura" >
                     </div>
+                    <div class="form-group col-12">
+                      <label for="">Apertura</label>
+                      <input type="date" v-model="model.ini_fecha" class="form-control" :min="apertura" >
+                    </div>
                     <div class="form-group col-6">
                       <label for="">Estado de Casilla</label>
                       <select v-model="model.casilla_estado" class="form-control">
