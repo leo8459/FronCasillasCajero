@@ -39,7 +39,7 @@
                           @click="Login()">
                           Ingresar
                         </button>
-                        <button @click="regresarBienvenida" class="btn btn-secondary">Regresar a Bienvenida</button> <!-- Botón añadido -->
+                        <button @click="regresarBienvenida" class="btn bg-gradient-info w-100 mt-4 mb-0 rounded shadow">Regresar a Bienvenida</button> <!-- Botón añadido -->
 
                       </div>
                     </div>
