@@ -19,7 +19,7 @@
                     </h3>
                     <p ref="typingSubtitle" class="mb-0 typing">Ingresa tu email y tu password para iniciar.</p>
                   </div>
-                  <div ref="formBody" class="card-body" style="opacity: 0;">
+                  <div ref="formBody" class="card-body">
                     <div role="form" class="text-start">
                       <label>Email</label>
                       <div class="mb-3">
@@ -144,16 +144,7 @@ export default {
         opacity: [0, 1],
         duration: 500,
         easing: 'easeInOutQuad',
-        delay: anime.stagger(250, { start: 250 }),
-        complete: () => {
-          this.$refs.formBody.style.opacity = 1;
-          anime({
-            targets: this.$refs.formBody,
-            opacity: [0, 1],
-            duration: 250,
-            easing: 'easeInOutExpo'
-          });
-        }
+        delay: anime.stagger(250, { start: 250 })
       });
     }
   }
