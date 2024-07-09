@@ -76,6 +76,12 @@
                   <span class="sidenav-normal"> Reservar </span>
                 </nuxtLink>
               </li>
+              <li class="nav-item">
+                <nuxtLink class="nav-link" to="/reservascajero">
+                  <span class="sidenav-mini-icon"> Reservas Vigentes </span>
+                  <span class="sidenav-normal"> Reservas Vigentes </span>
+                </nuxtLink>
+              </li>
           
               <!-- <li class="nav-item">
                    <nuxtLink

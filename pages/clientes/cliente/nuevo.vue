@@ -58,7 +58,6 @@
 
                     <!-- Checklists -->
                     <div class="form-group col-12">
-
                       <div class="form-check d-flex justify-content-between">
                         <label for="carnetValido" class="form-check-label">Cedula de Identidad</label>
                         <input type="radio" id="carnetValido" v-model="model.carnetValido" class="form-check-input" />
@@ -98,7 +97,11 @@ export default {
       load: true,
     }
   },
-  methods: {},
-  mounted() {},
+  mounted() {
+    const query = this.$route.query;
+    if (query.nombre) this.model.nombre = query.nombre;
+    if (query.telefono) this.model.telefono = query.telefono;
+    if (query.carnet) this.model.carnet = query.carnet;
+  },
 }
 </script>

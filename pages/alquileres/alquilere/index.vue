@@ -1475,6 +1475,7 @@ export default {
         case 2: return 'Con Correspondencia';
         case 3: return 'Mantenimiento';
         case 4: return 'Vencido';
+        case 5: return 'Reservado';
         default: return 'Ocupado';
       }
     },

@@ -211,6 +211,7 @@ export default {
       opcionesBusqueda: [],
       estadosCasillas: [
         { colorClass: 'status-red', nombre: 'Mantenimiento' },
+        { colorClass: 'status-blue', nombre: 'Reservado' },
         { colorClass: 'status-orange', nombre: 'Con Correspondencia' },
         { colorClass: 'status-black', nombre: 'Ocupado' },
         { colorClass: 'status-green', nombre: 'Libre' },
@@ -343,19 +344,23 @@ export default {
       this.modalMapaVisible = false;
     },
     getIconColorClass(estado) {
-      switch (estado) {
-        case 1:
-          return 'text-success';
-        case 2:
-          return 'text-brown';
-        case 3:
-          return 'text-danger';
-        case 4:
-          return 'text-warning';
-        default:
-          return 'text-black';
-      }
-    },
+  switch (estado) {
+    case 1:
+      return 'text-success';
+    case 2:
+      return 'text-brown';
+    case 3:
+      return 'text-danger';
+    case 4:
+      return 'text-warning';
+    case 5:
+      return 'text-custom-blue'; // Usar la nueva clase personalizada
+    default:
+      return 'text-black';
+  }
+},
+
+
     getIconSize(categoria) {
       switch (categoria) {
         case 'Pequeña':
@@ -396,6 +401,8 @@ export default {
           return 'Mantenimiento';
         case 4:
           return 'Vencido';
+          case 5:
+          return 'Reservado';
         default:
           return 'Desconocido';
       }
@@ -556,6 +563,15 @@ p {
   margin-left: 5px;
   border: 1px solid #000; /* Borde alrededor del cuadro */
 }
+.status-blue {
+  background-color: rgb(38, 0, 255);
+  color: white;
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
+  display: inline-block;
+  margin-left: 5px;
+  border: 1px solid #000; /* Borde alrededor del cuadro */
+}
 
 .status-orange {
   background-color: orange;
@@ -616,4 +632,8 @@ p {
   margin-right: 5px; /* Espacio entre el texto y el cuadro */
   font-size: 12px; /* Tamaño de la fuente para el texto */
 }
+.text-custom-blue {
+  color: rgb(38, 0, 255);
+}
+
 </style>
