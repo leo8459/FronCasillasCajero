@@ -39,6 +39,8 @@
                           @click="Login()">
                           Ingresar
                         </button>
+                        <button @click="regresarBienvenida" class="btn btn-secondary">Regresar a Bienvenida</button> <!-- Botón añadido -->
+
                       </div>
                     </div>
                   </div>
@@ -70,6 +72,9 @@ export default {
     this.loadRecaptcha();
   },
   methods: {
+    regresarBienvenida() {
+      this.$router.push('/auth/welcome');
+    },
     loadRecaptcha() {
       if (!document.querySelector('script[src="https://www.google.com/recaptcha/api.js"]')) {
         const script = document.createElement('script');
