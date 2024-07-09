@@ -14,13 +14,26 @@
                 <CrudCreate :model="model" :apiUrl="apiUrl">
                   <div slot="body" class="row">
                     <!-- Nuevo campo de entrada para el cliente con funcionalidad de búsqueda -->
+                   
                     <div class="form-group col-12">
-                      <label for="">Nombre Completo</label>
-                      <input type="text" name="" v-model="model.nombre" class="form-control" id="" />
+                      <label for="">Nombre</label>
+                      <input type="text" v-model="model.nombre" class="form-control" id="">
                     </div>
                     <div class="form-group col-12">
-                      <label for="">Cedula de Identidad</label>
-                      <input type="text" name="" v-model="model.carnet" class="form-control" id="" />
+                      <label for="">Email</label>
+                      <input type="text" v-model="model.email" class="form-control" id="">
+                    </div>
+                    <div class="form-group col-12">
+                      <label for="">Carnet</label>
+                      <input type="text" v-model="model.carnet" class="form-control" id="">
+                    </div>
+                    <div class="form-group col-12">
+                      <label for="">Direccion</label>
+                      <input type="text" v-model="model.direccion" class="form-control" id="">
+                    </div>
+                    <div class="form-group col-12">
+                      <label for="">Telefono</label>
+                      <input type="text" v-model="model.telefono" class="form-control" id="">
                     </div>
 
                     <div class="form-group col-12">
@@ -31,10 +44,10 @@
                       </select>
                     </div>
 
-                    <div class="form-group col-12">
-                      <label for="">Telefono</label>
-                      <input type="text" name="" v-model="model.telefono" class="form-control" id="" />
-                    </div>
+                   
+                    
+                   
+          
                   </div>
                 </CrudCreate>
               </div>
@@ -52,31 +65,19 @@ export default {
     return {
       model: {
         nombre: '',
-        cliente_id: '',
+        email: '',
+        carnet: '',
+        direccion: '',
+        telefono: '',
         casilla_id: '',
-        categoria_id: '',
-        precio_id: '',
-        estado_pago: '',
-        ini_fecha: '',
-        fin_fecha: '',
-        apertura: '',
-        habilitacion: '',
-        estado: '',
-        cajero_id: '', // Asignar cajero_id al modelo
       },
       apiUrl: 'reservas',
-      page: 'Reservas',
+      page: 'alquileres',
       modulo: 'AGBC',
       load: true,
       searchQuery: '', // Añade esta línea
       searchResults: [], // Añade esta línea
-      clientes: [],
       casillas: [],
-      categorias: [],
-      precios: [],
-      user: { // Asignar cajero_id al modelo
-        cajero: [] // LLAMAR DATO DEL CAJERO
-      }, // Asignar cajero_id al modelo
     };
   },
 

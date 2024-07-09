@@ -131,7 +131,7 @@
                     <th class="py-0 px-1">Cajero</th>
                     <th class="py-0 px-1">Telefono</th>
                     <th class="py-0 px-1">Casilla</th>
-                    <th class="py-0 px-1">Carnet</th>
+                    <th class="py-0 px-1">CI</th>
                     <th class="py-0 px-1">SECCION</th>
                     <th class="py-0 px-1">Precio</th>
                     <th class="py-0 px-1">Tamaño</th>

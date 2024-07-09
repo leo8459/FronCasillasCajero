@@ -97,11 +97,15 @@ export default {
       load: true,
     }
   },
+  
   mounted() {
     const query = this.$route.query;
     if (query.nombre) this.model.nombre = query.nombre;
     if (query.telefono) this.model.telefono = query.telefono;
     if (query.carnet) this.model.carnet = query.carnet;
+    if (query.email) this.model.email = query.email;
+    if (query.direccion) this.model.direccion = query.direccion;
+
   },
 }
 </script>

@@ -23,6 +23,8 @@
                     <th class="py-0 px-1">Nombre Completo</th>
                     <th class="py-0 px-1">Carnet</th>
                     <th class="py-0 px-1">Telefono</th>
+                    <th class="py-0 px-1">Email</th>
+                    <th class="py-0 px-1">Direccion</th>
                     <th class="py-0 px-1">Casilla</th>
                     <th class="py-0 px-1"></th>
                   </thead>
@@ -32,11 +34,13 @@
                       <td class="py-0 px-1">{{ m.nombre }}</td>
                       <td class="py-0 px-1">{{ m.carnet }}</td>
                       <td class="py-0 px-1">{{ m.telefono }}</td>
+                      <td class="py-0 px-1">{{ m.email }}</td>
+                      <td class="py-0 px-1">{{ m.direccion }}</td>
                       <td class="py-0 px-1">{{ m.casilla.nombre }}</td>
                       <td class="py-0 px-1">
                         <nuxt-link
                           v-if="m.nombre && m.telefono && m.carnet"
-                          :to="{ path: '/clientes/cliente/nuevo', query: { nombre: m.nombre, telefono: m.telefono, carnet: m.carnet } }"
+                          :to="{ path: '/clientes/cliente/nuevo', query: { nombre: m.nombre, telefono: m.telefono, carnet: m.carnet,email: m.email,direccion: m.direccion, } }"
                           class="btn btn-dark btn-sm w-100">
                           <i class="fas fa-plus"></i> Cliente Nuevo
                         </nuxt-link>
