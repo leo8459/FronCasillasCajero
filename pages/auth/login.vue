@@ -159,8 +159,7 @@ export default {
   }
 }
 </script>
-}
-</script>
+
 <style scoped>
 .main-content {
   height: 100vh;
