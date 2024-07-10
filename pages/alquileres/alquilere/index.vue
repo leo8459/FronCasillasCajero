@@ -7,7 +7,8 @@
           <div class="col-2"></div>
           <div class="contenedor">
             <div class="busqueda">
-              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre" @input="buscar" />
+              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre"
+                @input="buscar" />
             </div>
           </div>
           <!-- Botón para abrir el modal de casillas por vencer -->
@@ -179,7 +180,8 @@
                   <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-primary">
                     &laquo;
                   </button>
-                  <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }" class="page-number">
+                  <span v-for="page in pages" :key="page" @click="goToPage(page)"
+                    :class="{ active: page === currentPage }" class="page-number">
                     {{ page }}
                   </span>
                   <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
@@ -192,11 +194,11 @@
                       </button>
                     </div>
                     <!-- Botón para cambiar todas las casillas con correspondencia a ocupadas -->
-<div class="btn-group mr-2">
-  <button class="btn btn-warning" @click="updateAllToOcupadas">
-    <i class="fas fa-exclamation-triangle"></i> Cambiar Todas a Ocupadas
-  </button>
-</div>
+                    <div class="btn-group mr-2">
+                      <button class="btn btn-warning" @click="updateAllToOcupadas">
+                        <i class="fas fa-exclamation-triangle"></i> Cambiar Todas a Ocupadas
+                      </button>
+                    </div>
 
                   </div>
                 </div>
@@ -245,84 +247,84 @@ export default {
     };
   },
   computed: {
-  paginatedList() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    return this.filteredList.sort((a, b) => b.id - a.id).slice(start, end);
-  },
-  totalPages() {
-    return Math.ceil(this.filteredList.length / this.pageSize);
-  },
-  pages() {
-    const totalPages = this.totalPages;
-    const currentPage = this.currentPage;
-    let pages = [];
+    paginatedList() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.filteredList.sort((a, b) => b.id - a.id).slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredList.length / this.pageSize);
+    },
+    pages() {
+      const totalPages = this.totalPages;
+      const currentPage = this.currentPage;
+      let pages = [];
 
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 4) {
-        for (let i = 1; i <= 5; i++) {
-          pages.push(i);
-        }
-        pages.push('...', totalPages);
-      } else if (currentPage > totalPages - 4) {
-        pages.push(1, '...');
-        for (let i = totalPages - 4; i <= totalPages; i++) {
+      if (totalPages <= 7) {
+        for (let i = 1; i <= totalPages; i++) {
           pages.push(i);
         }
       } else {
-        pages.push(1, '...');
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
+        if (currentPage <= 4) {
+          for (let i = 1; i <= 5; i++) {
+            pages.push(i);
+          }
+          pages.push('...', totalPages);
+        } else if (currentPage > totalPages - 4) {
+          pages.push(1, '...');
+          for (let i = totalPages - 4; i <= totalPages; i++) {
+            pages.push(i);
+          }
+        } else {
+          pages.push(1, '...');
+          for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+            pages.push(i);
+          }
+          pages.push('...', totalPages);
         }
-        pages.push('...', totalPages);
       }
+
+      return pages;
     }
 
-    return pages;
-  }
-
-},
+  },
 
   methods: {
     async updateAllToOcupadas() {
-    this.load = true;
+      this.load = true;
 
-    try {
-      const response = await this.$api.$post('update-all-to-ocupadas');
+      try {
+        const response = await this.$api.$post('update-all-to-ocupadas');
 
-      if (response.status === 'success') {
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: response.message,
-        });
-        // Recargar los datos después de la actualización
-        await this.GET_DATA(this.apiUrl).then(v => {
-          this.list = v;
-          this.filteredList = this.list;
-        });
-      } else {
+        if (response.status === 'success') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: response.message,
+          });
+          // Recargar los datos después de la actualización
+          await this.GET_DATA(this.apiUrl).then(v => {
+            this.list = v;
+            this.filteredList = this.list;
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.message,
+          });
+        }
+      } catch (error) {
+        console.error(error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: response.message,
+          text: 'Hubo un error al actualizar los registros.',
         });
+      } finally {
+        this.load = false;
       }
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Hubo un error al actualizar los registros.',
-      });
-    } finally {
-      this.load = false;
-    }
-},
+    },
     toggleSelectAll(event) {
       this.selectedIds = event.target.checked ? this.paginatedList.map(m => m.id) : [];
     },

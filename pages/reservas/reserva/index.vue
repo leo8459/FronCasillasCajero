@@ -53,8 +53,8 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
-                :key="item.id ? 'large1-' + item.id : 'large1-' + index" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
+                :key="item.id ? 'large2-' + item.id : 'large2-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -64,8 +64,8 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
-                :key="item.id ? 'large2-' + item.id : 'large2-' + index" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
+                :key="item.id ? 'large1-' + item.id : 'large1-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -106,8 +106,8 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
-                :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
+                :key="item.id ? 'large2-23-' + item.id : 'large2-23-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -117,8 +117,8 @@
               </div>
             </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
-                :key="item.id ? 'large2-23-' + item.id : 'large2-23-' + index" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
+                :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -147,14 +147,12 @@
             <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
             <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
             <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
-
           </div>
           <div class="modal-footer">
             <nuxt-link v-if="casillaSeleccionada.casilla_estado === 1"
               :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
               <i class="fas fa-plus"></i>Reservar
             </nuxt-link>
-
           </div>
         </div>
       </div>
@@ -178,7 +176,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -231,7 +228,11 @@ export default {
       return categoriasUnicas.map((nombre, index) => ({ id: index + 1, nombre }));
     },
     casillasOrdenadas() {
-      return this.casillas.slice().sort((a, b) => b.categoria_nombre.localeCompare(a.categoria_nombre));
+      return this.casillas.slice().sort((a, b) => {
+        const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
+        if (categoriaComparison !== 0) return categoriaComparison;
+        return parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre);
+      });
     },
   },
   methods: {
@@ -307,10 +308,10 @@ export default {
         console.log('Datos recuperados de la API:', res);
         if (res && Array.isArray(res.casillas)) {
           this.casillas = res.casillas;
-          this.casillas.sort((b, a) => {
+          this.casillas.sort((a, b) => {
             const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
             if (categoriaComparison !== 0) return categoriaComparison;
-            return parseInt(b.casilla_nombre) - parseInt(a.casilla_nombre);
+            return parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre);
           });
         } else {
           console.error('La respuesta de la API no contiene el formato esperado.');
@@ -402,7 +403,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 ul {
