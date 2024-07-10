@@ -125,6 +125,7 @@ export default {
       user: { // Asignar cajero_id al modelo
         cajero: [] // LLAMAR DATO DEL CAJERO
       }, // Asignar cajero_id al modelo
+      apertura: '', // Añade esta línea para que la propiedad apertura sea reactiva
     };
   },
 
@@ -269,6 +270,7 @@ export default {
       const formattedDate = `${year}-${month}-${day}`;
 
       this.model.apertura = formattedDate; // Asignar la fecha actual a la apertura
+      this.apertura = formattedDate; // Asignar la fecha actual a la propiedad apertura
 
       try {
         await Promise.all([this.GET_DATA('clientes'), this.GET_DATA('casillas'), this.GET_DATA('categorias'), this.GET_DATA('precios')]).then((v) => {
