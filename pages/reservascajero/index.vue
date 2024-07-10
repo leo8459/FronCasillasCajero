@@ -41,8 +41,14 @@
                         <nuxt-link
                           v-if="m.nombre && m.telefono && m.carnet"
                           :to="{ path: '/clientes/cliente/nuevo', query: { nombre: m.nombre, telefono: m.telefono, carnet: m.carnet,email: m.email,direccion: m.direccion, } }"
-                          class="btn btn-dark btn-sm w-100">
+                          class="btn btn-dark btn-sm w-35 ">
                           <i class="fas fa-plus"></i> Cliente Nuevo
+                        </nuxt-link>
+                        <nuxt-link
+                          v-if="m.nombre && m.telefono && m.carnet"
+                          :to="{ path: '/clientes/cliente/nuevo2', query: { nombre: m.nombre, telefono: m.telefono, carnet: m.carnet,email: m.email,direccion: m.direccion, } }"
+                          class="btn btn-dark btn-sm w-35 ">
+                          <i class="fas fa-plus"></i> Empresa Nuevo
                         </nuxt-link>
                       </td>
                     </tr>
@@ -91,6 +97,7 @@ export default {
       page: 'Clientes',
       modulo: 'AGBC',
       url_nuevo: { path: '/clientes/cliente/nuevo' }, // Ajuste aquí para url_nuevo
+      url_nuevo2: { path: '/clientes/cliente/nuevo2' }, // Ajuste aquí para url_nuevo
       url_editar: '/clientes/cliente/editar/',
       pageSize: 10,
       currentPage: 1,

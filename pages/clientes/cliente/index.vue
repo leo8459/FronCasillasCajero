@@ -11,7 +11,12 @@
           </div>
           <div class="col-2">
       <nuxtLink :to="url_nuevo" class="btn btn-dark btn-sm w-100">
-        <i class="fas fa-plus"></i> Agregar
+        <i class="fas fa-plus"></i> Agregar Cliente
+      </nuxtLink>
+    </div>
+    <div class="col-2">
+      <nuxtLink :to="url_nuevo2" class="btn btn-dark btn-sm w-100">
+        <i class="fas fa-plus"></i> Agregar Empresa
       </nuxtLink>
     </div>
           <div class="col-12">
@@ -21,10 +26,10 @@
                   <thead>
                     <th class="py-0 px-1">#</th>
                     <th class="py-0 px-1">Nombre Completo</th>
-                    <th class="py-0 px-1">email</th>
-                    <th class="py-0 px-1">carnet</th>
+                    <th class="py-0 px-1">Email</th>
+                    <th class="py-0 px-1">CI o NIT</th>
                     <th class="py-0 px-1">Direccion</th>
-                    <th class="py-0 px-1">telefono</th>
+                    <th class="py-0 px-1">Telefono</th>
                     <th class="py-0 px-1"></th>
                   </thead>
                   <tbody>
@@ -91,6 +96,7 @@ export default {
       apiUrl: 'clientes',
       page: 'Clientes',
       modulo: 'AGBC',
+      url_nuevo2: '/clientes/cliente/nuevo2',
       url_nuevo: '/clientes/cliente/nuevo',
       url_editar: '/clientes/cliente/editar/',
       pageSize: 10,
