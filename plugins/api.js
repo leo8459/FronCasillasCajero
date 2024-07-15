@@ -11,7 +11,7 @@ export default function ({ $axios }, inject) {
   // Set baseURL to something different
 
   // let url ='http://127.0.0.1:8000/cajero/'
-   let url ='http://172.65.10.33:200506/cajero/'
+   let url ='http://172.65.10.33:6969/cajero/'
 
   api.url =url
   api.setBaseURL(url) 
