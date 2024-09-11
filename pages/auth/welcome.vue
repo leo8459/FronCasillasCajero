@@ -154,6 +154,8 @@
   .hero-title {
     font-size: 3em;
     margin-bottom: 20px;
+    color: #ffffff; /* Cambia este valor por el color que desees */
+
   }
   
   .hero-subtitle {
