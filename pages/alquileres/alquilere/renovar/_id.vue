@@ -98,7 +98,7 @@ export default {
         categoria_id: '',
         precio_id: '',
         estado: '',
-        apertura: '',
+        apertura: '',  // Add this line
         cajero_id: '',
       },
       apiUrl: "alquileres",
@@ -182,31 +182,31 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
-      let user = localStorage.getItem('userAuth');
-      this.user = JSON.parse(user);
-      this.model.cajero_id = this.user.cajero.id;
-      try {
-        await Promise.all([
-          this.GET_DATA(this.apiUrl + "/" + this.$route.params.id),
-          this.GET_DATA('clientes'),
-          this.GET_DATA('casillas'),
-          this.GET_DATA('categorias'),
-          this.GET_DATA('precios'),
-        ]).then((v) => {
-          this.model = v[0];
-          this.clientes = v[1];
-          this.casillas = v[2];
-          this.categorias = v[3];
-          this.precios = v[4];
-          this.model.precio_id = null;
-          this.model.apertura = this.getCurrentDate();
-          this.updateFechaTermino();
-        });
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.load = false;
-      }
+    let user = localStorage.getItem('userAuth');
+    this.user = JSON.parse(user);
+    this.model.cajero_id = this.user.cajero.id;
+    try {
+      await Promise.all([
+        this.GET_DATA(this.apiUrl + "/" + this.$route.params.id),
+        this.GET_DATA('clientes'),
+        this.GET_DATA('casillas'),
+        this.GET_DATA('categorias'),
+        this.GET_DATA('precios'),
+      ]).then((v) => {
+        this.model = v[0];
+        this.clientes = v[1];
+        this.casillas = v[2];
+        this.categorias = v[3];
+        this.precios = v[4];
+        this.model.precio_id = null;
+        this.apertura = this.getCurrentDate();  // Set apertura here
+        this.updateFechaTermino();
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.load = false;
+    }
     });
   }
 };
