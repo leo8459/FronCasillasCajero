@@ -55,7 +55,7 @@
 
                     <div class="form-group col-12">
                       <label for="">Fecha final</label>
-                      <input type="date" v-model="model.fin_fecha" class="form-control" :min="model.ini_fecha" disabled>
+                      <input type="date" v-model="model.fin_fecha" class="form-control" :min="model.ini_fecha" >
                     </div>
 
                     <div class="form-group col-12">
@@ -70,7 +70,7 @@
                     
                     <div class="form-group col-12">
                       <label for="">Apertura</label>
-                      <input type="date" v-model="model.apertura" class="form-control" :min="apertura" disabled>
+                      <input type="date" v-model="model.apertura" class="form-control" :min="apertura" >
                     </div>
                     <div class="form-group col-12">
                       <label for="">Habilitacion</label>
