@@ -3,7 +3,7 @@
     <JcLoader :load="load"></JcLoader>
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
-
+        
         <div class="row justify-content-end text-right">
           <div class="col-12 col-md-4">
             <label for="searchInput">Buscar por nombre:</label>
@@ -14,8 +14,8 @@
               </li>
             </ul>
           </div>
-
-        </div>
+          
+</div>
 
         <div class="col-2">
           <label for="seccionSelector">Selecciona una sección:</label>
@@ -40,12 +40,16 @@
             <div class="row mt-4">
               <div class="d-flex flex-wrap justify-content-center casillas-container">
                 <div
-                  v-for="(item, index) in casillasFiltradasPorDepartamento.filter(c => c.categoria_nombre === categoria.nombre)"
-                  :key="item.id" :class="{ 'small-casilla': item.categoria_nombre === 'Pequeño' }" class="m-2" :style="{
+                  v-for="(item, index) in casillasOrdenadasPorCategoria(categoria.id)"
+                  :key="item.id"
+                  :class="{'small-casilla': item.categoria_nombre === 'Pequeño'}"
+                  class="m-2"
+                  :style="{
                     fontSize: '2rem',
                     width: isMediana(item.categoria_nombre) ? 'calc(20% - 10px)' : 'calc(110px - 5px)', // Ajusta el ancho dependiendo de si es mediana o no
                     transform: getIconSize(item.categoria_nombre),
-                  }">
+                  }"
+                >
                   <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                     <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                   </div>
@@ -57,7 +61,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </AdminTemplate>
 
@@ -122,9 +125,6 @@ export default {
       modalVisible: false,
       casillaSeleccionada: {},
       busqueda: '',
-      user: {
-        cajero: []//recuperar usuario
-      },
       mostrarListaOpciones: false,
       opcionesBusqueda: [],
       estadosCasillas: [
@@ -142,18 +142,8 @@ export default {
       return categoriasUnicas.map((nombre, index) => ({ id: index + 1, nombre }));
     },
     casillasOrdenadas() {
-      return this.casillas.slice().sort((b, a) => a.categoria_nombre.localeCompare(b.categoria_nombre));
+      return this.casillas.slice().sort((a, b) => b.categoria_nombre.localeCompare(a.categoria_nombre));
     },
-    casillasFiltradasPorDepartamento() {
-    if (this.user && this.user.cajero && this.user.cajero.departamento) {
-      return this.casillas.filter(item => {
-        return item.casilla_departamento === this.user.cajero.departamento;
-      });
-    } else {
-      console.error('Departamento del usuario logueado no está definido');
-      return [];
-    }
-  }
   },
   methods: {
     toggleDropdown() {
@@ -226,43 +216,29 @@ export default {
       this.casillas = casillasFiltradas;
     },
     casillasOrdenadasPorCategoria(categoriaId) {
-      return this.casillas.filter(item => {
-        // Comparar el departamento del usuario logueado con el departamento de la casilla
-        return item.casilla_departamento === this.user.cajero.departamento && item.categoria_nombre === this.categorias[categoriaId - 1].nombre;
-      }).sort((a, b) => parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre));
+      const casillasCategoria = this.casillas.filter((item) => item.categoria_nombre === this.categorias[categoriaId - 1].nombre);
+      return casillasCategoria.sort((a, b) => parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre));
     },
-
     async cargarDatos() {
-  try {
-    const res = await this.$api.$get(`${this.apiUrl}/${this.seccionSeleccionada}`);
-    console.log('Datos recuperados de la API:', res);
-
-    if (res && Array.isArray(res.casillas)) {
-      // Solo filtrar las casillas si user.cajero.departamento está definido
-      if (this.user && this.user.cajero && this.user.cajero.departamento) {
-        this.casillas = res.casillas.filter(item => {
-          return item.casilla_departamento === this.user.cajero.departamento;
-        });
-
-        this.casillas.sort((b, a) => {
-          const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
-          if (categoriaComparison !== 0) return categoriaComparison;
-          return parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre);
-        });
-      } else {
-        console.error('No se puede filtrar por departamento, el usuario o su departamento no están definidos');
+      try {
+        const res = await this.$api.$get(`${this.apiUrl}/${this.seccionSeleccionada}`);
+        console.log('Datos recuperados de la API:', res);
+        if (res && Array.isArray(res.casillas)) {
+          this.casillas = res.casillas;
+          this.casillas.sort((b, a) => {
+            const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
+            if (categoriaComparison !== 0) return categoriaComparison;
+            return parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre);
+          });
+        } else {
+          console.error('La respuesta de la API no contiene el formato esperado.');
+        }
+      } catch (error) {
+        console.error('Error al recuperar los datos de la API:', error);
+      } finally {
+        this.load = false;
       }
-    } else {
-      console.error('La respuesta de la API no contiene el formato esperado.');
-    }
-  } catch (error) {
-    console.error('Error al recuperar los datos de la API:', error);
-  } finally {
-    this.load = false;
-  }
-}
-
-,
+    },
     abrirModal(item) {
       this.casillaSeleccionada = item;
       this.modalVisible = true;
@@ -330,26 +306,7 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(async () => {
-    try {
-      let user = localStorage.getItem('userAuth'); // Recuperar usuario del localStorage
-      if (user) {
-        this.user = JSON.parse(user);
-        
-        // Verificar si user y user.cajero están definidos correctamente
-        if (this.user && this.user.cajero && this.user.cajero.departamento) {
-          console.log('Usuario cargado correctamente', this.user);
-          this.cargarDatos(); // Llamar cargarDatos solo si user.cajero.departamento está definido
-        } else {
-          console.error('El usuario o el departamento no están definidos correctamente:', this.user);
-        }
-      } else {
-        console.error('Usuario no encontrado en localStorage');
-      }
-    } catch (error) {
-      console.error('Error al recuperar o analizar el usuario desde localStorage:', error);
-    }
-  });
+    this.cargarDatos();
   },
 };
 </script>
@@ -422,24 +379,19 @@ p {
 .casillas-container {
   display: flex;
   flex-wrap: wrap;
-  max-width: calc(10 * (110px - 5px));
-  /* Ajusta 110px según el ancho calculado de las casillas */
+  max-width: calc(10 * (110px - 5px)); /* Ajusta 110px según el ancho calculado de las casillas */
 }
 
 .small-casilla {
-  width: calc(12.5% - 5px);
-  /* 100% / 8 = 12.5% */
+  width: calc(12.5% - 5px); /* 100% / 8 = 12.5% */
 }
-
 .status-table {
   width: auto;
-  font-size: 0.7rem;
-  /* Hacemos la tabla más pequeña */
+  font-size: 0.7rem; /* Hacemos la tabla más pequeña */
 }
 
 .status-table td {
-  padding: 3px 5px;
-  /* Reducimos el padding para hacer la tabla más compacta */
+  padding: 3px 5px; /* Reducimos el padding para hacer la tabla más compacta */
   text-align: center;
 }
 
@@ -476,14 +428,11 @@ p {
 .dropdown-button {
   background-color: #4CAF50;
   color: white;
-  padding: 8px 10px;
-  /* Reducimos el tamaño del botón */
-  font-size: 14px;
-  /* Reducimos el tamaño de la fuente */
+  padding: 8px 10px; /* Reducimos el tamaño del botón */
+  font-size: 14px; /* Reducimos el tamaño de la fuente */
   border: none;
   cursor: pointer;
-  border-radius: 5px;
-  /* Borde redondeado */
+  border-radius: 5px; /* Borde redondeado */
 }
 
 .dropdown-button:hover {
@@ -494,81 +443,63 @@ p {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 200px;
-  /* Ajustamos el ancho mínimo */
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  min-width: 200px; /* Ajustamos el ancho mínimo */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  border-radius: 5px;
-  /* Borde redondeado */
+  border-radius: 5px; /* Borde redondeado */
 }
 
 .dropdown-custom .dropdown-content {
   display: block;
 }
-
 .status-red {
   background-color: red;
   color: white;
-  width: 30px;
-  /* Aumentar el tamaño del cuadro */
-  height: 30px;
-  /* Aumentar el tamaño del cuadro */
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
   display: inline-block;
   margin-left: 5px;
-  border: 1px solid #000;
-  /* Borde alrededor del cuadro */
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-orange {
   background-color: orange;
   color: black;
-  width: 30px;
-  /* Aumentar el tamaño del cuadro */
-  height: 30px;
-  /* Aumentar el tamaño del cuadro */
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
   display: inline-block;
   margin-left: 5px;
-  border: 1px solid #000;
-  /* Borde alrededor del cuadro */
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-black {
   background-color: black;
   color: white;
-  width: 30px;
-  /* Aumentar el tamaño del cuadro */
-  height: 30px;
-  /* Aumentar el tamaño del cuadro */
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
   display: inline-block;
   margin-left: 5px;
-  border: 1px solid #000;
-  /* Borde alrededor del cuadro */
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-green {
   background-color: green;
   color: black;
-  width: 30px;
-  /* Aumentar el tamaño del cuadro */
-  height: 30px;
-  /* Aumentar el tamaño del cuadro */
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
   display: inline-block;
   margin-left: 5px;
-  border: 1px solid #000;
-  /* Borde alrededor del cuadro */
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-yellow {
   background-color: yellow;
   color: black;
-  width: 30px;
-  /* Aumentar el tamaño del cuadro */
-  height: 30px;
-  /* Aumentar el tamaño del cuadro */
+  width: 30px;  /* Aumentar el tamaño del cuadro */
+  height: 30px; /* Aumentar el tamaño del cuadro */
   display: inline-block;
   margin-left: 5px;
-  border: 1px solid #000;
-  /* Borde alrededor del cuadro */
+  border: 1px solid #000; /* Borde alrededor del cuadro */
 }
 
 .status-container {
@@ -581,18 +512,13 @@ p {
   display: flex;
   align-items: center;
   margin-right: 10px;
-  border: 1px solid #ccc;
-  /* Borde alrededor de cada ítem */
-  padding: 5px;
-  /* Espacio alrededor del contenido del ítem */
-  border-radius: 5px;
-  /* Borde redondeado */
+  border: 1px solid #ccc; /* Borde alrededor de cada ítem */
+  padding: 5px; /* Espacio alrededor del contenido del ítem */
+  border-radius: 5px; /* Borde redondeado */
 }
 
 .status-item span {
-  margin-right: 5px;
-  /* Espacio entre el texto y el cuadro */
-  font-size: 12px;
-  /* Tamaño de la fuente para el texto */
+  margin-right: 5px; /* Espacio entre el texto y el cuadro */
+  font-size: 12px; /* Tamaño de la fuente para el texto */
 }
 </style>
