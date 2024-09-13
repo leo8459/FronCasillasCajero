@@ -12,7 +12,6 @@
               <i class="fas fa-plus"></i> Agregar
             </nuxtLink>
             <button class="btn btn-primary" @click="generarPDF">Generar PDF</button>
-
           </div>
           <div class="col-12">
             <div class="card">
@@ -94,6 +93,9 @@ export default {
       url_editar: '/casillas/casilla/editar/',
       currentPage: 1,
       pageSize: 10,
+      user: {
+        cartero: []//recuperar usuario
+      },
       maxPageNumbers: 10, // Define el máximo número de números de página a mostrar
       searchQuery: '' // Consulta de búsqueda
 
@@ -239,6 +241,8 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
+      let user = localStorage.getItem('userAuth');//recuperar usuario
+      this.user = JSON.parse(user);//recuperar usuario
       try {
         await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
           this.list = v[0];
