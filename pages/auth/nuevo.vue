@@ -15,15 +15,15 @@
                     <!-- Nuevo campo de entrada para el cliente con funcionalidad de búsqueda -->
                    
                     <div class="form-group col-12">
-                      <label for="">Nombre</label>
+                      <label for="">Nombre*</label>
                       <input type="text" v-model="model.nombre" class="form-control" id="">
                     </div>
                     <div class="form-group col-12">
-                      <label for="">Email</label>
+                      <label for="">Email*</label>
                       <input type="text" v-model="model.email" class="form-control" id="">
                     </div>
                     <div class="form-group col-12">
-                      <label for="">Carnet</label>
+                      <label for="">Carnet*</label>
                       <input type="text" v-model="model.carnet" class="form-control" id="">
                     </div>
                     <div class="form-group col-12">
@@ -31,7 +31,7 @@
                       <input type="text" v-model="model.direccion" class="form-control" id="">
                     </div>
                     <div class="form-group col-12">
-                      <label for="">Telefono</label>
+                      <label for="">Telefono*</label>
                       <input type="text" v-model="model.telefono" class="form-control" id="">
                     </div>
 

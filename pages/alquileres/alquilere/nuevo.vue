@@ -79,7 +79,7 @@
 
                     <div class="form-group col-12">
                       <label for="">precio</label>
-                      <select name="" id="" class="form-control" v-model="model.precio_id" >
+                      <select name="" id="" class="form-control" v-model="model.precio_id" disabled>
                         <option v-for="m in precios" :value="m.id">{{ m.precio }}</option>
                       </select>
                     </div>
