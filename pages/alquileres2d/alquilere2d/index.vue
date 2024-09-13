@@ -209,6 +209,9 @@ export default {
       busqueda: '',
       mostrarListaOpciones: false,
       opcionesBusqueda: [],
+      user: {
+        cajero: []//recuperar usuario
+      },
       estadosCasillas: [
         { colorClass: 'status-red', nombre: 'Mantenimiento' },
         { colorClass: 'status-blue', nombre: 'Reservado' },

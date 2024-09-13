@@ -1459,24 +1459,39 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
+    try {
+      // Recuperar usuario logueado del localStorage
+      let user = localStorage.getItem('userAuth');
+      this.user = JSON.parse(user);
 
-      try {
+      // Verificar si el departamento del usuario está disponible
+      if (this.user && this.user.cajero && this.user.cajero.departamento) {
+        const departamentoUsuario = this.user.cajero.departamento;
 
+        // Obtener los datos de alquileres
         await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-          this.list = v[0].filter(item => item.estado === 1);
+          // Filtrar alquileres por el departamento de la casilla que coincida con el usuario logueado
+          this.list = v[0].filter(item => item.casilla.departamento === departamentoUsuario);
           this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
           this.filteredList = this.list;
         });
+
+        // Generar alerta de casillas por vencer
         this.generarAlertaCasillasPorVencer();
-        let user = localStorage.getItem('userAuth'); // Asignar cajero_id al modelo
-        this.user = JSON.parse(user); // Asignar cajero_id al modelo
-        this.model.cajero_id = this.user.cajero.id; // Asignar cajero_id al modelo
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.load = false;
+      } else {
+        console.error('El departamento del usuario no está disponible.');
+
+
+
+
+
       }
-    });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.load = false;
+    }
+  });
   },
 };
 </script>

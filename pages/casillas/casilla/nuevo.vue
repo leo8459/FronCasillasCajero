@@ -31,7 +31,20 @@
                         <option v-for="m in secciones" :value="m.id">{{ m.nombre }}</option>
                       </select>
                     </div>
-
+                    <div class="form-group col-12">
+                      <label for="departamento">Departamento</label>
+                      <select v-model="model.departamento" class="form-control" id="departamento">
+                        <option value="LPB">La Paz (LPB)</option>
+                        <option value="SRZ">Santa Cruz (SRZ)</option>
+                        <option value="CBB">Cochabamba (CBB)</option>
+                        <option value="ORU">Oruro (ORU)</option>
+                        <option value="PTI">Potosí (PTI)</option>
+                        <option value="TJA">Tarija (TJA)</option>
+                        <option value="SRE">Sucre (SRE)</option>
+                        <option value="BEN">Trinidad (TDD)</option>
+                        <option value="CIJ">Cobija (CIJ)</option>
+                      </select>
+                    </div>
                     <div class="form-group col-12">
                       <label for="">Llaves</label>
                       <v-select 
@@ -92,20 +105,32 @@ export default {
           this.secciones = v[1];
           this.llaves = v[2];
           if (this.categorias.length) {
-            this.model.categoria_id = this.categorias[0].id;
+            this.model.categoria_id = this.categorias[0].id
           }
           if (this.secciones.length) {
-            this.model.seccione_id = this.secciones[0].id;
+            this.model.seccione_id = this.secciones[0].id
+
+
+
+
+
+
+
+
+
+
           }
           if (this.llaves.length) {
-            this.model.llaves_id = this.llaves[0].id;
+            this.model.llaves_id = this.llaves[0].id
           }
-        });
+
+        })
       } catch (e) {
         console.log(e);
       } finally {
-        this.load = false;
+        this.load = false
       }
+
     });
   },
 };
