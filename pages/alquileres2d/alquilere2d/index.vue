@@ -314,25 +314,35 @@ export default {
       return casillasTipo.sort((a, b) => parseInt(a.casilla_nombre) - parseInt(b.casilla_nombre));
     },
     async cargarDatos() {
-      try {
-        const res = await this.$api.$get('todas-las-casillas');
-        console.log('Datos recuperados de la API:', res);
-        if (res && Array.isArray(res.casillas)) {
-          this.casillas = res.casillas;
-          this.casillas.sort((b, a) => {
-            const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
-            if (categoriaComparison !== 0) return categoriaComparison;
-            return parseInt(b.casilla_nombre) - parseInt(a.casilla_nombre);
-          });
-        } else {
-          console.error('La respuesta de la API no contiene el formato esperado.');
-        }
-      } catch (error) {
-        console.error('Error al recuperar los datos de la API:', error);
-      } finally {
-        this.load = false;
+  try {
+    const res = await this.$api.$get('todas-las-casillas');
+    console.log('Datos recuperados de la API:', res);
+
+    if (res && Array.isArray(res.casillas)) {
+      // Filtrar casillas por departamento del usuario logueado
+      if (this.user && this.user.cajero && this.user.cajero.departamento) {
+        this.casillas = res.casillas.filter(item => {
+          return item.casilla_departamento === this.user.cajero.departamento;
+        });
+
+        // Ordenar casillas
+        this.casillas.sort((a, b) => {
+          const categoriaComparison = a.categoria_nombre.localeCompare(b.categoria_nombre);
+          if (categoriaComparison !== 0) return categoriaComparison;
+          return parseInt(b.casilla_nombre) - parseInt(a.casilla_nombre);
+        });
+      } else {
+        console.error('No se puede filtrar por departamento, el usuario o su departamento no están definidos');
       }
-    },
+    } else {
+      console.error('La respuesta de la API no contiene el formato esperado.');
+    }
+  } catch (error) {
+    console.error('Error al recuperar los datos de la API:', error);
+  } finally {
+    this.load = false;
+  }
+},
     abrirModal(item) {
       this.casillaSeleccionada = item;
       this.modalVisible = true;
@@ -412,6 +422,26 @@ export default {
     },
   },
   async mounted() {
+    this.$nextTick(async () => {
+    try {
+      let user = localStorage.getItem('userAuth'); // Recuperar usuario del localStorage
+      if (user) {
+        this.user = JSON.parse(user);
+        
+        // Verificar si el departamento del usuario está definido
+        if (this.user && this.user.cajero && this.user.cajero.departamento) {
+          console.log('Usuario cargado correctamente', this.user);
+          this.cargarDatos(); // Llamar a cargarDatos si todo está definido
+        } else {
+          console.error('El usuario o el departamento no están definidos correctamente:', this.user);
+        }
+      } else {
+        console.error('Usuario no encontrado en localStorage');
+      }
+    } catch (error) {
+      console.error('Error al recuperar o analizar el usuario desde localStorage:', error);
+    }
+  });
     this.cargarDatos();
   },
 };
