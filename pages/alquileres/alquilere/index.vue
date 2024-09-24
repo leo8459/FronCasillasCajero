@@ -889,11 +889,16 @@ export default {
   });
 
   const totalCasillasAlquiladas = dataForReport.length;
+
+  // Sumar precios, estado_pago, habilitacion y nombre
   const totalPrecio = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.precio?.precio || 0), 0);
+  const totalEstadoPago = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.estado_pago || 0), 0);
+  const totalHabilitacion = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.habilitacion || 0), 0);
+  const totalNombre = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.nombre || 0), 0);
 
   // Crear el documento PDF con márgenes y mejor diseño
   const doc = new jsPDF('landscape', 'mm', 'a4');
-  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio'];
+  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio', 'Estado Pago', 'Habilitacion', 'Nombre'];
 
   const body = dataForReport.map(alquiler => [
     alquiler.cliente?.nombre || 'S/N',
@@ -903,7 +908,10 @@ export default {
     alquiler.categoria?.nombre || 'S/N',
     alquiler.apertura || 'S/N',
     alquiler.fin_fecha || 'S/N',
-    parseFloat(alquiler.precio?.precio || 0).toFixed(2) || 'S/N'
+    parseFloat(alquiler.precio?.precio || 0).toFixed(2) || 'S/N',
+    parseFloat(alquiler.estado_pago || 0).toFixed(2) || 'S/N',
+    parseFloat(alquiler.habilitacion || 0).toFixed(2) || 'S/N',
+    parseFloat(alquiler.nombre || 0).toFixed(2) || 'S/N'  // Sumamos el nombre si es numérico
   ]);
 
   // Diseño del título
@@ -920,12 +928,15 @@ export default {
   doc.setTextColor(100);
   doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
   doc.text(`Total Suma de Precios: Bs. ${totalPrecio.toFixed(2)}`, 14, 36);
+  doc.text(`Total Estado Pago: ${totalEstadoPago.toFixed(2)}`, 14, 42);
+  doc.text(`Total Habilitacion: ${totalHabilitacion.toFixed(2)}`, 14, 48);
+  doc.text(`Total Nombre: ${totalNombre.toFixed(2)}`, 14, 54);  // Mostrar el total de "nombre"
 
   // Generar la tabla con estilo más empresarial
   doc.autoTable({
     head: [headers],
     body: body,
-    startY: 45, // Posicionar la tabla más abajo del texto
+    startY: 60, // Posicionar la tabla más abajo del texto
     theme: 'grid', // Aplicar el tema "grid" para un estilo empresarial
     styles: {
       fontSize: 10,
@@ -939,7 +950,10 @@ export default {
     },
     columnStyles: {
       0: { halign: 'left' },  // Alinear el texto de la primera columna a la izquierda
-      7: { halign: 'right' }  // Alinear el precio a la derecha
+      7: { halign: 'right' }, // Alinear el precio a la derecha
+      8: { halign: 'right' }, // Alinear estado_pago a la derecha
+      9: { halign: 'right' }, // Alinear habilitacion a la derecha
+      10: { halign: 'right' }  // Alinear el nombre a la derecha
     },
     tableLineColor: [189, 195, 199], // Color más sutil para las líneas de la tabla
     tableLineWidth: 0.75
@@ -948,7 +962,12 @@ export default {
   // Abrir el PDF en una nueva ventana
   window.open(doc.output('bloburl'), '_blank');
 }
+
+
+
 ,
+
+
 
 
 
