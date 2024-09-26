@@ -108,23 +108,23 @@ export default {
   },
   methods: {
     async buscarCasilla() {
-      try {
-        // Realiza una solicitud al backend para buscar la casilla por su ID o nombre
-        const response = await this.$api.get(`/buscar-casilla/${this.casilla_id}`);
-        console.log(response.data); // Revisa si aquí se está devolviendo el estado correcto
+    try {
+      // Realiza una solicitud al backend para buscar la casilla por su ID o nombre
+      const response = await this.$api.get(`/buscar-casilla/${this.casilla_id}`);
+      console.log(response.data); // Revisa si aquí se está devolviendo el estado correcto
 
-        if (response.data.success) {
-          this.estadoCasilla = this.obtenerEstado(response.data.estado_casilla);
-          this.paquetes = response.data.paquetes; // Guarda los códigos de los paquetes asociados al alquiler
-          this.mostrarEstado(); // Llama a la función para mostrar el estado en SweetAlert2
-        } else {
-          this.mostrarError(response.data.message); // Llama a la función para mostrar el error en SweetAlert2
-        }
-      } catch (error) {
-        console.error('Error al buscar la casilla:', error);
-        this.mostrarError('Ocurrió un error al realizar la búsqueda. Intenta nuevamente.');
+      if (response.data.success) {
+        this.estadoCasilla = this.obtenerEstado(response.data.estado_casilla);
+        this.paquete = response.data.paquete; // Aquí manejamos un solo paquete en lugar de una lista
+        this.mostrarEstado(); // Llama a la función para mostrar el estado en SweetAlert2
+      } else {
+        this.mostrarError(response.data.message); // Llama a la función para mostrar el error en SweetAlert2
       }
-    },
+    } catch (error) {
+      console.error('Error al buscar la casilla:', error);
+      this.mostrarError('Ocurrió un error al realizar la búsqueda. Intenta nuevamente.');
+    }
+  },
     obtenerEstado(estado) {
       // Función que devuelve el estado de la casilla en texto
       switch (estado) {
@@ -145,16 +145,16 @@ export default {
       }
     },
     mostrarEstado() {
-      // Generar el texto de los paquetes
-      const paquetesText = this.paquetes.length > 0 ? this.paquetes.join(', ') : 'No hay paquetes asociados.';
+    // Generar el texto del paquete
+    const paqueteText = this.paquete ? this.paquete : 'No hay paquetes asociados.';
 
-      // Función para mostrar el estado de la casilla en SweetAlert2
-      Swal.fire({
-        title: 'Estado de tu casilla',
-        text: `El número de casilla: ${this.casilla_id} está en estado: ${this.estadoCasilla}. Paquetes asociados: ${paquetesText}.`,
-        icon: 'success',
-        confirmButtonText: 'Aceptar'
-      });
+    // Función para mostrar el estado de la casilla en SweetAlert2
+    Swal.fire({
+      title: 'Estado de tu casilla',
+      text: `El número de casilla: ${this.casilla_id} está en estado: ${this.estadoCasilla}. Paquete asociado: ${paqueteText}.`,
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    });
     },
     mostrarError(mensaje) {
       // Función para mostrar un error en SweetAlert2
