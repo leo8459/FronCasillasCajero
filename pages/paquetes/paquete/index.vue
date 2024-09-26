@@ -8,8 +8,6 @@
         </div>
         <div class="row justify-content-end">
           <div class="col-2">
-            <button class="btn btn-warning" @click="generarBackup">Generar Backup</button>
-
             <nuxtLink :to="url_nuevo" class="btn btn-dark btn-sm w-100">
               <i class="fas fa-plus"></i> Agregar
             </nuxtLink>
@@ -22,39 +20,35 @@
                 <table class="table">
                   <thead>
                     <th class="py-0 px-1">#</th>
-                    <th class="py-0 px-1">Codigo Casilla</th>
-                    <th class="py-0 px-1">Categoria</th>
-                    <th class="py-0 px-1">Seccion</th>
-                    <th class="py-0 px-1">Estado</th>
+                    <th class="py-0 px-1">Codigo</th>
+                    <th class="py-0 px-1">Fecha</th>
+                    <th class="py-0 px-1">Departamento</th>
+                    <th class="py-0 px-1">Alquiler</th>
                     <!-- <th class="py-0 px-1">llaves</th> -->
                     <th class="py-0 px-1"></th>
                   </thead>
                   <tbody>
-                    <tr v-for="(m, index) in paginatedList" :key="index">
-                      <td class="py-0 px-1">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-                      <td class="py-0 px-1">{{ m.nombre }}</td>
-                      <td class="py-0 px-1">{{ m.categoria.nombre }}</td>
-                      <td class="py-0 px-1">{{ m.seccione.nombre }}</td>
+  <tr v-for="(m, index) in paginatedList" :key="index">
+    <td class="py-0 px-1">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
+    <td class="py-0 px-1">{{ m.codigo ? m.codigo : 'S/N' }}</td>
+    <td class="py-0 px-1">{{ m.fecha ? m.fecha : 'S/N' }}</td>
+    <td class="py-0 px-1">{{ m.departamento ? m.departamento : 'S/N' }}</td>
+    <!-- Uso del operador opcional para evitar errores si alquilere o nombre son null -->
+    <td class="py-0 px-1">{{ m.alquilere?.nombre ? m.alquilere.nombre : 'S/N' }}</td>
+    <td class="py-0 px-1">
+      <div class="btn-group">
+        <nuxtLink :to="url_editar + m.id" class="btn btn-info btn-sm py-1 px-2">
+          <i class="fas fa-pen"></i>
+        </nuxtLink>
+        <button type="button" @click="Eliminar(m.id)" class="btn btn-danger btn-sm py-1 px-2">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+</tbody>
 
-                      <td class="py-0 px-1"
-                        :class="m.estado === 1 ? 'Libre' : (m.estado === 2 ? 'Con Correspondecia' : (m.estado === 3 ? 'Mantenimiento' : (m.estado === 4 ? 'Vencido' : 'Ocupado')))">
-                        {{ m.estado === 1 ? 'Libre' : (m.estado === 2 ? 'Con Correspondecia' : (m.estado === 3 ?
-                          'Mantenimiento' : (m.estado === 4 ? 'Vencido' : 'Ocupado'))) }}
-                      </td>
-                      <!-- <td class="py-0 px-1">{{ m.llaves.nombre }}</td> -->
 
-                      <td class="py-0 px-1">
-                        <div class="btn-group">
-                          <nuxtLink :to="url_editar + m.id" class="btn btn-info btn-sm py-1 px-2">
-                            <i class="fas fa-pen"></i>
-                          </nuxtLink>
-                          <button type="button" @click="Eliminar(m.id)" class="btn btn-danger btn-sm py-1 px-2">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
                 </table>
                 <nav aria-label="Page navigation">
                   <ul class="pagination justify-content-between">
@@ -92,11 +86,11 @@ export default {
     return {
       load: true,
       list: [],
-      apiUrl: 'casillas',
-      page: 'Casillas',
+      apiUrl: 'paquetes',
+      page: 'Paquetes',
       modulo: 'AGBC',
-      url_nuevo: '/casillas/casilla/nuevo',
-      url_editar: '/casillas/casilla/editar/',
+      url_nuevo: '/paquetes/paquete/nuevo',
+      url_editar: '/paquetes/paquete/editar/',
       currentPage: 1,
       pageSize: 10,
       user: {
@@ -112,20 +106,19 @@ export default {
       return Math.ceil(this.list.length / this.pageSize);
     },
     paginatedList() {
-      const filteredList = this.list.filter(item => {
-        // Filtrar por nombre, categoría, sección y estado según sea necesario
-        return (
-          item.nombre.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.categoria.nombre.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.seccione.nombre.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          this.getEstadoText(item.estado).toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      });
+    const filteredList = this.list.filter(item => {
+      return (
+        (item.codigo ? item.codigo.toLowerCase().includes(this.searchQuery.toLowerCase()) : 'S/N') ||
+        (item.fecha ? item.fecha.toLowerCase().includes(this.searchQuery.toLowerCase()) : 'S/N') ||
+        (item.departamento ? item.departamento.toLowerCase().includes(this.searchQuery.toLowerCase()) : 'S/N') ||
+        (item.alquilere?.nombre ? item.alquilere.nombre.toLowerCase().includes(this.searchQuery.toLowerCase()) : 'S/N')
+      );
+    });
 
-      const startIndex = (this.currentPage - 1) * this.pageSize;
-      const endIndex = startIndex + this.pageSize;
-      return filteredList.slice(startIndex, endIndex);
-    },
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return filteredList.slice(startIndex, endIndex);
+  },
 
     displayedPageNumbers() {
       const totalPages = this.totalPage;
@@ -158,46 +151,6 @@ export default {
     }
   },
   methods: {
-    async generarBackup() {
-    try {
-      // Mostrar el modal de carga
-      this.$swal.fire({
-        title: 'Generando backup',
-        text: 'Por favor, espere mientras se genera el backup...',
-        allowOutsideClick: false,
-        didOpen: () => {
-          this.$swal.showLoading();
-        }
-      });
-
-      // Llamar a la API para generar el backup
-      const response = await this.$api.$post('/backup-laravel');
-      
-      // Descargar el archivo automáticamente
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(new Blob([response], { type: 'application/zip' }));
-      link.setAttribute('download', 'laravel_backup.zip');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Cerrar el modal de carga
-      this.$swal.close();
-      
-      // Mostrar mensaje de éxito
-      this.$swal.fire('¡Backup generado!', 'El backup se ha generado y descargado con éxito.', 'success');
-    } catch (error) {
-      console.error('Error al generar el backup:', error);
-      
-      // Cerrar el modal de carga si ocurre un error
-      this.$swal.close();
-      
-      // Mostrar mensaje de error
-      this.$swal.fire('¡Backup generado!', 'El backup se ha generado y descargado con éxito.', 'success');
-    }
-  },
-
-  
     generarPDF() {
       const doc = new jsPDF();
       let y = 10;

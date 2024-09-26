@@ -133,6 +133,7 @@
                     <th class="py-0 px-1">Cajero</th>
                     <th class="py-0 px-1">Telefono</th>
                     <th class="py-0 px-1">Casilla</th>
+                    <th class="py-0 px-1">Paquetes</th>
                     <th class="py-0 px-1">CI</th>
                     <th class="py-0 px-1">SECCION</th>
                     <th class="py-0 px-1">Precio</th>
@@ -153,6 +154,7 @@
                       <td class="py-0 px-1">{{ m.cajero?.nombre || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.cliente?.telefono || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.casilla?.nombre || 'S/N' }}</td>
+                      <td class="py-0 px-1">{{ m.paquetes?.codigo || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.cliente?.carnet || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.casilla?.seccione_id || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.precio?.precio || 'S/N' }}</td>
@@ -1481,39 +1483,31 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
-      try {
-        // Recuperar usuario logueado del localStorage
-        let user = localStorage.getItem('userAuth');
-        this.user = JSON.parse(user);
+    try {
+      let user = localStorage.getItem('userAuth');
+      this.user = JSON.parse(user);
 
-        // Verificar si el departamento del usuario está disponible
-        if (this.user && this.user.cajero && this.user.cajero.departamento) {
-          const departamentoUsuario = this.user.cajero.departamento;
+      if (this.user && this.user.cajero && this.user.cajero.departamento) {
+        const departamentoUsuario = this.user.cajero.departamento;
 
-          // Obtener los datos de alquileres
-          await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-            // Filtrar alquileres por el departamento de la casilla que coincida con el usuario logueado
-            this.list = v[0].filter(item => item.casilla.departamento === departamentoUsuario);
-            this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
-            this.filteredList = this.list;
-          });
+        // Obtener los datos de alquileres y verificar que los paquetes se estén cargando
+        await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
+          this.list = v[0].filter(item => item.casilla.departamento === departamentoUsuario);
+          console.log('Datos de paquetes:', this.list); // Verificar que los paquetes estén aquí
+          this.filteredList = this.list;
+        });
 
-          // Generar alerta de casillas por vencer
-          this.generarAlertaCasillasPorVencer();
-        } else {
-          console.error('El departamento del usuario no está disponible.');
-
-
-
-
-
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.load = false;
+        // Generar alerta de casillas por vencer
+        this.generarAlertaCasillasPorVencer();
+      } else {
+        console.error('El departamento del usuario no está disponible.');
       }
-    });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.load = false;
+    }
+  });
   },
 };
 </script>

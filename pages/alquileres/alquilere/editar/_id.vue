@@ -4,7 +4,6 @@
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
         <div class="row justify-content-center">
-
           <div class="col-sm-8 col-12">
             <div class="card">
               <div class="card-header">
@@ -13,14 +12,10 @@
               <div class="card-body">
                 <CrudUpdate :model="model" :apiUrl="apiUrl">
                   <div slot="body" class="row">
-
                     <div class="form-group col-12">
                       <label for="">Multas</label>
                       <input type="text" v-model="model.nombre" class="form-control" id="">
                     </div>
-
-
-
 
                     <div class="form-group col-12">
                       <label for="">Llaves Extras</label>
@@ -28,11 +23,17 @@
                     </div>
                     <div class="form-group col-12">
                       <label for="">Apertura</label>
-                      <input type="date" v-model="model.apertura" class="form-control" >
+                      <input type="date" v-model="model.apertura" class="form-control">
                     </div>
                     <div class="form-group col-12">
                       <label for="">Fecha Inicio</label>
-                      <input type="date" v-model="model.ini_fecha" class="form-control" >
+                      <input type="date" v-model="model.ini_fecha" class="form-control">
+                    </div>
+                    <div class="form-group col-12">
+                      <label for="">Paquetes</label>
+                      <select name="" id="" class="form-control" v-model="model.paquetes_id">
+                        <option v-for="m in paquetes" :key="m.id" :value="m.id">{{ m.codigo }}</option>
+                      </select>
                     </div>
                     <div class="form-group col-6">
                       <label for="">Estado de Casilla</label>
@@ -60,27 +61,24 @@ export default {
   name: "IndexPage",
   head() {
     return {
-      title: "alquileres",
+      title: "Alquileres",
     };
-    ;
   },
   data() {
     return {
       load: true,
-
       model: {
         nombre: '',
         ini_fecha: '',
         fin_fecha: '',
         cliente_id: '',
         casilla_id: '',
+        paquetes_id: '',
         casilla_estado: '',
         categoria_id: '',
         precio_id: '',
         estado: '',
         apertura: '',
-
-
       },
       apiUrl: "alquileres",
       page: "Alquileres",
@@ -89,27 +87,35 @@ export default {
       casillas: [],
       categorias: [],
       precios: [],
-
-
+      paquetes: [],  // Agregar la propiedad paquetes
     };
   },
   methods: {
     async GET_DATA(path) {
       const res = await this.$api.$get(path);
-      return res
+      return res;
     },
-
   },
   mounted() {
     this.$nextTick(async () => {
-
       try {
-        await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('casillas')]).then((v) => {
+        await Promise.all([
+          this.GET_DATA(this.apiUrl + "/" + this.$route.params.id),
+          this.GET_DATA('casillas'),
+          this.GET_DATA('paquetes')  // Asegúrate de estar obteniendo los paquetes
+        ]).then((v) => {
           this.model = v[0];
           this.casillas = v[1];
+          this.paquetes = v[2];  // Asignar los paquetes correctamente
+          
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0');
+          const day = String(today.getDate()).padStart(2, '0');
           const formattedDate = `${year}-${month}-${day}`;
 
           this.model.apertura = formattedDate; // Asignar la fecha actual a la apertura
+          
           // Cargar el estado de la casilla en el modelo
           let casilla = this.casillas.find(c => c.id === this.model.casilla_id);
           if (casilla) {
@@ -119,11 +125,8 @@ export default {
       } catch (e) {
         console.log(e);
       } finally {
-        this.load = false
+        this.load = false;
       }
-
-
-
     });
   }
 };
