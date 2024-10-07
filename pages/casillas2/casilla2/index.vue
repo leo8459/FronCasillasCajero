@@ -46,9 +46,14 @@
                     width: isMediana(item.categoria_nombre) ? 'calc(20% - 10px)' : 'calc(110px - 5px)', // Ajusta el ancho dependiendo de si es mediana o no
                     transform: getIconSize(item.categoria_nombre),
                   }">
-                  <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
-                    <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
-                  </div>
+                <div class="circle-icon">
+  <i :class="getIconClass(item.categoria_nombre)" 
+     :style="{ color: getIconColorClass(item.casilla_estado) }"
+     @click="abrirModal(item)">
+  </i>
+</div>
+
+
                   <div class="text-center">
                     <p class="casilla-nombre">{{ item.casilla_nombre }}</p>
                   </div>
@@ -271,19 +276,21 @@ export default {
       this.modalVisible = false;
     },
     getIconColorClass(estado) {
-      switch (estado) {
-        case 1:
-          return 'text-success';
-        case 2:
-          return 'text-brown';
-        case 3:
-          return 'text-danger';
-        case 4:
-          return 'text-warning';
-        default:
-          return 'text-black';
-      }
-    },
+  switch (estado) {
+    case 1:
+      return 'rgb(126, 211, 33)'; // Verde
+    case 2:
+      return 'rgb(165, 42, 42)'; // Marrón
+    case 3:
+      return 'rgb(255, 0, 0)'; // Rojo
+    case 4:
+      return 'rgb(255, 255, 0)'; // Naranja
+    default:
+      return 'rgb(0, 0, 0)'; // Negro
+  }
+}
+,
+
     getIconSize(categoria) {
       switch (categoria) {
         case 'Pequeño':
@@ -546,7 +553,7 @@ p {
 }
 
 .status-green {
-  background-color: green;
+  background-color: rgb(126, 211, 33);
   color: black;
   width: 30px;
   /* Aumentar el tamaño del cuadro */

@@ -19,7 +19,12 @@
         <!-- Primera fila de secciones (1 a 22) -->
         <div class="section" v-for="seccion in seccionesPrimeraFila" :key="seccion.id">
           <div class="text-center mb-4">
-            <h2>Sección {{ seccion.nombre }}</h2>
+            <h2>{{ seccion.nombre }}</h2>
+          </div>
+
+          <!-- Título para casillas Pequeñas -->
+          <div class="text-center mb-2">
+            <h4>Pequeña</h4>
           </div>
           <div class="casillas-container">
             <div v-for="(item, index) in getCasillasByType(seccion.id, 'Pequeña')"
@@ -32,6 +37,11 @@
               </div>
             </div>
           </div>
+
+          <!-- Título para casillas Medianas -->
+          <div class="text-center mb-2">
+            <h4>Mediana</h4>
+          </div>
           <div class="casillas-container">
             <div v-for="(item, index) in getCasillasByType(seccion.id, 'Mediana')"
               :key="item.id ? 'medium-' + item.id : 'medium-' + index" class="casilla-item medium-casilla">
@@ -43,8 +53,13 @@
               </div>
             </div>
           </div>
+
+          <!-- Título para casillas Cajón -->
+          <div class="text-center mb-2">
+            <h4>Gabeta</h4>
+          </div>
           <div class="casillas-container">
-            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
+            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
               :key="item.id ? 'large1-' + item.id : 'large1-' + index" class="casilla-item large-casilla">
               <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                 <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -54,8 +69,13 @@
               </div>
             </div>
           </div>
+
+          <!-- Título para casillas Gabeta -->
+          <div class="text-center mb-2">
+            <h4>Cajón</h4>
+          </div>
           <div class="casillas-container">
-            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
+            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
               :key="item.id ? 'large2-' + item.id : 'large2-' + index" class="casilla-item large-casilla">
               <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                 <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -72,7 +92,12 @@
       <div class="sections-container2">
         <div class="section2" v-for="seccion in seccionesSegundaFila" :key="seccion.id">
           <div class="text-center mb-4">
-            <h2>Sección {{ seccion.nombre }}</h2>
+            <h2>{{ seccion.nombre }}</h2>
+          </div>
+
+          <!-- Título para casillas Pequeñas -->
+          <div class="text-center mb-2">
+            <h4>Pequeña</h4>
           </div>
           <div class="casillas-container">
             <div v-for="(item, index) in getCasillasByType(seccion.id, 'Pequeña')"
@@ -85,6 +110,11 @@
               </div>
             </div>
           </div>
+
+          <!-- Título para casillas Medianas -->
+          <div class="text-center mb-2">
+            <h4>Mediana</h4>
+          </div>
           <div class="casillas-container">
             <div v-for="(item, index) in getCasillasByType(seccion.id, 'Mediana')"
               :key="item.id ? 'medium-23-' + item.id : 'medium-23-' + index" class="casilla-item medium-casilla">
@@ -96,8 +126,13 @@
               </div>
             </div>
           </div>
+
+          <!-- Título para casillas Cajón -->
+          <div class="text-center mb-2">
+            <h4>Gabeta</h4>
+          </div>
           <div class="casillas-container">
-            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
+            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
               :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
               <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                 <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -107,8 +142,13 @@
               </div>
             </div>
           </div>
+
+          <!-- Título para casillas Gabeta -->
+          <div class="text-center mb-2">
+            <h4>Cajón</h4>
+          </div>
           <div class="casillas-container">
-            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
+            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Cajon')"
               :key="item.id ? 'large2-23-' + item.id : 'large2-23-' + index" class="casilla-item large-casilla">
               <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                 <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -121,7 +161,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- Modal personalizado -->
     <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);">
@@ -138,14 +177,12 @@
             <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
             <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
             <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
-
           </div>
           <div class="modal-footer">
             <nuxt-link v-if="casillaSeleccionada.casilla_estado === 1"
               :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
               <i class="fas fa-plus"></i>Reservar
             </nuxt-link>
-
           </div>
         </div>
       </div>
@@ -169,6 +206,7 @@
     </div>
   </div>
 </template>
+
 
 
 <script>
@@ -590,7 +628,7 @@ p {
 }
 
 .status-green {
-  background-color: green;
+  background-color: rgb(126, 211, 33);
   color: black;
   width: 30px;
   /* Aumentar el tamaño del cuadro */
