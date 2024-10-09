@@ -15,7 +15,7 @@
           <h1 class="hero-title">Bienvenido a servicio de casillas de la AGBC</h1>
           <p class="hero-subtitle">Una opción segura y confiable para recibir correspondencia y paquetes.</p>
           <p class="hero-description">
-            Al registrarte, te asignan una dirección de casilla con tu nombre y un número específico. Ofrece diferentes tamaños de casillas y servicios adicionales como consolidación de paquetes. Los costos varían según el tamaño y duración del contrato. Es recomendable verificar los precios actualizados directamente en la oficina.
+            Al registrarte, te asignan un domicilio postal con tu nombre y un número de casilla. Ofrece diferentes tamaños de casillas y servicios adicionales como consolidación de paquetes. Los costos varían según el tamaño y duración del contrato. Es recomendable verificar los precios actualizados directamente en la oficina.
           </p>
           <div class="cta-buttons">
             <router-link to="/auth/" class="btn btn-primary">Reserva tu casilla</router-link>
