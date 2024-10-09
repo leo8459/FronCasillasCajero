@@ -8,7 +8,7 @@ export default {
   },
   head: {
   
-    title: 'AGBC',
+    title: 'CAJERO',
     htmlAttrs: {
       lang: 'en'
     },
@@ -19,7 +19,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon2.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/assets/css/nucleo-icons.css' },
       { rel: 'stylesheet', href: '/assets/css/nucleo-svg.css' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' },
