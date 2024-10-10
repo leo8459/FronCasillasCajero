@@ -275,7 +275,6 @@ export default {
       if (elemento) {
         this.abrirModal(elemento);
       } else {
-        console.error('No se encontró el elemento correspondiente.');
       }
     },
     filtrarOpcionesBusqueda() {
@@ -313,7 +312,6 @@ export default {
     async cargarDatos() {
       try {
         const res = await this.$api.$get('todas-las-casillas');
-        console.log('Datos recuperados de la API:', res);
         if (res && Array.isArray(res.casillas)) {
           this.casillas = res.casillas;
           this.casillas.sort((b, a) => {
@@ -322,10 +320,8 @@ export default {
             return parseInt(b.casilla_nombre) - parseInt(a.casilla_nombre);
           });
         } else {
-          console.error('La respuesta de la API no contiene el formato esperado.');
         }
       } catch (error) {
-        console.error('Error al recuperar los datos de la API:', error);
       } finally {
         this.load = false;
       }
