@@ -31,10 +31,11 @@
                     </div>
                     <div class="form-group col-12">
                       <label for="">Paquetes</label>
-                      <select name="" id="" class="form-control" v-model="model.paquetes_id">
+                      <select name="paquete_id" class="form-control" v-model="model.paquete_id">
                         <option v-for="m in paquetes" :key="m.id" :value="m.id">{{ m.codigo }}</option>
                       </select>
                     </div>
+
                     <div class="form-group col-6">
                       <label for="">Estado de Casilla</label>
                       <select v-model="model.casilla_estado" class="form-control">
@@ -73,7 +74,7 @@ export default {
         fin_fecha: '',
         cliente_id: '',
         casilla_id: '',
-        paquetes_id: '',
+        paquete_id: '', // Cambiar aquí también
         casilla_estado: '',
         categoria_id: '',
         precio_id: '',
@@ -107,7 +108,7 @@ export default {
           this.model = v[0];
           this.casillas = v[1];
           this.paquetes = v[2];  // Asignar los paquetes correctamente
-          
+
           const today = new Date();
           const year = today.getFullYear();
           const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -115,7 +116,7 @@ export default {
           const formattedDate = `${year}-${month}-${day}`;
 
           this.model.apertura = formattedDate; // Asignar la fecha actual a la apertura
-          
+
           // Cargar el estado de la casilla en el modelo
           let casilla = this.casillas.find(c => c.id === this.model.casilla_id);
           if (casilla) {

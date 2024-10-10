@@ -154,7 +154,7 @@
                       <td class="py-0 px-1">{{ m.cajero?.nombre || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.cliente?.telefono || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.casilla?.nombre || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.paquetes?.codigo || 'S/N' }}</td>
+                      <td class="py-0 px-1">{{ m.paquete?.codigo || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.cliente?.carnet || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.casilla?.seccione_id || 'S/N' }}</td>
                       <td class="py-0 px-1">{{ m.precio?.precio || 'S/N' }}</td>
