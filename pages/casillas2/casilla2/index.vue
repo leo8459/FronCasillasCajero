@@ -68,44 +68,46 @@
 
     <!-- Modal personalizado -->
     <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Detalles de la Casilla</h5>
-            <button type="button" class="close" @click="cerrarModal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Numero de Casilla: {{ casillaSeleccionada.casilla_nombre }}</p>
-            <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
-            <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
-            <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
-            <p>Observacion: {{ casillaSeleccionada.casilla_observacion }}</p>
-            <p>Nombre del Cliente: {{ casillaSeleccionada.cliente_nombre }}</p>
-            <p>Carnet: {{ casillaSeleccionada.carnet }}</p>
-          </div>
-          <div class="modal-footer">
-            <nuxt-link
-              v-if="casillaSeleccionada.casilla_estado !== 0 && casillaSeleccionada.casilla_estado !== 2 && casillaSeleccionada.casilla_estado !== 3"
-              :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
-              <i class="fas fa-plus"></i>Alquilar
-            </nuxt-link>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles de la Casilla</h5>
+        <button type="button" class="close" @click="cerrarModal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Numero de Casilla: {{ casillaSeleccionada.casilla_nombre }}</p>
+        <p>Numero de Llave: {{ casillaSeleccionada.llave_nombre ? casillaSeleccionada.llave_nombre : 'Sin llave' }}</p>
+        <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
+        <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
+        <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
+        <p>Observacion: {{ casillaSeleccionada.casilla_observacion }}</p>
+        <p>Nombre del Cliente: {{ casillaSeleccionada.cliente_nombre }}</p>
+        <p>Carnet: {{ casillaSeleccionada.carnet }}</p>
+      </div>
+      <div class="modal-footer">
+        <nuxt-link
+          v-if="casillaSeleccionada.casilla_estado !== 0 && casillaSeleccionada.casilla_estado !== 2 && casillaSeleccionada.casilla_estado !== 3"
+          :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
+          <i class="fas fa-plus"></i>Alquilar
+        </nuxt-link>
 
-            <nuxtLink :to="url_editar + casillaSeleccionada.casilla_id" class="btn btn-info btn-sm py-2 px-4">
-              Estado
-            </nuxtLink>
+        <nuxtLink :to="url_editar + casillaSeleccionada.casilla_id" class="btn btn-info btn-sm py-2 px-4">
+          Estado
+        </nuxtLink>
 
-            <nuxt-link v-if="casillaSeleccionada.casilla_estado !== 1"
-              :to="`${url_editar2}${casillaSeleccionada.alquiler_id}`" class="btn btn-info btn-sm py-2 px-4">
-              <i class="fas fa-plus"></i> Renovar
-            </nuxt-link>
+        <nuxt-link v-if="casillaSeleccionada.casilla_estado !== 1"
+          :to="`${url_editar2}${casillaSeleccionada.alquiler_id}`" class="btn btn-info btn-sm py-2 px-4">
+          <i class="fas fa-plus"></i> Renovar
+        </nuxt-link>
 
-            <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
-          </div>
-        </div>
+        <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
       </div>
     </div>
+  </div>
+</div>
+
   </div>
 </template>
 

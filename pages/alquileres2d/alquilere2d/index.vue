@@ -164,6 +164,8 @@
           </div>
           <div class="modal-body">
             <p>Numero de Casilla: {{ casillaSeleccionada.casilla_nombre }}</p>
+            <p>Numero de Llave: {{ casillaSeleccionada.llave_nombre ? casillaSeleccionada.llave_nombre : 'Sin llave' }}</p>
+
             <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
             <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
             <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
