@@ -47,9 +47,10 @@
                     </div>
 
                     <div class="form-group col-12">
-                      <label for="">Apertura</label>
-                      <input type="date" v-model="model.apertura" class="form-control" :min="apertura" disabled>
-                    </div>
+  <label for="">Apertura</label>
+  <input type="date" v-model="model.apertura" class="form-control" >
+</div>
+
 
                     <div class="form-group col-12">
                       <label for="">Llaves Extras</label>
@@ -63,7 +64,7 @@
 
                     <div class="form-group col-12">
                       <label for="">Fecha TERMINO</label>
-                      <input type="date" v-model="model.fin_fecha" class="form-control" :min="model.ini_fecha"disabled>
+                      <input type="date" v-model="model.fin_fecha" class="form-control" :min="model.ini_fecha">
                     </div>
                   </div>
                 </CrudUpdate>
@@ -200,6 +201,10 @@ export default {
         this.precios = v[4];
         this.model.precio_id = null;
         this.apertura = this.getCurrentDate();  // Set apertura here
+                // Establecer la fecha actual para "apertura"
+                this.model.apertura = this.getCurrentDate(); 
+        this.apertura = this.getCurrentDate(); // Si necesitas usarla en otro lugar
+
         this.updateFechaTermino();
       });
     } catch (e) {
