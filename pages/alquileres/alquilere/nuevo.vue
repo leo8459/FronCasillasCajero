@@ -90,7 +90,7 @@
                     <div class="form-group col-12" v-else>
                       <label for="fin_fecha">Fecha Final</label>
                       <input type="date" id="fin_fecha" v-model="model.fin_fecha" class="form-control"
-                        :min="model.ini_fecha" disabled />
+                        :min="model.ini_fecha"  />
                     </div>
 
                     <!-- Llaves Extras -->
