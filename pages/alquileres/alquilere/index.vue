@@ -795,6 +795,8 @@ export default {
 
       const doc = new jsPDF('l', 'mm', 'a4');
 
+
+
       // Añadir el título
       const title = 'Reporte Casillas Vencidas Entre Fechas';
       const titleWidth = doc.getTextWidth(title);
@@ -813,6 +815,15 @@ export default {
         ['Total Habilitación', totalHabilitacion.toFixed(2), ''],
         ['Total Suma', totalSuma.toFixed(2), '']
       ];
+
+
+
+
+
+
+
+
+
 
       doc.autoTable({
         head: [totalHeaders],
@@ -903,9 +914,12 @@ export default {
   const totalHabilitacion = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.habilitacion || 0), 0);
   const totalNombre = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.nombre || 0), 0);
 
+  // Calcular el total de todas las sumas
+  const totalSuma = totalPrecio + totalEstadoPago + totalHabilitacion + totalNombre;
+
   // Crear el documento PDF con márgenes y mejor diseño
   const doc = new jsPDF('landscape', 'mm', 'a4');
-  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio', 'Estado Pago', 'Habilitacion', 'Nombre'];
+  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio', 'Llaves Extras', 'Habilitacion', 'Multas'];
 
   const body = dataForReport.map(alquiler => [
     alquiler.cliente?.nombre || 'S/N',
@@ -935,15 +949,16 @@ export default {
   doc.setTextColor(100);
   doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
   doc.text(`Total Suma de Precios: Bs. ${totalPrecio.toFixed(2)}`, 14, 36);
-  doc.text(`Total Estado Pago: ${totalEstadoPago.toFixed(2)}`, 14, 42);
-  doc.text(`Total Habilitacion: ${totalHabilitacion.toFixed(2)}`, 14, 48);
-  doc.text(`Total Nombre: ${totalNombre.toFixed(2)}`, 14, 54);  // Mostrar el total de "nombre"
+  doc.text(`Total Llaves Extras: Bs. ${totalEstadoPago.toFixed(2)}`, 14, 42);
+  doc.text(`Total Habilitacion: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 48);
+  doc.text(`Total Multas: Bs. ${totalNombre.toFixed(2)}`, 14, 54);  // Mostrar el total de "nombre"
+  doc.text(`Gran Total: Bs. ${totalSuma.toFixed(2)}`, 14, 60);  // Mostrar el gran total
 
   // Generar la tabla con estilo más empresarial
   doc.autoTable({
     head: [headers],
     body: body,
-    startY: 60, // Posicionar la tabla más abajo del texto
+    startY: 70, // Posicionar la tabla más abajo del texto
     theme: 'grid', // Aplicar el tema "grid" para un estilo empresarial
     styles: {
       fontSize: 10,
@@ -969,6 +984,7 @@ export default {
   // Abrir el PDF en una nueva ventana
   window.open(doc.output('bloburl'), '_blank');
 }
+
 ,
     generarReporteFechasPasadas() {
       // Obtener la fecha actual

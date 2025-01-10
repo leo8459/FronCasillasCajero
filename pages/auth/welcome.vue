@@ -127,7 +127,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('../auth/img/monito.gif'); /* Actualiza la ruta a la imagen */
+    background-image: url('../auth/img/LOGOCASILLAS.png'); /* Actualiza la ruta a la imagen */
     background-size: cover;
     background-position: center;
     text-align: center;

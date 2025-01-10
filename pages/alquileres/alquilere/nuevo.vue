@@ -54,8 +54,7 @@
                     <!-- Fecha Inicial -->
                     <div class="form-group col-12">
                       <label for="ini_fecha">Fecha Inicial</label>
-                      <input type="date" id="ini_fecha" v-model="model.ini_fecha" class="form-control" :min="minFecha"
-                        @change="handleIniFechaChange" />
+                      <input type="date" id="ini_fecha" v-model="model.ini_fecha" class="form-control" @change="handleIniFechaChange" />
                     </div>
 
                     <!-- Tiempo -->
@@ -111,8 +110,8 @@
                     <!-- Apertura -->
                     <div class="form-group col-12">
                       <label for="apertura">Apertura</label>
-                      <input type="date" id="apertura" v-model="model.apertura" class="form-control" :min="apertura"
-                        disabled />
+                      <input type="date" id="apertura" v-model="model.apertura" class="form-control" />
+                    
                     </div>
 
                     <!-- Habilitación -->
@@ -347,13 +346,16 @@ export default {
 
   computed: {
     // Obtener la fecha actual en formato ISO (YYYY-MM-DD)
+    // minFecha() {
+    //   const now = new Date();
+    //   const year = now.getFullYear();
+    //   const month = String(now.getMonth() + 1).padStart(2, '0');
+    //   const day = String(now.getDate()).padStart(2, '0');
+    //   return `${year}-${month}-${day}`;
+    // }
     minFecha() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const day = String(now.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
+    return ''; // No establecer una fecha mínima
+  }
   },
 
   watch: {
