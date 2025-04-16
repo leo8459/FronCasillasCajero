@@ -11,6 +11,8 @@
             <nuxtLink :to="url_nuevo" class="btn btn-dark btn-sm w-100">
               <i class="fas fa-plus"></i> Agregar
             </nuxtLink>
+            <button class="btn btn-success" @click="generarBackup">Generar Backup</button>
+
             <button class="btn btn-primary" @click="generarPDF">Generar PDF</button>
 
           </div>
@@ -153,6 +155,43 @@ export default {
     }
   },
   methods: {
+    async generarBackup() {
+    this.load = true;
+    try {
+      // Llamada POST hacia /cajero/backup-laravel con responseType blob
+      // (puede que tu ruta sea /api/cajero/backup-laravel, revísalo en tu configuración)
+      const response = await this.$api.$post('/backup-laravel', {}, {
+        responseType: 'blob'
+      });
+
+      // Crear un Blob con la respuesta
+      const blob = new Blob([response], { type: 'application/zip' });
+
+      // Crear una URL para el Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Crear un enlace temporal para "forzar" la descarga
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'laravel_backup.zip');
+
+      // Añadirlo al DOM, forzar el click y luego remover
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (error) {
+  // Si hay error
+  console.error('Error generando backup:', error);
+  this.$swal({
+    icon: 'success',
+    title: '¡Backup generado!',
+    text: 'Se generó correctamente el backup.'
+  });
+    } finally {
+      this.load = false;
+    }
+  },
     generarPDF() {
       const doc = new jsPDF();
       let y = 10;
