@@ -26,6 +26,16 @@
                       <label for="">Llaves Extras</label>
                       <input type="text" v-model="model.estado_pago" class="form-control" id="">
                     </div>
+                    <div class="form-group col-12">
+  <label for="">Seleccionar Paquete</label>
+  <select v-model="model.paquete_id" class="form-control">
+    <option :value="null" disabled>Seleccione un paquete</option>
+    <option v-for="paquete in paquetes" :key="paquete.id" :value="paquete.id">
+      {{ paquete.codigo }}
+    </option>
+  </select>
+</div>
+
                     <!-- <div class="form-group col-12">
                       <label for="">Apertura</label>
                       <input type="date" v-model="model.apertura" class="form-control" >
@@ -79,6 +89,7 @@ export default {
         precio_id: '',
         estado: '',
         apertura: '',
+        paquetes: [],
 
 
       },
@@ -104,18 +115,28 @@ export default {
     this.$nextTick(async () => {
 
       try {
-        await Promise.all([this.GET_DATA(this.apiUrl + "/" + this.$route.params.id), this.GET_DATA('casillas')]).then((v) => {
-          this.model = v[0];
-          this.casillas = v[1];
-          const formattedDate = `${year}-${month}-${day}`;
+        await Promise.all([
+  this.GET_DATA(this.apiUrl + "/" + this.$route.params.id),
+  this.GET_DATA('casillas'),
+  this.GET_DATA('paquetes')  // Añadido
+]).then((v) => {
+  this.model = v[0];
+  this.casillas = v[1];
+  this.paquetes = v[2];
 
-          this.model.apertura = formattedDate; // Asignar la fecha actual a la apertura
-          // Cargar el estado de la casilla en el modelo
-          let casilla = this.casillas.find(c => c.id === this.model.casilla_id);
-          if (casilla) {
-            this.model.casilla_estado = casilla.estado;
-          }
-        });
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  this.model.apertura = formattedDate;
+
+  let casilla = this.casillas.find(c => c.id === this.model.casilla_id);
+  if (casilla) {
+    this.model.casilla_estado = casilla.estado;
+  }
+});
+
       } catch (e) {
         console.log(e);
       } finally {
