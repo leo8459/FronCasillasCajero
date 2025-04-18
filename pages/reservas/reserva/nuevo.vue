@@ -77,11 +77,48 @@ export default {
       load: true,
       searchQuery: '', // Añade esta línea
       searchResults: [], // Añade esta línea
+      enviandoReserva: false,
+
       casillas: [],
     };
   },
 
   methods: {
+    async enviarReserva() {
+  try {
+    this.enviandoReserva = true;
+    this.$swal.fire({
+      title: 'Enviando mensaje...',
+      text: 'Por favor espera mientras se envía el correo de reserva.',
+      icon: 'info',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    const response = await this.$api.$post(this.apiUrl, this.model);
+
+    this.$swal.fire({
+      title: '¡Éxito!',
+      text: 'Reserva realizada y correo enviado con éxito.',
+      icon: 'success'
+    });
+
+  } catch (error) {
+    this.$swal.fire({
+      title: 'Error',
+      text: 'Hubo un problema al enviar la reserva.',
+      icon: 'error'
+    });
+    console.error(error);
+  } finally {
+    this.enviandoReserva = false;
+  }
+}
+,
     async searchClients() {
       // Realizar la búsqueda de clientes basada en la consulta de búsqueda
       if (this.searchQuery.trim() !== '') {
