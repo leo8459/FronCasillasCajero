@@ -86,6 +86,7 @@ export default {
         categoria_id: '',
         seccione_id: '',
         estado: '',
+        llaves: '',
 
       },
       apiUrl: "casillas",
@@ -93,6 +94,8 @@ export default {
       modulo: "AGBC",
       categorias: [],
       secciones: [],
+      llaves: [], // Agregar aquí para que se inicialice
+
     };
   },
   methods: {
@@ -103,30 +106,30 @@ export default {
 
   },
   mounted() {
-    this.$nextTick(async () => {
+  this.$nextTick(async () => {
+    try {
+      const [casillaData, categoriasData, seccionesData, llavesData] = await Promise.all([
+        this.GET_DATA(this.apiUrl + '/' + this.$route.params.id),
+        this.GET_DATA('categorias'),
+        this.GET_DATA('secciones'),
+        this.GET_DATA('llaves')
+      ]);
 
-      try {
-        await Promise.all([this.GET_DATA(this.apiUrl + '/' + this.$route.params.id),this.GET_DATA('categorias'), this.GET_DATA('secciones'), this.GET_DATA('llaves')]).then((v) => {
-          this.model = v[0];
-          this.categorias = v[1];
-          this.secciones = v[2];
-                    this.llaves = v[3];
-          // if (this.categorias.length) {
-          //   this.model.categoria_id = this.categorias[0].id
-          // }
-          // if (this.secciones.length) {
-          //   this.model.seccione_id = this.secciones[0].id
-          // }
-        })
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.load = false
-      }
+      console.log("Casilla Data:", casillaData);
+      console.log("Categorias Data:", categoriasData);
+      console.log("Secciones Data:", seccionesData);
+      console.log("Llaves Data:", llavesData);
 
-
-
-    });
-  }
+      this.model = casillaData;
+      this.categorias = categoriasData;
+      this.secciones = seccionesData;
+      this.llaves = llavesData;
+    } catch (e) {
+      console.log("Error:", e);
+    } finally {
+      this.load = false;
+    }
+  });
+}
 };
 </script>

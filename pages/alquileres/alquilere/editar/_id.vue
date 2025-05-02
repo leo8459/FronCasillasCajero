@@ -21,7 +21,7 @@
                       <label for="">Llaves Extras</label>
                       <input type="text" v-model="model.estado_pago" class="form-control" id="">
                     </div>
-                    <div class="form-group col-12">
+                    <!-- <div class="form-group col-12">
                       <label for="">Apertura</label>
                       <input type="date" v-model="model.apertura" class="form-control">
                     </div>
@@ -45,7 +45,7 @@
                         <option value="1">Libre</option>
                         <option value="0">Ocupado</option>
                       </select>
-                    </div>
+                    </div> -->
                   </div>
                 </CrudUpdate>
               </div>

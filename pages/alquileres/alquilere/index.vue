@@ -3,133 +3,138 @@
     <JcLoader :load="load"></JcLoader>
     <AdminTemplate :page="page" :modulo="modulo">
       <div slot="body">
-        <div class="row justify-content-end">
-          <div class="col-2"></div>
-          <div class="contenedor">
-            <div class="busqueda">
-              <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre"
-                @input="buscar" />
+        <div class="row justify-content-end align-items-center mb-3">
+          <!-- Contenedor de búsqueda -->
+          <div class="col-md-4 col-12">
+            <input
+              type="text"
+              v-model="searchTerm"
+              class="form-control"
+              placeholder="Buscar por nombre"
+              @input="buscar"
+            />
+          </div>
+
+          <!-- Botones para reportes -->
+          <div class="col-md-8 col-12 d-flex justify-content-end">
+            <!-- Botón para abrir el modal de casillas por vencer -->
+            <div class="btn-group mr-2">
+              <button class="btn btn-info" @click="generarReporteFechasPorVencer">
+                <i class="fas fa-exclamation-triangle"></i> Casillas por Vencer
+              </button>
+            </div>
+
+            <!-- Botón para abrir el modal de reportes por fechas -->
+            <div class="btn-group mr-2">
+              <button class="btn btn-info" @click="modalVisible2 = true">
+                <i class="fas fa-file-pdf"></i> Reportes Por Fechas
+              </button>
+            </div>
+
+            <!-- Botón para abrir el modal de reportes generales -->
+            <div class="btn-group">
+              <button class="btn btn-info" @click="modalVisible = true">
+                <i class="fas fa-file-pdf"></i> Reportes
+              </button>
             </div>
           </div>
-          <!-- Botón para abrir el modal de casillas por vencer -->
-          <div class="btn-group mr-2">
-            <button class="btn btn-info" @click="generarReporteFechasPorVencer">
-              <i class="fas fa-exclamation-triangle"></i> Casillas por Vencer
-            </button>
-          </div>
-          <!-- Botón para abrir el modal -->
-          <div class="btn-group mr-2">
-            <button class="btn btn-info" @click="modalVisible2 = true">
-              <i class="fas fa-file-pdf"></i> Reportes Por Fechas
-            </button>
-          </div>
-          <!-- Modal personalizado -->
-          <div v-if="modalVisible2" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Generar Reportes por Fechas</h5>
-                  <button type="button" class="close" @click="modalVisible2 = false">
-                    <span aria-hidden="true">&times;</span>
+        </div>
+
+        <!-- Modal para Reportes Por Fechas -->
+        <div v-if="modalVisible2" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);" @click.self="modalVisible2 = false">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Generar Reportes por Fechas</h5>
+                <button type="button" class="close" @click="modalVisible2 = false">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="d-flex flex-column align-items-stretch">
+                  <!-- Input para seleccionar la fecha de inicio -->
+                  <input type="date" v-model="fechaInicio" class="form-control mb-3" placeholder="Fecha de inicio" />
+
+                  <!-- Input para seleccionar la fecha de fin -->
+                  <input type="date" v-model="fechaFin" class="form-control mb-3" placeholder="Fecha de fin" />
+
+                  <!-- Botones para generar reportes -->
+                  <button @click="generarReporteCasillasAlquiladasEntreFechas" class="btn btn-info mb-2">
+                    Generar Reporte de Casillas Alquiladas
                   </button>
-                </div>
-                <div class="modal-body">
-                  <div class="d-flex flex-column align-items-center">
-                    <!-- Botones de reporte -->
-                    <!-- Input para seleccionar la fecha de inicio -->
-                    <input type="date" v-model="fechaInicio" class="form-control" placeholder="Fecha de inicio" />
-
-                    <!-- Input para seleccionar la fecha de fin -->
-                    <input type="date" v-model="fechaFin" class="form-control" placeholder="Fecha de fin" />
-
-                    <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
-                    <!-- <button @click="generarReporteCasillasVencidasEntreFechas" class="btn btn-fx btn-info">
-                      Casillas Vencidas
-                    </button> -->
-                    <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
-
-                    <!-- Botón para generar el reporte de casillas vencidas entre las fechas seleccionadas -->
-                    <button @click="generarReporteCasillasAlquiladasEntreFechas" class="btn btn-fx btn-info">
-                      Generar Reporte de Casillas Alquiladas
-                    </button>
-
-                    <button @click="generarReporteCasillasPequenasFechas" class="btn btn-fx btn-info">
-                      Reporte Casillas Pequeñas
-                    </button>
-                    <button @click="generarReporteCasillasMedianasFechas" class="btn btn-fx btn-info">
-                      Reporte Casillas Medianas
-                    </button>
-                    <button @click="generarReporteGabetasFechas" class="btn btn-fx btn-info">
-                      Reporte Casillas Gabetas
-                    </button>
-                    <button @click="generarReporteCajonFechas" class="btn btn-fx btn-info">
-                      Reporte Casillas Cajones
-                    </button>
-
-                  </div>
+                  <button @click="generarReporteCasillasPequenasFechas" class="btn btn-info mb-2">
+                    Reporte Casillas Pequeñas
+                  </button>
+                  <button @click="generarReporteCasillasMedianasFechas" class="btn btn-info mb-2">
+                    Reporte Casillas Medianas
+                  </button>
+                  <button @click="generarReporteGabetasFechas" class="btn btn-info mb-2">
+                    Reporte Casillas Gabetas
+                  </button>
+                  <button @click="generarReporteCajonFechas" class="btn btn-info mb-2">
+                    Reporte Casillas Cajones
+                  </button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Botón para abrir el modal -->
-          <div class="btn-group mr-2">
-            <button class="btn btn-info" @click="modalVisible = true">
-              <i class="fas fa-file-pdf"></i> Reportes
-            </button>
-          </div>
-
-          <!-- Modal personalizado -->
-          <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Generar Reportes</h5>
-                  <button type="button" class="close" @click="modalVisible = false">
-                    <span aria-hidden="true">&times;</span>
+        <!-- Modal para Reportes Generales -->
+        <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);" @click.self="modalVisible = false">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Generar Reportes</h5>
+                <button type="button" class="close" @click="modalVisible = false">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="d-flex flex-column align-items-stretch">
+                  <!-- Botones de reporte -->
+                  <button @click="generarReporteCompleto" class="btn btn-primary mb-2">
+                    Reporte General
+                  </button>
+                  <button @click="generarReporteFechasPasadas" class="btn btn-primary mb-2">
+                    Casillas vencidas
+                  </button>
+                  <button @click="generarReporteCasillasVigentes" class="btn btn-primary mb-2">
+                    Casillas vigentes
+                  </button>
+                  <button @click="generarReporteFechasPorVencer" class="btn btn-primary mb-2">
+                    Casillas por Vencer
+                  </button>
+                  <button @click="generarReporteCasillasPequenas" class="btn btn-primary mb-2">
+                    Casillas Pequeñas recaudado
+                  </button>
+                  <button @click="generarReporteCasillasMedianas" class="btn btn-primary mb-2">
+                    Casillas Medianas recaudado
+                  </button>
+                  <button @click="generarReporteCasillasGabetas" class="btn btn-primary mb-2">
+                    Casillas Gabetas recaudado
+                  </button>
+                  <button @click="generarReporteCasillasCajones" class="btn btn-primary mb-2">
+                    Casillas Cajones recaudado
                   </button>
                 </div>
-                <div class="modal-body">
-                  <div class="d-flex flex-column align-items-center">
-                    <!-- Botones de reporte -->
-
-                    <button @click="generarReporteCompleto" class="btn btn-sm btn-primary mb-2">
-                      Reporte General
-                    </button>
-                    <button @click="generarReporteFechasPasadas" class="btn btn-sm btn-primary mb-2">
-                      Casillas vencidas
-                    </button>
-                    <button @click="generarReporteCasillasVigentes" class="btn btn-sm btn-primary mb-2">
-                      Casillas vigentes
-                    </button>
-                    <button @click="generarReporteFechasPorVencer" class="btn btn-sm btn-primary mb-2">
-                      Casillas por Vencer
-                    </button>
-                    <button @click="generarReporteCasillasPequenas" class="btn btn-sm btn-primary mb-2">
-                      Casillas Pequeñas recaudado
-                    </button>
-                    <button @click="generarReporteCasillasMedianas" class="btn btn-sm btn-primary mb-2">
-                      Casillas Medianas recaudado
-                    </button>
-                    <button @click="generarReporteCasillasGabetas" class="btn btn-sm btn-primary mb-2">
-                      Casillas Gabetas recaudado
-                    </button>
-                    <button @click="generarReporteCasillasCajones" class="btn btn-sm btn-primary mb-2">
-                      Casillas Cajones recaudado
-                    </button>
-                  </div>
-                </div>
-                <!-- Puedes agregar más contenido al cuerpo del modal si es necesario -->
               </div>
+              <!-- Puedes agregar más contenido al cuerpo del modal si es necesario -->
             </div>
           </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <table class="table">
-                  <thead>
+        </div>
+
+        <!-- Tabla y Paginación -->
+        <div class="card">
+          <div class="card-body">
+            <!-- Contenedor responsivo para la tabla -->
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover table-striped">
+                <thead>
+                  <tr>
                     <th class="py-0 px-1"><input type="checkbox" @click="toggleSelectAll" /></th>
                     <th class="py-0 px-1">Cliente</th>
+                    <th class="py-0 px-1">Autorizados</th>
                     <th class="py-0 px-1">Cajero</th>
                     <th class="py-0 px-1">Telefono</th>
                     <th class="py-0 px-1">Casilla</th>
@@ -146,75 +151,76 @@
                     <th class="py-0 px-1">Tiempo Inicio</th>
                     <th class="py-0 px-1">Tiempo Fin</th>
                     <th class="py-0 px-1"></th>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(m, i) in paginatedList" :key="m.id">
-                      <td class="py-0 px-1"><input type="checkbox" v-model="selectedIds" :value="m.id" /></td>
-                      <td class="py-0 px-1">{{ m.cliente?.nombre || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.cajero?.nombre || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.cliente?.telefono || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.casilla?.nombre || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.paquete?.codigo || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.cliente?.carnet || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.casilla?.seccione_id || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.precio?.precio || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.categoria?.nombre || 'S/N' }}</td>
-                      <td class="py-0 px-1" :class="formatoEstado(m.casilla?.estado)">
-                        {{ formatoEstado(m.casilla?.estado) || 'S/N' }}
-                      </td>
-                      <td class="py-0 px-1">{{ m.estado_pago || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.nombre || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.habilitacion || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.apertura || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.ini_fecha || 'S/N' }}</td>
-                      <td class="py-0 px-1">{{ m.fin_fecha || 'S/N' }}</td>
-                      <td class="py-0 px-1">
-                        <nuxtLink :to="url_editar + m.id" class="btn btn-info btn-sm py-1 px-2">
-                          <i class="fas fa-pen"></i>
-                        </nuxtLink>
-                        <button type="button" @click="Eliminar(m.id)" class="btn btn-danger btn-sm py-1 px-2">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-
-
-                </table>
-                <div class="pagination">
-                  <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-primary">
-                    &laquo;
-                  </button>
-                  <span v-for="page in pages" :key="page" @click="goToPage(page)"
-                    :class="{ active: page === currentPage }" class="page-number">
-                    {{ page }}
-                  </span>
-                  <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
-                    &raquo;
-                  </button>
-                  <div class="d-flex justify-content-between">
-                    <div class="btn-group">
-                      <button class="btn btn-warning" @click="updateSelected">
-                        <i class="fas fa-edit"></i> Mandar mensajes
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(m, i) in paginatedList" :key="m.id">
+                    <td class="py-0 px-1">
+                      <input type="checkbox" v-model="selectedIds" :value="m.id" />
+                    </td>
+                    <td class="py-0 px-1" :data-tooltip="m.cliente?.nombre || 'S/N'">{{ m.cliente?.nombre || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.autorizado_recojo || 'S/N'">{{ m.autorizado_recojo || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.cajero?.nombre || 'S/N'">{{ m.cajero?.nombre || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.cliente?.telefono || 'S/N'">{{ m.cliente?.telefono || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.casilla?.nombre || 'S/N'">{{ m.casilla?.nombre || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.cliente?.carnet || 'S/N'">{{ m.cliente?.carnet || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.casilla?.seccione_id || 'S/N'">{{ m.casilla?.seccione_id || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.precio?.precio || 'S/N'">{{ m.precio?.precio || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.categoria?.nombre || 'S/N'">{{ m.categoria?.nombre || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="formatoEstado(m.casilla?.estado) || 'S/N'" :class="formatoEstado(m.casilla?.estado)">
+                      {{ formatoEstado(m.casilla?.estado) || 'S/N' }}
+                    </td>
+                    <td class="py-0 px-1" :data-tooltip="m.estado_pago || 'S/N'">{{ m.estado_pago || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.nombre || 'S/N'">{{ m.nombre || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.habilitacion || 'S/N'">{{ m.habilitacion || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.apertura || 'S/N'">{{ m.apertura || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.ini_fecha || 'S/N'">{{ m.ini_fecha || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.fin_fecha || 'S/N'">{{ m.fin_fecha || 'S/N' }}</td>
+                    <td class="py-0 px-1">
+                      <nuxtLink :to="url_editar + m.id" class="btn btn-info btn-sm py-1 px-2">
+                        <i class="fas fa-pen"></i>
+                      </nuxtLink>
+                      <button type="button" @click="Eliminar(m.id)" class="btn btn-danger btn-sm py-1 px-2">
+                        <i class="fas fa-trash"></i>
                       </button>
-                    </div>
-                    <!-- Botón para cambiar todas las casillas con correspondencia a ocupadas -->
-                    <div class="btn-group mr-2">
-                      <button class="btn btn-warning" @click="updateAllToOcupadas">
-                        <i class="fas fa-exclamation-triangle"></i> Cambiar Todas a Ocupadas
-                      </button>
-                    </div>
-
-                  </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Paginación y otros controles -->
+            <div class="pagination">
+              <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-primary">
+                &laquo;
+              </button>
+              <span v-for="page in pages" :key="page" @click="goToPage(page)"
+                :class="{ active: page === currentPage }" class="page-number">
+                {{ page }}
+              </span>
+              <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
+                &raquo;
+              </button>
+              <div class="d-flex justify-content-between mt-3">
+                <div class="btn-group">
+                  <button class="btn btn-warning" @click="updateSelected">
+                    <i class="fas fa-edit"></i> Mandar mensajes
+                  </button>
+                </div>
+                <!-- Botón para cambiar todas las casillas con correspondencia a ocupadas -->
+                <div class="btn-group mr-2">
+                  <button class="btn btn-warning" @click="updateAllToOcupadas">
+                    <i class="fas fa-exclamation-triangle"></i> Cambiar Todas a Ocupadas
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </AdminTemplate>
   </div>
 </template>
+
 
 <script>
 import jsPDF from 'jspdf';
@@ -790,6 +796,8 @@ export default {
 
       const doc = new jsPDF('l', 'mm', 'a4');
 
+
+
       // Añadir el título
       const title = 'Reporte Casillas Vencidas Entre Fechas';
       const titleWidth = doc.getTextWidth(title);
@@ -808,6 +816,15 @@ export default {
         ['Total Habilitación', totalHabilitacion.toFixed(2), ''],
         ['Total Suma', totalSuma.toFixed(2), '']
       ];
+
+
+
+
+
+
+
+
+
 
       doc.autoTable({
         head: [totalHeaders],
@@ -898,9 +915,12 @@ export default {
   const totalHabilitacion = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.habilitacion || 0), 0);
   const totalNombre = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.nombre || 0), 0);
 
+  // Calcular el total de todas las sumas
+  const totalSuma = totalPrecio + totalEstadoPago + totalHabilitacion + totalNombre;
+
   // Crear el documento PDF con márgenes y mejor diseño
   const doc = new jsPDF('landscape', 'mm', 'a4');
-  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio', 'Estado Pago', 'Habilitacion', 'Nombre'];
+  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio', 'Llaves Extras', 'Habilitacion', 'Multas'];
 
   const body = dataForReport.map(alquiler => [
     alquiler.cliente?.nombre || 'S/N',
@@ -930,15 +950,16 @@ export default {
   doc.setTextColor(100);
   doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
   doc.text(`Total Suma de Precios: Bs. ${totalPrecio.toFixed(2)}`, 14, 36);
-  doc.text(`Total Estado Pago: ${totalEstadoPago.toFixed(2)}`, 14, 42);
-  doc.text(`Total Habilitacion: ${totalHabilitacion.toFixed(2)}`, 14, 48);
-  doc.text(`Total Nombre: ${totalNombre.toFixed(2)}`, 14, 54);  // Mostrar el total de "nombre"
+  doc.text(`Total Llaves Extras: Bs. ${totalEstadoPago.toFixed(2)}`, 14, 42);
+  doc.text(`Total Habilitacion: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 48);
+  doc.text(`Total Multas: Bs. ${totalNombre.toFixed(2)}`, 14, 54);  // Mostrar el total de "nombre"
+  doc.text(`Gran Total: Bs. ${totalSuma.toFixed(2)}`, 14, 60);  // Mostrar el gran total
 
   // Generar la tabla con estilo más empresarial
   doc.autoTable({
     head: [headers],
     body: body,
-    startY: 60, // Posicionar la tabla más abajo del texto
+    startY: 70, // Posicionar la tabla más abajo del texto
     theme: 'grid', // Aplicar el tema "grid" para un estilo empresarial
     styles: {
       fontSize: 10,
@@ -965,14 +986,7 @@ export default {
   window.open(doc.output('bloburl'), '_blank');
 }
 
-
-
 ,
-
-
-
-
-
     generarReporteFechasPasadas() {
       // Obtener la fecha actual
       const currentDate = new Date();
@@ -1482,33 +1496,42 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(async () => {
+  this.$nextTick(async () => {
     try {
-      let user = localStorage.getItem('userAuth');
-      this.user = JSON.parse(user);
+      // Recuperar usuario logueado del localStorage
+      const userStr = localStorage.getItem('userAuth');
+      this.user     = JSON.parse(userStr);
 
       if (this.user && this.user.cajero && this.user.cajero.departamento) {
         const departamentoUsuario = this.user.cajero.departamento;
 
-        // Obtener los datos de alquileres y verificar que los paquetes se estén cargando
+        // Obtener alquileres y filtrar:
+        //   1️⃣  Solo del mismo departamento
+        //   2️⃣  Solo estado === 1  (vigentes)
         await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-          this.list = v[0].filter(item => item.casilla.departamento === departamentoUsuario);
-          console.log('Datos de paquetes:', this.list); // Verificar que los paquetes estén aquí
-          this.filteredList = this.list;
+          this.list = v[0].filter(
+            item =>
+              item.casilla.departamento === departamentoUsuario && // mismo dep.
+              item.estado === 1                                     // solo vigentes
+          );
+
+          this.casillasOcupadas = this.list.map(item => item.casilla.nombre);
+          this.filteredList     = this.list;  // la tabla muestra sólo vigentes
         });
 
-        // Generar alerta de casillas por vencer
+        // Alerta de casillas por vencer (opcional)
         this.generarAlertaCasillasPorVencer();
       } else {
         console.error('El departamento del usuario no está disponible.');
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     } finally {
       this.load = false;
     }
   });
-  },
+}
+,
 };
 </script>
 

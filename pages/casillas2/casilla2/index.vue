@@ -46,9 +46,14 @@
                     width: isMediana(item.categoria_nombre) ? 'calc(20% - 10px)' : 'calc(110px - 5px)', // Ajusta el ancho dependiendo de si es mediana o no
                     transform: getIconSize(item.categoria_nombre),
                   }">
-                  <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
-                    <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
-                  </div>
+                <div class="circle-icon">
+  <i :class="getIconClass(item.categoria_nombre)" 
+     :style="{ color: getIconColorClass(item.casilla_estado) }"
+     @click="abrirModal(item)">
+  </i>
+</div>
+
+
                   <div class="text-center">
                     <p class="casilla-nombre">{{ item.casilla_nombre }}</p>
                   </div>
@@ -63,44 +68,46 @@
 
     <!-- Modal personalizado -->
     <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Detalles de la Casilla</h5>
-            <button type="button" class="close" @click="cerrarModal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Numero de Casilla: {{ casillaSeleccionada.casilla_nombre }}</p>
-            <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
-            <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
-            <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
-            <p>Observacion: {{ casillaSeleccionada.casilla_observacion }}</p>
-            <p>Nombre del Cliente: {{ casillaSeleccionada.cliente_nombre }}</p>
-            <p>Carnet: {{ casillaSeleccionada.carnet }}</p>
-          </div>
-          <div class="modal-footer">
-            <nuxt-link
-              v-if="casillaSeleccionada.casilla_estado !== 0 && casillaSeleccionada.casilla_estado !== 2 && casillaSeleccionada.casilla_estado !== 3"
-              :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
-              <i class="fas fa-plus"></i>Alquilar
-            </nuxt-link>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles de la Casilla</h5>
+        <button type="button" class="close" @click="cerrarModal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Numero de Casilla: {{ casillaSeleccionada.casilla_nombre }}</p>
+        <p>Numero de Llave: {{ casillaSeleccionada.llave_nombre ? casillaSeleccionada.llave_nombre : 'Sin llave' }}</p>
+        <p>Seccion: {{ casillaSeleccionada.seccione_id }}</p>
+        <p>Categoría: {{ casillaSeleccionada.categoria_nombre }}</p>
+        <p>Estado: {{ getTextForEstado(casillaSeleccionada.casilla_estado) }}</p>
+        <p>Observacion: {{ casillaSeleccionada.casilla_observacion }}</p>
+        <p>Nombre del Cliente: {{ casillaSeleccionada.cliente_nombre }}</p>
+        <p>Carnet: {{ casillaSeleccionada.carnet }}</p>
+      </div>
+      <div class="modal-footer">
+        <nuxt-link
+          v-if="casillaSeleccionada.casilla_estado !== 0 && casillaSeleccionada.casilla_estado !== 2 && casillaSeleccionada.casilla_estado !== 3"
+          :to="`${url_nuevo}?casillaId=${casillaSeleccionada.casilla_id}`" class="btn btn-dark btn-sm w-30">
+          <i class="fas fa-plus"></i>Alquilar
+        </nuxt-link>
 
-            <nuxtLink :to="url_editar + casillaSeleccionada.casilla_id" class="btn btn-info btn-sm py-2 px-4">
-              Estado
-            </nuxtLink>
+        <nuxtLink :to="url_editar + casillaSeleccionada.casilla_id" class="btn btn-info btn-sm py-2 px-4">
+          Estado
+        </nuxtLink>
 
-            <nuxt-link v-if="casillaSeleccionada.casilla_estado !== 1"
-              :to="`${url_editar2}${casillaSeleccionada.alquiler_id}`" class="btn btn-info btn-sm py-2 px-4">
-              <i class="fas fa-plus"></i> Renovar
-            </nuxt-link>
+        <nuxt-link v-if="casillaSeleccionada.casilla_estado !== 1"
+          :to="`${url_editar2}${casillaSeleccionada.alquiler_id}`" class="btn btn-info btn-sm py-2 px-4">
+          <i class="fas fa-plus"></i> Renovar
+        </nuxt-link>
 
-            <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
-          </div>
-        </div>
+        <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
       </div>
     </div>
+  </div>
+</div>
+
   </div>
 </template>
 
@@ -271,19 +278,21 @@ export default {
       this.modalVisible = false;
     },
     getIconColorClass(estado) {
-      switch (estado) {
-        case 1:
-          return 'text-success';
-        case 2:
-          return 'text-brown';
-        case 3:
-          return 'text-danger';
-        case 4:
-          return 'text-warning';
-        default:
-          return 'text-black';
-      }
-    },
+  switch (estado) {
+    case 1:
+      return 'rgb(126, 211, 33)'; // Verde
+    case 2:
+      return 'rgb(165, 42, 42)'; // Marrón
+    case 3:
+      return 'rgb(255, 0, 0)'; // Rojo
+    case 4:
+      return 'rgb(255, 255, 0)'; // Naranja
+    default:
+      return 'rgb(0, 0, 0)'; // Negro
+  }
+}
+,
+
     getIconSize(categoria) {
       switch (categoria) {
         case 'Pequeño':
@@ -546,7 +555,7 @@ p {
 }
 
 .status-green {
-  background-color: green;
+  background-color: rgb(126, 211, 33);
   color: black;
   width: 30px;
   /* Aumentar el tamaño del cuadro */

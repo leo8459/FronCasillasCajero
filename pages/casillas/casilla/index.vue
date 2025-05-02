@@ -26,7 +26,7 @@
                     <th class="py-0 px-1">Categoria</th>
                     <th class="py-0 px-1">Seccion</th>
                     <th class="py-0 px-1">Estado</th>
-                    <!-- <th class="py-0 px-1">llaves</th> -->
+                    <th class="py-0 px-1">Llaves</th>
                     <th class="py-0 px-1"></th>
                   </thead>
                   <tbody>
@@ -37,11 +37,10 @@
                       <td class="py-0 px-1">{{ m.seccione.nombre }}</td>
 
                       <td class="py-0 px-1"
-                        :class="m.estado === 1 ? 'Libre' : (m.estado === 2 ? 'Con Correspondecia' : (m.estado === 3 ? 'Mantenimiento' : (m.estado === 4 ? 'Vencido' : 'Ocupado')))">
-                        {{ m.estado === 1 ? 'Libre' : (m.estado === 2 ? 'Con Correspondecia' : (m.estado === 3 ?
-                          'Mantenimiento' : (m.estado === 4 ? 'Vencido' : 'Ocupado'))) }}
-                      </td>
-                      <!-- <td class="py-0 px-1">{{ m.llaves.nombre }}</td> -->
+  :class="m.estado === 1 ? 'Libre' : (m.estado === 2 ? 'Con Correspondecia' : (m.estado === 3 ? 'Mantenimiento' : (m.estado === 4 ? 'Vencido' : 'Ocupado')))">
+  {{ m.estado === 1 ? 'Libre' : (m.estado === 2 ? 'Con Correspondecia' : (m.estado === 3 ? 'Mantenimiento' : (m.estado === 4 ? 'Vencido' : 'Ocupado'))) }}
+</td>
+<td class="py-0 px-1">{{ m.llaves ? m.llaves.nombre : 'Sin llave' }}</td>
 
                       <td class="py-0 px-1">
                         <div class="btn-group">

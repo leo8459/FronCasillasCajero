@@ -1,14 +1,160 @@
 <template>
-  <div class="landing-page">
-    <header class="main-header">
-      <div class="logo">
-        <img src="../auth/img/AGBClogo.png" alt="Logo de la Empresa" />
-      </div>
-      <div class="spacer"></div>
-      <div class="login-btn">
-        <router-link to="/auth/login" class="btn btn-link">Iniciar sesión</router-link>
-      </div>
-    </header>
+    <div class="landing-page">
+      <header class="main-header">
+        <div class="logo">
+          <img src="../auth/img/AGBClogo.png" alt="Logo de la Empresa" />
+        </div>
+        <div class="spacer"></div>
+        <div class="login-btn">
+          <router-link to="/auth/login" class="btn btn-link">Iniciar sesión</router-link>
+        </div>
+      </header>
+      <section class="hero-section">
+        <div class="overlay"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">Bienvenido a servicio de casillas de la AGBC</h1>
+          <p class="hero-subtitle">Una opción segura y confiable para recibir correspondencia y paquetes.</p>
+          <p class="hero-description">
+            Al registrarte, te asignan un domicilio postal con tu nombre y un número de casilla. Ofrece diferentes tamaños de casillas y servicios adicionales como consolidación de paquetes. Los costos varían según el tamaño y duración del contrato. Es recomendable verificar los precios actualizados directamente en la oficina.
+          </p>
+          <div class="cta-buttons">
+            <router-link to="/auth/" class="btn btn-primary">Reserva tu casilla</router-link>
+          </div>
+        </div>
+      </section>
+      
+      <section class="features-section">
+        <h2 class="section-title">Precios y Tamaños</h2>
+        <div class="features-container">
+          <div class="feature">
+            <img src="../auth/img/pequeña.jpg" alt="Característica 1" />
+            <h2 class="animated-text">Casilla Pequeña</h2>
+            <p class="animated-text">Precio 1 mes 35Bs</p>
+            <p class="animated-text">Precio 6 meses 126Bs</p>
+            <p class="animated-text">Precio 1 año 210Bs</p>
+          </div>
+          <div class="feature">
+            <img src="../auth/img/mediana.jpg" alt="Característica 2" />
+            <h2 class="animated-text">Casilla Mediana</h2>
+            <p class="animated-text">Precio 1 mes 49 Bs</p>
+            <p class="animated-text">Precio 6 meses 175 Bs</p>
+            <p class="animated-text">Precio 1 año 294 Bs</p>
+          </div>
+          <div class="feature">
+            <img src="../auth/img/gabeta.jpg" alt="Característica 3" />
+            <h2 class="animated-text">Casilla Gabeta</h2>
+            <p class="animated-text">Precio 1 mes 70 Bs</p>
+            <p class="animated-text">Precio 6 meses 250 Bs</p>
+            <p class="animated-text">Precio 1 año 420 Bs</p>
+          </div>
+          <div class="feature">
+            <img src="../auth/img/cajon.jpg" alt="Característica 3" />
+            <h2 class="animated-text">Casilla Cajon</h2>
+            <p class="animated-text">Precio 1 mes 84 Bs</p>
+            <p class="animated-text">Precio 6 meses 300 Bs</p>
+            <p class="animated-text">Precio 1 año 504 Bs</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="cta-section">
+        <div class="cta-content">
+          <h2 style="color: #fff;">¿Listo para empezar?</h2>
+          <p style="color: #fff;">REQUISITOS PARA ADQUIRIR TU CASILLA</p>
+          <p style="color: #fff;">- Fotocopia de CI Actualizado. (Persona Natural y/o Jurídica)</p>
+          <p style="color: #fff;">- Fotocopia de NIT. (Solo Persona Jurídica)</p>
+          <p style="color: #fff;">- Fotocopia de Luz o Agua.</p>
+        </div>
+      </section>
+      
+      <footer class="footer">
+        <div class="footer-content">
+          <p>&copy; #EstamosSaliendoAdelante #RumboalBicentenario
+            <br>
+            © 2023 Todos los derechos reservados - Agencia Boliviana de Correos
+            <br>
+            Contacto: (591-2) 2152423 - Av. Mariscal Santa Cruz Esq. C. Oruro Edif. Telecomunicaciones -
+            agbc@correos.gob.bo
+          </p>
+        </div>
+      </footer>
+    </div>
+  </template>
+  
+  <style scoped>
+  .landing-page {
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+  }
+  
+  .main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: transparent;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .logo img {
+    width: 60px;
+    height: auto;
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  
+  .login-btn .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-btn .btn:hover {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  .hero-section {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../auth/img/LOGOCASILLAS.png'); /* Actualiza la ruta a la imagen */
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: #fff;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    padding: 20px;
+  }
+  
+  .hero-title {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #ffffff; /* Cambia este valor por el color que desees */
 
     <section class="hero-section">
       <div class="overlay"></div>
