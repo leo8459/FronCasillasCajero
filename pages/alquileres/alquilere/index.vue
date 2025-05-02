@@ -1495,41 +1495,42 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(async () => {
-      try {
-        // Recuperar usuario logueado del localStorage
-        let user = localStorage.getItem('userAuth');
-        this.user = JSON.parse(user);
+  this.$nextTick(async () => {
+    try {
+      // Recuperar usuario logueado del localStorage
+      const userStr = localStorage.getItem('userAuth');
+      this.user     = JSON.parse(userStr);
 
-        // Verificar si el departamento del usuario está disponible
-        if (this.user && this.user.cajero && this.user.cajero.departamento) {
-          const departamentoUsuario = this.user.cajero.departamento;
+      if (this.user && this.user.cajero && this.user.cajero.departamento) {
+        const departamentoUsuario = this.user.cajero.departamento;
 
-          // Obtener los datos de alquileres
-          await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-            // Filtrar alquileres por el departamento de la casilla que coincida con el usuario logueado
-            this.list = v[0].filter(item => item.casilla.departamento === departamentoUsuario);
-            this.casillasOcupadas = this.list.map((item) => item.casilla.nombre);
-            this.filteredList = this.list;
-          });
+        // Obtener alquileres y filtrar:
+        //   1️⃣  Solo del mismo departamento
+        //   2️⃣  Solo estado === 1  (vigentes)
+        await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
+          this.list = v[0].filter(
+            item =>
+              item.casilla.departamento === departamentoUsuario && // mismo dep.
+              item.estado === 1                                     // solo vigentes
+          );
 
-          // Generar alerta de casillas por vencer
-          this.generarAlertaCasillasPorVencer();
-        } else {
-          console.error('El departamento del usuario no está disponible.');
+          this.casillasOcupadas = this.list.map(item => item.casilla.nombre);
+          this.filteredList     = this.list;  // la tabla muestra sólo vigentes
+        });
 
-
-
-
-
-        }
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.load = false;
+        // Alerta de casillas por vencer (opcional)
+        this.generarAlertaCasillasPorVencer();
+      } else {
+        console.error('El departamento del usuario no está disponible.');
       }
-    });
-  },
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.load = false;
+    }
+  });
+}
+,
 };
 </script>
 
