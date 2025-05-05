@@ -147,7 +147,7 @@ export default {
         }
         const year = String(fechaFin.getFullYear()).padStart(2, '0');
         const month = String(fechaFin.getMonth() + 1).padStart(2, '0');
-        const day = String(fechaFin.getDate() + 1).padStart(2, '0');
+        const day = String(fechaFin.getDate()).padStart(2, '0');
         this.model.fin_fecha = `${year}-${month}-${day}`;
         this.tiempoSeleccionado = true;
       }

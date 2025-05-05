@@ -74,7 +74,7 @@ export default {
         fin_fecha: '',
         cliente_id: '',
         casilla_id: '',
-        paquete_id: '', // Cambiar aquí también
+        // paquete_id: '', // Cambiar aquí también
         casilla_estado: '',
         categoria_id: '',
         precio_id: '',
@@ -88,7 +88,7 @@ export default {
       casillas: [],
       categorias: [],
       precios: [],
-      paquetes: [],  // Agregar la propiedad paquetes
+      // paquetes: [],  // Agregar la propiedad paquetes
     };
   },
   methods: {
@@ -103,11 +103,11 @@ export default {
         await Promise.all([
           this.GET_DATA(this.apiUrl + "/" + this.$route.params.id),
           this.GET_DATA('casillas'),
-          this.GET_DATA('paquetes')  // Asegúrate de estar obteniendo los paquetes
+          // this.GET_DATA('paquetes')  // Asegúrate de estar obteniendo los paquetes
         ]).then((v) => {
           this.model = v[0];
           this.casillas = v[1];
-          this.paquetes = v[2];  // Asignar los paquetes correctamente
+         // this.paquetes = v[2];  // Asignar los paquetes correctamente
 
           const today = new Date();
           const year = today.getFullYear();
