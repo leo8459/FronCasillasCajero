@@ -76,12 +76,7 @@
                   <span class="sidenav-normal"> Reservar </span>
                 </nuxtLink>
               </li>
-              <li class="nav-item">
-                <nuxtLink class="nav-link" to="/paquetes/paquete">
-                  <span class="sidenav-mini-icon"> Paquetes </span>
-                  <span class="sidenav-normal"> Paquetes </span>
-                </nuxtLink>
-              </li>
+             
               <li class="nav-item">
                 <nuxtLink class="nav-link" to="/reservascajero">
                   <span class="sidenav-mini-icon"> Reservas Vigentes </span>
