@@ -49,7 +49,7 @@
         </div>
         <div class="feature">
           <img src="../auth/img/gabeta.jpg" alt="Característica 3" />
-          <h2 class="animated-text">Casilla Gabeta</h2>
+          <h2 class="animated-text">Casilla Gaveta</h2>
           <p class="animated-text">Precio 1 mes 70 Bs</p>
           <p class="animated-text">Precio 6 meses 250 Bs</p>
           <p class="animated-text">Precio 1 año 420 Bs</p>

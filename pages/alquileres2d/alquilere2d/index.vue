@@ -59,10 +59,10 @@
               </div>
             </div>
             <div class="text-center mb-2">
-            <h4>Gabeta</h4>
+            <h4>Gaveta</h4>
           </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')" :key="item.id ? 'large1-' + item.id : 'large1-' + index"
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gaveta')" :key="item.id ? 'large1-' + item.id : 'large1-' + index"
                 class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -122,10 +122,10 @@
               </div>
             </div>
             <div class="text-center mb-2">
-            <h4>Gabeta</h4>
+            <h4>Gaveta</h4>
           </div>
             <div class="casillas-container">
-              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')" :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
+              <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gaveta')" :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
                 <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                   <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
                 </div>
@@ -287,28 +287,36 @@ export default {
         console.error('No se encontró el elemento correspondiente.');
       }
     },
-    filtrarOpcionesBusqueda() {
-      if (this.busqueda.trim() === '') {
-        this.mostrarListaOpciones = false;
-        return;
-      }
-      const busquedaLowerCase = this.busqueda.toLowerCase().trim();
-      this.opcionesBusqueda = this.casillas
-        .filter(item => (
-          (item.casilla_nombre && item.casilla_nombre.toLowerCase().includes(busquedaLowerCase)) ||
-          (item.cliente_nombre && item.cliente_nombre.toLowerCase().includes(busquedaLowerCase)) ||
-          (item.carnet && item.carnet.toLowerCase().includes(busquedaLowerCase))
-        ))
-        .map(item => ({
-          id: item.casilla_id,
-          nombre: `${item.casilla_nombre} - ${item.cliente_nombre}`,
-        }));
-      this.mostrarListaOpciones = true;
-    },
-    abrirImagen(imagen) {
-      const rutaImagen = `/assets/imagenes/${imagen}`;
-      window.open(rutaImagen, '_self');
-    },
+  filtrarOpcionesBusqueda() {
+  const texto = this.busqueda.trim().toLowerCase();
+
+  if (!texto) {
+    this.mostrarListaOpciones = false;
+    this.opcionesBusqueda = [];
+    return;
+  }
+
+  const coincidencias = this.casillas
+    .filter(item =>
+      (item.casilla_nombre && item.casilla_nombre.toLowerCase().includes(texto)) ||
+      (item.cliente_nombre && item.cliente_nombre.toLowerCase().includes(texto)) ||
+      (item.carnet && item.carnet.toLowerCase().includes(texto))
+    )
+    .map(item => ({
+      id: item.casilla_id,
+      nombre: `${item.casilla_nombre} - ${item.cliente_nombre}`,
+    }));
+
+  if (coincidencias.length === 1) {
+    this.mostrarListaOpciones = false;
+    this.abrirElemento(coincidencias[0].id);
+  } else {
+    this.opcionesBusqueda = coincidencias;
+    this.mostrarListaOpciones = true;
+  }
+}
+
+,
     buscarCasilla(event) {
       if (event.key === 'Enter') {
         const busquedaLowerCase = this.busqueda.toLowerCase().trim();

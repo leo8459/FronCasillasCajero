@@ -109,7 +109,7 @@
 
                     <!-- Apertura -->
                     <div class="form-group col-12">
-                      <label for="apertura">Apertura</label>
+                      <label for="apertura">Dia de Pago</label>
                       <input type="date" id="apertura" v-model="model.apertura" class="form-control" />
                     
                     </div>

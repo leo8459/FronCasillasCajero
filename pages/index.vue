@@ -418,7 +418,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">Total Casillas Gabetas </p>
+                      <p class="text-sm mb-0 text-capitalize">Total Casillas Gavetas </p>
                       <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.gabetas }}</h5>
                     </div>
                   </div>
@@ -438,7 +438,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Alquiladas</p>
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gavetas Alquiladas</p>
                       <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.gabetaocupadas }}</h5>
                     </div>
                   </div>
@@ -458,7 +458,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Libres</p>
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gavetas Libres</p>
                       <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.gabetaslibres }}</h5>
                     </div>
                   </div>
@@ -477,7 +477,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Mantenimiento</p>
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gavetas Mantenimiento</p>
                       <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.casillasMantenimientoGabeta }}</h5>
                     </div>
                   </div>
@@ -496,7 +496,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Vencidos</p>
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gavetas Vencidos</p>
                       <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.casillasVencidoGabeta }}</h5>
                     </div>
                   </div>
@@ -515,7 +515,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize">Casillas Gabetas Correspondecia</p>
+                      <p class="text-sm mb-0 text-capitalize">Casillas Gavetas Correspondecia</p>
                       <h5 class="text-info text-center font-weight-bolder mb-0">{{ dashboard.casillasConCorrespondenciaGabeta }}</h5>
                     </div>
                   </div>
@@ -535,7 +535,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Gabetas Alquiladas Hoy</strong></p>
+                      <p class="text-sm mb-0 text-capitalize"><strong>Gavetas Alquiladas Hoy</strong></p>
                       <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.gabetasHoy }}</h6>
                     </div>
                   </div>
@@ -555,7 +555,7 @@
                 <div class="row">
                   <div class="col-8">
                     <div class="numbers">
-                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Gabetas</strong></p>
+                      <p class="text-sm mb-0 text-capitalize"><strong>Ingresos Gavetas</strong></p>
                       <h6 class="text-center text-lg font-weight-bolder text-black">{{ dashboard.total_multas_gabeta }}</h6>
                     </div>
                   </div>

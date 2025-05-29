@@ -299,7 +299,7 @@ export default {
           return 'scale(1)';
         case 'Mediana':
           return 'scale(1)';
-        case 'Gabeta':
+        case 'Gaveta':
           return 'scale(1)';
         case 'Cajon':
           return 'scale(1)';
@@ -313,7 +313,7 @@ export default {
           return 'fas fa-box';
         case 'Mediana':
           return "fa fa-th-large";
-        case 'Gabeta':
+        case 'Gaveta':
           return 'fa fa-archive';
         case 'Cajon':
           return 'fas fa-box-open';

@@ -69,7 +69,7 @@
                     Reporte Casillas Medianas
                   </button>
                   <button @click="generarReporteGabetasFechas" class="btn btn-info mb-2">
-                    Reporte Casillas Gabetas
+                    Reporte Casillas Gavetas
                   </button>
                   <button @click="generarReporteCajonFechas" class="btn btn-info mb-2">
                     Reporte Casillas Cajones
@@ -112,7 +112,7 @@
                     Casillas Medianas recaudado
                   </button>
                   <button @click="generarReporteCasillasGabetas" class="btn btn-primary mb-2">
-                    Casillas Gabetas recaudado
+                    Casillas Gavetas recaudado
                   </button>
                   <button @click="generarReporteCasillasCajones" class="btn btn-primary mb-2">
                     Casillas Cajones recaudado

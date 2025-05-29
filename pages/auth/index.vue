@@ -56,7 +56,7 @@
 
           <!-- Título para casillas Cajón -->
           <div class="text-center mb-2">
-            <h4>Gabeta</h4>
+            <h4>Gaveta</h4>
           </div>
           <div class="casillas-container">
             <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
@@ -129,7 +129,7 @@
 
           <!-- Título para casillas Cajón -->
           <div class="text-center mb-2">
-            <h4>Gabeta</h4>
+            <h4>Gaveta</h4>
           </div>
           <div class="casillas-container">
             <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
