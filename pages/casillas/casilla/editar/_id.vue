@@ -46,12 +46,12 @@
                         <option value="0">Ocupado</option>
                       </select>
                     </div>
-                    <!-- <div class="form-group col-12">
-                      <label for="">llaves</label>
-                      <select name="" id="" class="form-control" v-model="model.llaves_id">
-                        <option v-for="m in llaves" :value="m.id">{{ m.nombre }}</option>
-                      </select>
-                    </div> -->
+    <div class="form-group col-12">
+  <label>Llave (número / código)</label>
+  <input type="text" class="form-control" v-model="model.llave_nombre">
+</div>
+
+
 
 
 
@@ -87,6 +87,8 @@ export default {
         seccione_id: '',
         estado: '',
         llaves: '',
+          llave_numero: ''    // <-- nuevo campo para el texto de la llave
+
 
       },
       apiUrl: "casillas",
@@ -121,6 +123,7 @@ export default {
       console.log("Llaves Data:", llavesData);
 
       this.model = casillaData;
+        this.model.llave_nombre = casillaData.llaves ? casillaData.llaves.nombre : '';
       this.categorias = categoriasData;
       this.secciones = seccionesData;
       this.llaves = llavesData;
