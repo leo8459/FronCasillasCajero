@@ -59,7 +59,7 @@
             <h4>Gaveta</h4>
           </div>
           <div class="casillas-container">
-            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
+            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gaveta')"
               :key="item.id ? 'large1-' + item.id : 'large1-' + index" class="casilla-item large-casilla">
               <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                 <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -132,7 +132,7 @@
             <h4>Gaveta</h4>
           </div>
           <div class="casillas-container">
-            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gabeta')"
+            <div v-for="(item, index) in getCasillasByType(seccion.id, 'Gaveta')"
               :key="item.id ? 'large1-23-' + item.id : 'large1-23-' + index" class="casilla-item large-casilla">
               <div :class="['circle-icon', getIconColorClass(item.casilla_estado)]">
                 <i :class="getIconClass(item.categoria_nombre)" @click="abrirModal(item)"></i>
@@ -361,7 +361,7 @@ export default {
           return 'scale(1)';
         case 'Mediana':
           return 'scale(1)';
-        case 'Gabeta':
+        case 'Gaveta':
           return 'scale(1)';
         case 'Cajon':
           return 'scale(1)';
@@ -375,7 +375,7 @@ export default {
           return 'fas fa-box';
         case 'Mediana':
           return "fa fa-th-large";
-        case 'Gabeta':
+        case 'Gaveta':
           return 'fa fa-archive';
         case 'Cajon':
           return 'fas fa-box-open';
