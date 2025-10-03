@@ -47,10 +47,10 @@
                     </div>
 
                     <div class="form-group col-12">
-  <label for="">Apertura</label>
-  <input type="date" v-model="model.apertura" class="form-control" >
-</div>
-<input type="hidden" name="cajero_id" v-model="model.cajero_id" />
+                      <label for="">Dia de Pago</label>
+                      <input type="date" v-model="model.apertura" class="form-control">
+                    </div>
+                    <input type="hidden" name="cajero_id" v-model="model.cajero_id" />
 
 
                     <div class="form-group col-12">
@@ -183,65 +183,65 @@ export default {
     }
   },
   mounted() {
-  /*  Se ejecuta después de que el componente terminó de renderizar.
-      1) Recupera al usuario logueado.
-      2) Trae el alquiler + catálogos (clientes, casillas, etc.).
-      3) Sobrescribe this.model con el alquiler recibido **y luego**
-         fuerza el cajero actual; así no se pisa el valor.
-      4) Ajusta campos por defecto y calcula fechas.
-  */
-  this.$nextTick(async () => {
-    try {
-      /*────────────────────────────────────────────
-        1. Usuario autenticado
-      ────────────────────────────────────────────*/
-      this.user = JSON.parse(localStorage.getItem('userAuth') || '{}');
+    /*  Se ejecuta después de que el componente terminó de renderizar.
+        1) Recupera al usuario logueado.
+        2) Trae el alquiler + catálogos (clientes, casillas, etc.).
+        3) Sobrescribe this.model con el alquiler recibido **y luego**
+           fuerza el cajero actual; así no se pisa el valor.
+        4) Ajusta campos por defecto y calcula fechas.
+    */
+    this.$nextTick(async () => {
+      try {
+        /*────────────────────────────────────────────
+          1. Usuario autenticado
+        ────────────────────────────────────────────*/
+        this.user = JSON.parse(localStorage.getItem('userAuth') || '{}');
 
-      /*────────────────────────────────────────────
-        2. Peticiones en paralelo
-      ────────────────────────────────────────────*/
-      const [
-        alquiler,
-        clientes,
-        casillas,
-        categorias,
-        precios,
-      ] = await Promise.all([
-        this.GET_DATA(`${this.apiUrl}/${this.$route.params.id}`),
-        this.GET_DATA('clientes'),
-        this.GET_DATA('casillas'),
-        this.GET_DATA('categorias'),
-        this.GET_DATA('precios'),
-      ]);
+        /*────────────────────────────────────────────
+          2. Peticiones en paralelo
+        ────────────────────────────────────────────*/
+        const [
+          alquiler,
+          clientes,
+          casillas,
+          categorias,
+          precios,
+        ] = await Promise.all([
+          this.GET_DATA(`${this.apiUrl}/${this.$route.params.id}`),
+          this.GET_DATA('clientes'),
+          this.GET_DATA('casillas'),
+          this.GET_DATA('categorias'),
+          this.GET_DATA('precios'),
+        ]);
 
-      /*────────────────────────────────────────────
-        3. Asignar datos y forzar cajero_id logueado
-      ────────────────────────────────────────────*/
-      this.model = alquiler;                          // ← copia todo
-      this.model.cajero_id = this.user?.cajero?.id || null;  // ← ⚠️ NUEVO valor
+        /*────────────────────────────────────────────
+          3. Asignar datos y forzar cajero_id logueado
+        ────────────────────────────────────────────*/
+        this.model = alquiler;                          // ← copia todo
+        this.model.cajero_id = this.user?.cajero?.id || null;  // ← ⚠️ NUEVO valor
 
-      /*────────────────────────────────────────────
-        4. Catálogos y campos auxiliares
-      ────────────────────────────────────────────*/
-      this.clientes   = clientes;
-      this.casillas   = casillas;
-      this.categorias = categorias;
-      this.precios    = precios;
+        /*────────────────────────────────────────────
+          4. Catálogos y campos auxiliares
+        ────────────────────────────────────────────*/
+        this.clientes = clientes;
+        this.casillas = casillas;
+        this.categorias = categorias;
+        this.precios = precios;
 
-      this.model.precio_id = null;           // resetea selección
-      if (!this.model.apertura) {
-        this.model.apertura = this.getCurrentDate();
+        this.model.precio_id = null;           // resetea selección
+        if (!this.model.apertura) {
+          this.model.apertura = this.getCurrentDate();
+        }
+
+        // Recalcular fecha de término según precio/tiempo
+        this.updateFechaTermino();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.load = false;                     // quita el loader
       }
-
-      // Recalcular fecha de término según precio/tiempo
-      this.updateFechaTermino();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.load = false;                     // quita el loader
-    }
-  });
-}
+    });
+  }
 
 };
 </script>
