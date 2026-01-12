@@ -1314,156 +1314,151 @@ export default {
     },
 
     async generarReporteCasillasAlquiladasEntreFechas() {
-      if (!this.fechaInicio || !this.fechaFin) {
-        alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
-        return;
-      }
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+    return;
+  }
 
-      this.load = true;
+  this.load = true;
 
-      try {
-        const fechaInicio = new Date(this.fechaInicio);
-        const fechaFin = new Date(this.fechaFin);
+  try {
+    const fechaInicio = new Date(this.fechaInicio);
+    const fechaFin    = new Date(this.fechaFin);
 
-        /* =====================================================
-         * 1️⃣ FILTRAR ALQUILERES POR FECHAS
-         * ===================================================== */
-        const dataForReport = this.list.filter(a => {
-          const iniFecha = new Date(a.apertura);
-          return iniFecha >= fechaInicio && iniFecha <= fechaFin;
-        });
+    /* =====================================================
+     * 1️⃣ FILTRAR ALQUILERES POR FECHAS
+     * ===================================================== */
+    const dataForReport = this.list.filter(a => {
+      const iniFecha = new Date(a.apertura);
+      return iniFecha >= fechaInicio && iniFecha <= fechaFin;
+    });
 
-        const totalCasillasAlquiladas = dataForReport.length;
+    const totalCasillasAlquiladas = dataForReport.length;
 
-        /* =====================================================
-         * 2️⃣ TOTALES ECONÓMICOS
-         * ===================================================== */
-        const totalPrecio = dataForReport.reduce(
-          (t, a) => t + parseFloat(a.precio?.precio || 0), 0
-        );
-        const totalEstadoPago = dataForReport.reduce(
-          (t, a) => t + parseFloat(a.estado_pago || 0), 0
-        );
-        const totalHabilitacion = dataForReport.reduce(
-          (t, a) => t + parseFloat(a.habilitacion || 0), 0
-        );
-        const totalMultas = dataForReport.reduce(
-          (t, a) => t + parseFloat(a.nombre || 0), 0
-        );
+    /* =====================================================
+     * 2️⃣ TOTALES ECONÓMICOS
+     * ===================================================== */
+    const totalPrecio = dataForReport.reduce(
+      (t, a) => t + parseFloat(a.precio?.precio || 0), 0
+    );
+    const totalLlavesExtra = dataForReport.reduce(
+      (t, a) => t + parseFloat(a.estado_pago || 0), 0
+    );
+    const totalHabilitacion = dataForReport.reduce(
+      (t, a) => t + parseFloat(a.habilitacion || 0), 0
+    );
+    const totalMultas = dataForReport.reduce(
+      (t, a) => t + parseFloat(a.nombre || 0), 0
+    );
 
-        const totalSuma =
-          totalPrecio +
-          totalEstadoPago +
-          totalHabilitacion +
-          totalMultas;
+    const granTotal =
+      totalPrecio +
+      totalLlavesExtra +
+      totalHabilitacion +
+      totalMultas;
 
-        /* =====================================================
-         * 3️⃣ OBTENER CASILLAS DESDE LA API REAL
-         * ===================================================== */
-        const casillas = await this.$axios.$get(this.apiCasillas);
+    /* =====================================================
+     * 3️⃣ OBTENER CASILLAS DESDE API REAL
+     * ===================================================== */
+    const casillas = await this.$axios.$get(this.apiCasillas);
 
-        // 🟢 Casillas libres (estado 1)
-        const totalCasillasLibres = casillas.filter(
-          c => c.estado === 1
-        ).length;
+    const totalCasillasLibres = casillas.filter(c => c.estado === 1).length;
+    const totalCasillasMantenimiento = casillas.filter(c => c.estado === 3).length;
+    const totalCasillasVencidas = casillas.filter(c => c.estado === 4).length;
 
-        // 🟠 Casillas en mantenimiento (estado 3)
-        const totalCasillasMantenimiento = casillas.filter(
-          c => c.estado === 3
-        ).length;
+    /* =====================================================
+     * 4️⃣ CREAR PDF
+     * ===================================================== */
+    const doc = new jsPDF('landscape', 'mm', 'a4');
 
-        /* =====================================================
-         * 4️⃣ CREAR PDF
-         * ===================================================== */
-        const doc = new jsPDF('landscape', 'mm', 'a4');
+    const headers = [
+      'Cliente',
+      'Teléfono',
+      'Casilla',
+      'Sección',
+      'Tamaño',
+      'Fecha Pago',
+      'Fecha Fin',
+      'Precio',
+      'Llaves Extra',
+      'Habilitación',
+      'Multas'
+    ];
 
-        const headers = [
-          'Cliente',
-          'Teléfono',
-          'Casilla',
-          'Sección',
-          'Tamaño',
-          'Fecha Pago',
-          'Fecha Fin',
-          'Precio',
-          'Llaves Extra',
-          'Habilitación',
-          'Multas'
-        ];
+    const body = dataForReport.map(a => [
+      a.cliente?.nombre || 'S/N',
+      a.cliente?.telefono || 'S/N',
+      a.casilla?.nombre || 'S/N',
+      a.casilla?.seccione_id || 'S/N',
+      a.categoria?.nombre || 'S/N',
+      a.apertura || 'S/N',
+      a.fin_fecha || 'S/N',
+      parseFloat(a.precio?.precio || 0).toFixed(2),
+      parseFloat(a.estado_pago || 0).toFixed(2),
+      parseFloat(a.habilitacion || 0).toFixed(2),
+      parseFloat(a.nombre || 0).toFixed(2),
+    ]);
 
-        const body = dataForReport.map(a => [
-          a.cliente?.nombre || 'S/N',
-          a.cliente?.telefono || 'S/N',
-          a.casilla?.nombre || 'S/N',
-          a.casilla?.seccione_id || 'S/N',
-          a.categoria?.nombre || 'S/N',
-          a.apertura || 'S/N',
-          a.fin_fecha || 'S/N',
-          parseFloat(a.precio?.precio || 0).toFixed(2),
-          parseFloat(a.estado_pago || 0).toFixed(2),
-          parseFloat(a.habilitacion || 0).toFixed(2),
-          parseFloat(a.nombre || 0).toFixed(2),
-        ]);
+    /* =====================================================
+     * 5️⃣ TÍTULO
+     * ===================================================== */
+    const title = `Reporte de Casillas Alquiladas (${this.fechaInicio} - ${this.fechaFin})`;
+    doc.setFontSize(18);
+    doc.setTextColor('#344767');
+    const pageWidth = doc.internal.pageSize.width;
+    doc.text(title, (pageWidth - doc.getTextWidth(title)) / 2, 20);
 
-        /* =====================================================
-         * 5️⃣ TÍTULO
-         * ===================================================== */
-        const title = `Reporte de Casillas Alquiladas (${this.fechaInicio} - ${this.fechaFin})`;
-        doc.setFontSize(18);
-        doc.setTextColor('#344767');
+    /* =====================================================
+     * 6️⃣ RESUMEN
+     * ===================================================== */
+    doc.setFontSize(12);
+    doc.setTextColor(80);
 
-        const pageWidth = doc.internal.pageSize.width;
-        const titleWidth = doc.getTextWidth(title);
-        doc.text(title, (pageWidth - titleWidth) / 2, 20);
+    doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
+    doc.text(`Casillas Libres (Estado 1): ${totalCasillasLibres}`, 14, 36);
+    doc.text(`Casillas en Mantenimiento (Estado 3): ${totalCasillasMantenimiento}`, 14, 42);
+    doc.text(`Casillas Vencidas (Estado 4): ${totalCasillasVencidas}`, 14, 48);
 
-        /* =====================================================
-         * 6️⃣ RESUMEN
-         * ===================================================== */
-        doc.setFontSize(12);
-        doc.setTextColor(80);
+    doc.text(`Total Precio: Bs. ${totalPrecio.toFixed(2)}`, 14, 56);
+    doc.text(`Total Llaves Extra: Bs. ${totalLlavesExtra.toFixed(2)}`, 14, 62);
+    doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 68);
+    doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, 74);
+    doc.text(`Gran Total: Bs. ${granTotal.toFixed(2)}`, 14, 80);
 
-        doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
-        doc.text(`Casillas Libres (Estado 1): ${totalCasillasLibres}`, 14, 36);
-        doc.text(`Casillas en Mantenimiento (Estado 3): ${totalCasillasMantenimiento}`, 14, 42);
-        doc.text(`Total Precio: Bs. ${totalPrecio.toFixed(2)}`, 14, 48);
-        doc.text(`Total Llaves Extra: Bs. ${totalEstadoPago.toFixed(2)}`, 14, 54);
-        doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 60);
-        doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, 66);
-        doc.text(`Gran Total: Bs. ${totalSuma.toFixed(2)}`, 14, 72);
+    /* =====================================================
+     * 7️⃣ TABLA
+     * ===================================================== */
+    doc.autoTable({
+      head: [headers],
+      body,
+      startY: 88,
+      theme: 'grid',
+      styles: {
+        fontSize: 10,
+        cellPadding: 4,
+      },
+      headStyles: {
+        fillColor: '#344767',
+        textColor: '#ffffff',
+      },
+      columnStyles: {
+        7: { halign: 'right' },
+        8: { halign: 'right' },
+        9: { halign: 'right' },
+        10:{ halign: 'right' },
+      },
+    });
 
-        /* =====================================================
-         * 7️⃣ TABLA
-         * ===================================================== */
-        doc.autoTable({
-          head: [headers],
-          body,
-          startY: 80,
-          theme: 'grid',
-          styles: {
-            fontSize: 10,
-            cellPadding: 4,
-          },
-          headStyles: {
-            fillColor: '#344767',
-            textColor: '#ffffff',
-          },
-          columnStyles: {
-            7: { halign: 'right' },
-            8: { halign: 'right' },
-            9: { halign: 'right' },
-            10: { halign: 'right' },
-          },
-        });
+    window.open(doc.output('bloburl'), '_blank');
 
-        window.open(doc.output('bloburl'), '_blank');
+  } catch (error) {
+    console.error(error);
+    Swal.fire('Error', 'No se pudo generar el reporte', 'error');
+  } finally {
+    this.load = false;
+  }
+}
 
-      } catch (error) {
-        console.error(error);
-        Swal.fire('Error', 'No se pudo generar el reporte', 'error');
-      } finally {
-        this.load = false;
-      }
-    }
 
 
 
