@@ -1423,18 +1423,18 @@ export default {
     doc.setTextColor(80);
 
     let y = 30;
-    doc.text(`Casillas Alquiladas (0): ${resumenEstados.alquiladas}`, 14, y); y += 6;
-    doc.text(`Casillas Libres (1): ${resumenEstados.libres}`, 14, y); y += 6;
-    doc.text(`Con Correspondencia (2): ${resumenEstados.correspondencia}`, 14, y); y += 6;
-    doc.text(`En Mantenimiento (3): ${resumenEstados.mantenimiento}`, 14, y); y += 6;
-    doc.text(`Casillas Vencidas (4): ${resumenEstados.vencidas}`, 14, y); y += 6;
-    doc.text(`Casillas Reservadas (5): ${resumenEstados.reservadas}`, 14, y); y += 8;
+    doc.text(`Casillas Alquiladas: ${resumenEstados.alquiladas}`, 14, y); y += 6;
+    doc.text(`Casillas Libres: ${resumenEstados.libres}`, 14, y); y += 6;
+    doc.text(`Con Correspondencia : ${resumenEstados.correspondencia}`, 14, y); y += 6;
+    doc.text(`En Mantenimiento: ${resumenEstados.mantenimiento}`, 14, y); y += 6;
+    doc.text(`Casillas Vencidas: ${resumenEstados.vencidas}`, 14, y); y += 6;
+    doc.text(`Casillas Reservadas: ${resumenEstados.reservadas}`, 14, y); y += 8;
 
-    doc.text(`Total Precio: Bs. ${totalPrecio.toFixed(2)}`, 14, y); y += 6;
+    doc.text(`Total de ingresos por alquiler de casillas: Bs. ${totalPrecio.toFixed(2)}`, 14, y); y += 6;
     doc.text(`Total Llaves Extra: Bs. ${totalLlavesExtra.toFixed(2)}`, 14, y); y += 6;
     doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, y); y += 6;
     doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, y); y += 6;
-    doc.text(`Gran Total: Bs. ${granTotal.toFixed(2)}`, 14, y);
+    doc.text(`Total generado: Bs. ${granTotal.toFixed(2)}`, 14, y);
 
     /* =====================================================
      * 7️⃣ TABLA
