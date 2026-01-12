@@ -6,13 +6,8 @@
         <div class="row justify-content-end align-items-center mb-3">
           <!-- Contenedor de búsqueda -->
           <div class="col-md-4 col-12">
-            <input
-              type="text"
-              v-model="searchTerm"
-              class="form-control"
-              placeholder="Buscar por nombre"
-              @input="buscar"
-            />
+            <input type="text" v-model="searchTerm" class="form-control" placeholder="Buscar por nombre"
+              @input="buscar" />
           </div>
 
           <!-- Botones para reportes -->
@@ -41,7 +36,8 @@
         </div>
 
         <!-- Modal para Reportes Por Fechas -->
-        <div v-if="modalVisible2" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);" @click.self="modalVisible2 = false">
+        <div v-if="modalVisible2" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);"
+          @click.self="modalVisible2 = false">
           <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
@@ -81,7 +77,8 @@
         </div>
 
         <!-- Modal para Reportes Generales -->
-        <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);" @click.self="modalVisible = false">
+        <div v-if="modalVisible" class="modal fade show" style="display: block; background: rgba(0, 0, 0, 0.5);"
+          @click.self="modalVisible = false">
           <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
@@ -157,16 +154,24 @@
                     <td class="py-0 px-1">
                       <input type="checkbox" v-model="selectedIds" :value="m.id" />
                     </td>
-                    <td class="py-0 px-1" :data-tooltip="m.cliente?.nombre || 'S/N'">{{ m.cliente?.nombre || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="m.autorizado_recojo || 'S/N'">{{ m.autorizado_recojo || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.cliente?.nombre || 'S/N'">{{ m.cliente?.nombre || 'S/N' }}
+                    </td>
+                    <td class="py-0 px-1" :data-tooltip="m.autorizado_recojo || 'S/N'">{{ m.autorizado_recojo || 'S/N'
+                      }}</td>
                     <td class="py-0 px-1" :data-tooltip="m.cajero?.nombre || 'S/N'">{{ m.cajero?.nombre || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="m.cliente?.telefono || 'S/N'">{{ m.cliente?.telefono || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="m.casilla?.nombre || 'S/N'">{{ m.casilla?.nombre || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="m.cliente?.carnet || 'S/N'">{{ m.cliente?.carnet || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="m.casilla?.seccione_id || 'S/N'">{{ m.casilla?.seccione_id || 'S/N' }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.cliente?.telefono || 'S/N'">{{ m.cliente?.telefono || 'S/N'
+                      }}</td>
+                    <td class="py-0 px-1" :data-tooltip="m.casilla?.nombre || 'S/N'">{{ m.casilla?.nombre || 'S/N' }}
+                    </td>
+                    <td class="py-0 px-1" :data-tooltip="m.cliente?.carnet || 'S/N'">{{ m.cliente?.carnet || 'S/N' }}
+                    </td>
+                    <td class="py-0 px-1" :data-tooltip="m.casilla?.seccione_id || 'S/N'">{{ m.casilla?.seccione_id ||
+                      'S/N' }}</td>
                     <td class="py-0 px-1" :data-tooltip="m.precio?.precio || 'S/N'">{{ m.precio?.precio || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="m.categoria?.nombre || 'S/N'">{{ m.categoria?.nombre || 'S/N' }}</td>
-                    <td class="py-0 px-1" :data-tooltip="formatoEstado(m.casilla?.estado) || 'S/N'" :class="formatoEstado(m.casilla?.estado)">
+                    <td class="py-0 px-1" :data-tooltip="m.categoria?.nombre || 'S/N'">{{ m.categoria?.nombre || 'S/N'
+                      }}</td>
+                    <td class="py-0 px-1" :data-tooltip="formatoEstado(m.casilla?.estado) || 'S/N'"
+                      :class="formatoEstado(m.casilla?.estado)">
                       {{ formatoEstado(m.casilla?.estado) || 'S/N' }}
                     </td>
                     <td class="py-0 px-1" :data-tooltip="m.estado_pago || 'S/N'">{{ m.estado_pago || 'S/N' }}</td>
@@ -192,8 +197,8 @@
               <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-primary">
                 &laquo;
               </button>
-              <span v-for="page in pages" :key="page" @click="goToPage(page)"
-                :class="{ active: page === currentPage }" class="page-number">
+              <span v-for="page in pages" :key="page" @click="goToPage(page)" :class="{ active: page === currentPage }"
+                class="page-number">
                 {{ page }}
               </span>
               <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-primary">
@@ -215,7 +220,7 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </AdminTemplate>
   </div>
 </template>
@@ -248,6 +253,9 @@ export default {
       fechaFin: '',
       alertShown: false,
       dropdownVisible: false,
+      apiCasillas: 'http://172.65.10.33:8000/cajero/',
+      // apiCasillas: 'http://127.0.0.1:8000/api/casillas',
+
       casillasPorVencer: [],
       selectedIds: [], // Para almacenar los IDs seleccionados
       cajero_id: '', // Asignar cajero_id al modelo
@@ -892,100 +900,6 @@ export default {
 
       window.open(doc.output('bloburl'), '_blank');
     },
-    generarReporteCasillasAlquiladasEntreFechas() {
-  if (!this.fechaInicio || !this.fechaFin) {
-    alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
-    return;
-  }
-
-  const fechaInicio = new Date(this.fechaInicio);
-  const fechaFin = new Date(this.fechaFin);
-
-  const dataForReport = this.list.filter(alquiler => {
-    const iniFecha = new Date(alquiler.apertura);
-    return iniFecha >= fechaInicio && iniFecha <= fechaFin;
-  });
-
-  const totalCasillasAlquiladas = dataForReport.length;
-
-  // Sumar precios, estado_pago, habilitacion y nombre
-  const totalPrecio = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.precio?.precio || 0), 0);
-  const totalEstadoPago = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.estado_pago || 0), 0);
-  const totalHabilitacion = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.habilitacion || 0), 0);
-  const totalNombre = dataForReport.reduce((total, alquiler) => total + parseFloat(alquiler.nombre || 0), 0);
-
-  // Calcular el total de todas las sumas
-  const totalSuma = totalPrecio + totalEstadoPago + totalHabilitacion + totalNombre;
-
-  // Crear el documento PDF con márgenes y mejor diseño
-  const doc = new jsPDF('landscape', 'mm', 'a4');
-  const headers = ['Cliente', 'Teléfono', 'Casilla', 'Sección', 'Tamaño', 'Fecha de pago', 'Fecha Fin', 'Precio', 'Llaves Extras', 'Habilitacion', 'Multas'];
-
-  const body = dataForReport.map(alquiler => [
-    alquiler.cliente?.nombre || 'S/N',
-    alquiler.cliente?.telefono || 'S/N',
-    alquiler.casilla?.nombre || 'S/N',
-    alquiler.casilla?.seccione_id || 'S/N',
-    alquiler.categoria?.nombre || 'S/N',
-    alquiler.apertura || 'S/N',
-    alquiler.fin_fecha || 'S/N',
-    parseFloat(alquiler.precio?.precio || 0).toFixed(2) || 'S/N',
-    parseFloat(alquiler.estado_pago || 0).toFixed(2) || 'S/N',
-    parseFloat(alquiler.habilitacion || 0).toFixed(2) || 'S/N',
-    parseFloat(alquiler.nombre || 0).toFixed(2) || 'S/N'  // Sumamos el nombre si es numérico
-  ]);
-
-  // Diseño del título
-  const title = `Reporte de Casillas Alquiladas (${this.fechaInicio} - ${this.fechaFin})`;
-  doc.setFontSize(18);
-  doc.setTextColor('#344767'); // Color más empresarial
-  const pageWidth = doc.internal.pageSize.width;
-  const titleWidth = doc.getTextWidth(title);
-  const x = (pageWidth - titleWidth) / 2;
-  doc.text(title, x, 20);
-
-  // Información adicional
-  doc.setFontSize(12);
-  doc.setTextColor(100);
-  doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
-  doc.text(`Total Suma de Precios: Bs. ${totalPrecio.toFixed(2)}`, 14, 36);
-  doc.text(`Total Llaves Extras: Bs. ${totalEstadoPago.toFixed(2)}`, 14, 42);
-  doc.text(`Total Habilitacion: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 48);
-  doc.text(`Total Multas: Bs. ${totalNombre.toFixed(2)}`, 14, 54);  // Mostrar el total de "nombre"
-  doc.text(`Gran Total: Bs. ${totalSuma.toFixed(2)}`, 14, 60);  // Mostrar el gran total
-
-  // Generar la tabla con estilo más empresarial
-  doc.autoTable({
-    head: [headers],
-    body: body,
-    startY: 70, // Posicionar la tabla más abajo del texto
-    theme: 'grid', // Aplicar el tema "grid" para un estilo empresarial
-    styles: {
-      fontSize: 10,
-      cellPadding: 4,
-      overflow: 'linebreak',
-    },
-    headStyles: {
-      fillColor: '#344767', // Color de fondo de las cabeceras
-      textColor: '#ffffff', // Color de texto blanco para cabeceras
-      fontSize: 12,
-    },
-    columnStyles: {
-      0: { halign: 'left' },  // Alinear el texto de la primera columna a la izquierda
-      7: { halign: 'right' }, // Alinear el precio a la derecha
-      8: { halign: 'right' }, // Alinear estado_pago a la derecha
-      9: { halign: 'right' }, // Alinear habilitacion a la derecha
-      10: { halign: 'right' }  // Alinear el nombre a la derecha
-    },
-    tableLineColor: [189, 195, 199], // Color más sutil para las líneas de la tabla
-    tableLineWidth: 0.75
-  });
-
-  // Abrir el PDF en una nueva ventana
-  window.open(doc.output('bloburl'), '_blank');
-}
-
-,
     generarReporteFechasPasadas() {
       // Obtener la fecha actual
       const currentDate = new Date();
@@ -1398,6 +1312,163 @@ export default {
         });
       }
     },
+
+    async generarReporteCasillasAlquiladasEntreFechas() {
+      if (!this.fechaInicio || !this.fechaFin) {
+        alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
+        return;
+      }
+
+      this.load = true;
+
+      try {
+        const fechaInicio = new Date(this.fechaInicio);
+        const fechaFin = new Date(this.fechaFin);
+
+        /* =====================================================
+         * 1️⃣ FILTRAR ALQUILERES POR FECHAS
+         * ===================================================== */
+        const dataForReport = this.list.filter(a => {
+          const iniFecha = new Date(a.apertura);
+          return iniFecha >= fechaInicio && iniFecha <= fechaFin;
+        });
+
+        const totalCasillasAlquiladas = dataForReport.length;
+
+        /* =====================================================
+         * 2️⃣ TOTALES ECONÓMICOS
+         * ===================================================== */
+        const totalPrecio = dataForReport.reduce(
+          (t, a) => t + parseFloat(a.precio?.precio || 0), 0
+        );
+        const totalEstadoPago = dataForReport.reduce(
+          (t, a) => t + parseFloat(a.estado_pago || 0), 0
+        );
+        const totalHabilitacion = dataForReport.reduce(
+          (t, a) => t + parseFloat(a.habilitacion || 0), 0
+        );
+        const totalMultas = dataForReport.reduce(
+          (t, a) => t + parseFloat(a.nombre || 0), 0
+        );
+
+        const totalSuma =
+          totalPrecio +
+          totalEstadoPago +
+          totalHabilitacion +
+          totalMultas;
+
+        /* =====================================================
+         * 3️⃣ OBTENER CASILLAS DESDE LA API REAL
+         * ===================================================== */
+        const casillas = await this.$axios.$get(this.apiCasillas);
+
+        // 🟢 Casillas libres (estado 1)
+        const totalCasillasLibres = casillas.filter(
+          c => c.estado === 1
+        ).length;
+
+        // 🟠 Casillas en mantenimiento (estado 3)
+        const totalCasillasMantenimiento = casillas.filter(
+          c => c.estado === 3
+        ).length;
+
+        /* =====================================================
+         * 4️⃣ CREAR PDF
+         * ===================================================== */
+        const doc = new jsPDF('landscape', 'mm', 'a4');
+
+        const headers = [
+          'Cliente',
+          'Teléfono',
+          'Casilla',
+          'Sección',
+          'Tamaño',
+          'Fecha Pago',
+          'Fecha Fin',
+          'Precio',
+          'Llaves Extra',
+          'Habilitación',
+          'Multas'
+        ];
+
+        const body = dataForReport.map(a => [
+          a.cliente?.nombre || 'S/N',
+          a.cliente?.telefono || 'S/N',
+          a.casilla?.nombre || 'S/N',
+          a.casilla?.seccione_id || 'S/N',
+          a.categoria?.nombre || 'S/N',
+          a.apertura || 'S/N',
+          a.fin_fecha || 'S/N',
+          parseFloat(a.precio?.precio || 0).toFixed(2),
+          parseFloat(a.estado_pago || 0).toFixed(2),
+          parseFloat(a.habilitacion || 0).toFixed(2),
+          parseFloat(a.nombre || 0).toFixed(2),
+        ]);
+
+        /* =====================================================
+         * 5️⃣ TÍTULO
+         * ===================================================== */
+        const title = `Reporte de Casillas Alquiladas (${this.fechaInicio} - ${this.fechaFin})`;
+        doc.setFontSize(18);
+        doc.setTextColor('#344767');
+
+        const pageWidth = doc.internal.pageSize.width;
+        const titleWidth = doc.getTextWidth(title);
+        doc.text(title, (pageWidth - titleWidth) / 2, 20);
+
+        /* =====================================================
+         * 6️⃣ RESUMEN
+         * ===================================================== */
+        doc.setFontSize(12);
+        doc.setTextColor(80);
+
+        doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
+        doc.text(`Casillas Libres (Estado 1): ${totalCasillasLibres}`, 14, 36);
+        doc.text(`Casillas en Mantenimiento (Estado 3): ${totalCasillasMantenimiento}`, 14, 42);
+        doc.text(`Total Precio: Bs. ${totalPrecio.toFixed(2)}`, 14, 48);
+        doc.text(`Total Llaves Extra: Bs. ${totalEstadoPago.toFixed(2)}`, 14, 54);
+        doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 60);
+        doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, 66);
+        doc.text(`Gran Total: Bs. ${totalSuma.toFixed(2)}`, 14, 72);
+
+        /* =====================================================
+         * 7️⃣ TABLA
+         * ===================================================== */
+        doc.autoTable({
+          head: [headers],
+          body,
+          startY: 80,
+          theme: 'grid',
+          styles: {
+            fontSize: 10,
+            cellPadding: 4,
+          },
+          headStyles: {
+            fillColor: '#344767',
+            textColor: '#ffffff',
+          },
+          columnStyles: {
+            7: { halign: 'right' },
+            8: { halign: 'right' },
+            9: { halign: 'right' },
+            10: { halign: 'right' },
+          },
+        });
+
+        window.open(doc.output('bloburl'), '_blank');
+
+      } catch (error) {
+        console.error(error);
+        Swal.fire('Error', 'No se pudo generar el reporte', 'error');
+      } finally {
+        this.load = false;
+      }
+    }
+
+
+
+    ,
+
     mostrarCasillasPorVencer() {
       const currentDate = new Date();
       const oneMonthAhead = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
@@ -1495,42 +1566,42 @@ export default {
     },
   },
   mounted() {
-  this.$nextTick(async () => {
-    try {
-      // Recuperar usuario logueado del localStorage
-      const userStr = localStorage.getItem('userAuth');
-      this.user     = JSON.parse(userStr);
+    this.$nextTick(async () => {
+      try {
+        // Recuperar usuario logueado del localStorage
+        const userStr = localStorage.getItem('userAuth');
+        this.user = JSON.parse(userStr);
 
-      if (this.user && this.user.cajero && this.user.cajero.departamento) {
-        const departamentoUsuario = this.user.cajero.departamento;
+        if (this.user && this.user.cajero && this.user.cajero.departamento) {
+          const departamentoUsuario = this.user.cajero.departamento;
 
-        // Obtener alquileres y filtrar:
-        //   1️⃣  Solo del mismo departamento
-        //   2️⃣  Solo estado === 1  (vigentes)
-        await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-          this.list = v[0].filter(
-            item =>
-              item.casilla.departamento === departamentoUsuario && // mismo dep.
-              item.estado === 1                                     // solo vigentes
-          );
+          // Obtener alquileres y filtrar:
+          //   1️⃣  Solo del mismo departamento
+          //   2️⃣  Solo estado === 1  (vigentes)
+          await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
+            this.list = v[0].filter(
+              item =>
+                item.casilla.departamento === departamentoUsuario && // mismo dep.
+                item.estado === 1                                     // solo vigentes
+            );
 
-          this.casillasOcupadas = this.list.map(item => item.casilla.nombre);
-          this.filteredList     = this.list;  // la tabla muestra sólo vigentes
-        });
+            this.casillasOcupadas = this.list.map(item => item.casilla.nombre);
+            this.filteredList = this.list;  // la tabla muestra sólo vigentes
+          });
 
-        // Alerta de casillas por vencer (opcional)
-        this.generarAlertaCasillasPorVencer();
-      } else {
-        console.error('El departamento del usuario no está disponible.');
+          // Alerta de casillas por vencer (opcional)
+          this.generarAlertaCasillasPorVencer();
+        } else {
+          console.error('El departamento del usuario no está disponible.');
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.load = false;
       }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.load = false;
-    }
-  });
-}
-,
+    });
+  }
+  ,
 };
 </script>
 
