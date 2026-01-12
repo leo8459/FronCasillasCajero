@@ -253,7 +253,7 @@ export default {
       fechaFin: '',
       alertShown: false,
       dropdownVisible: false,
-      apiCasillas: 'http://172.65.10.33:8000/cajero/',
+      apiCasillas: 'http://172.65.10.33:8000/cajero/casillas',
       // apiCasillas: 'http://127.0.0.1:8000/api/casillas',
 
       casillasPorVencer: [],
