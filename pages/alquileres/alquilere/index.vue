@@ -1313,7 +1313,7 @@ export default {
       }
     },
 
-    async generarReporteCasillasAlquiladasEntreFechas() {
+  async generarReporteCasillasAlquiladasEntreFechas() {
   if (!this.fechaInicio || !this.fechaFin) {
     alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
     return;
@@ -1326,7 +1326,7 @@ export default {
     const fechaFin    = new Date(this.fechaFin);
 
     /* =====================================================
-     * 1️⃣ FILTRAR ALQUILERES POR FECHAS
+     * 1️⃣ ALQUILERES POR FECHAS
      * ===================================================== */
     const dataForReport = this.list.filter(a => {
       const iniFecha = new Date(a.apertura);
@@ -1358,13 +1358,18 @@ export default {
       totalMultas;
 
     /* =====================================================
-     * 3️⃣ OBTENER CASILLAS DESDE API REAL
+     * 3️⃣ CASILLAS DESDE API OFICIAL
      * ===================================================== */
     const casillas = await this.$axios.$get(this.apiCasillas);
 
-    const totalCasillasLibres = casillas.filter(c => c.estado === 1).length;
-    const totalCasillasMantenimiento = casillas.filter(c => c.estado === 3).length;
-    const totalCasillasVencidas = casillas.filter(c => c.estado === 4).length;
+    const resumenEstados = {
+      alquiladas:      casillas.filter(c => c.estado === 0).length,
+      libres:          casillas.filter(c => c.estado === 1).length,
+      correspondencia: casillas.filter(c => c.estado === 2).length,
+      mantenimiento:   casillas.filter(c => c.estado === 3).length,
+      vencidas:        casillas.filter(c => c.estado === 4).length,
+      reservadas:      casillas.filter(c => c.estado === 5).length,
+    };
 
     /* =====================================================
      * 4️⃣ CREAR PDF
@@ -1402,28 +1407,34 @@ export default {
     /* =====================================================
      * 5️⃣ TÍTULO
      * ===================================================== */
-    const title = `Reporte de Casillas Alquiladas (${this.fechaInicio} - ${this.fechaFin})`;
+    const title = `Reporte de Casillas (${this.fechaInicio} - ${this.fechaFin})`;
     doc.setFontSize(18);
     doc.setTextColor('#344767');
-    const pageWidth = doc.internal.pageSize.width;
-    doc.text(title, (pageWidth - doc.getTextWidth(title)) / 2, 20);
+    doc.text(
+      title,
+      (doc.internal.pageSize.width - doc.getTextWidth(title)) / 2,
+      20
+    );
 
     /* =====================================================
-     * 6️⃣ RESUMEN
+     * 6️⃣ RESUMEN DE ESTADOS
      * ===================================================== */
     doc.setFontSize(12);
     doc.setTextColor(80);
 
-    doc.text(`Total Casillas Alquiladas: ${totalCasillasAlquiladas}`, 14, 30);
-    doc.text(`Casillas Libres (Estado 1): ${totalCasillasLibres}`, 14, 36);
-    doc.text(`Casillas en Mantenimiento (Estado 3): ${totalCasillasMantenimiento}`, 14, 42);
-    doc.text(`Casillas Vencidas (Estado 4): ${totalCasillasVencidas}`, 14, 48);
+    let y = 30;
+    doc.text(`Casillas Alquiladas (0): ${resumenEstados.alquiladas}`, 14, y); y += 6;
+    doc.text(`Casillas Libres (1): ${resumenEstados.libres}`, 14, y); y += 6;
+    doc.text(`Con Correspondencia (2): ${resumenEstados.correspondencia}`, 14, y); y += 6;
+    doc.text(`En Mantenimiento (3): ${resumenEstados.mantenimiento}`, 14, y); y += 6;
+    doc.text(`Casillas Vencidas (4): ${resumenEstados.vencidas}`, 14, y); y += 6;
+    doc.text(`Casillas Reservadas (5): ${resumenEstados.reservadas}`, 14, y); y += 8;
 
-    doc.text(`Total Precio: Bs. ${totalPrecio.toFixed(2)}`, 14, 56);
-    doc.text(`Total Llaves Extra: Bs. ${totalLlavesExtra.toFixed(2)}`, 14, 62);
-    doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, 68);
-    doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, 74);
-    doc.text(`Gran Total: Bs. ${granTotal.toFixed(2)}`, 14, 80);
+    doc.text(`Total Precio: Bs. ${totalPrecio.toFixed(2)}`, 14, y); y += 6;
+    doc.text(`Total Llaves Extra: Bs. ${totalLlavesExtra.toFixed(2)}`, 14, y); y += 6;
+    doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, y); y += 6;
+    doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, y); y += 6;
+    doc.text(`Gran Total: Bs. ${granTotal.toFixed(2)}`, 14, y);
 
     /* =====================================================
      * 7️⃣ TABLA
@@ -1431,16 +1442,10 @@ export default {
     doc.autoTable({
       head: [headers],
       body,
-      startY: 88,
+      startY: y + 8,
       theme: 'grid',
-      styles: {
-        fontSize: 10,
-        cellPadding: 4,
-      },
-      headStyles: {
-        fillColor: '#344767',
-        textColor: '#ffffff',
-      },
+      styles: { fontSize: 10, cellPadding: 4 },
+      headStyles: { fillColor: '#344767', textColor: '#ffffff' },
       columnStyles: {
         7: { halign: 'right' },
         8: { halign: 'right' },
@@ -1458,6 +1463,7 @@ export default {
     this.load = false;
   }
 }
+
 
 
 
