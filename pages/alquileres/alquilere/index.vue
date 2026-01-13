@@ -1313,7 +1313,7 @@ export default {
       }
     },
 
-  async generarReporteCasillasAlquiladasEntreFechas() {
+ async generarReporteCasillasAlquiladasEntreFechas() {
   if (!this.fechaInicio || !this.fechaFin) {
     alert("Por favor selecciona tanto la fecha de inicio como la fecha de fin.");
     return;
@@ -1358,7 +1358,7 @@ export default {
       totalMultas;
 
     /* =====================================================
-     * 3️⃣ CASILLAS DESDE API OFICIAL
+     * 3️⃣ CASILLAS DESDE API
      * ===================================================== */
     const casillas = await this.$axios.$get(this.apiCasillas);
 
@@ -1417,32 +1417,54 @@ export default {
     );
 
     /* =====================================================
-     * 6️⃣ RESUMEN DE ESTADOS
+     * 6️⃣ RESÚMENES (IZQUIERDA / DERECHA)
      * ===================================================== */
     doc.setFontSize(12);
     doc.setTextColor(80);
 
-    let y = 30;
-    doc.text(`Casillas Alquiladas: ${resumenEstados.alquiladas}`, 14, y); y += 6;
-    doc.text(`Casillas Libres: ${resumenEstados.libres}`, 14, y); y += 6;
-    doc.text(`Con Correspondencia : ${resumenEstados.correspondencia}`, 14, y); y += 6;
-    doc.text(`En Mantenimiento: ${resumenEstados.mantenimiento}`, 14, y); y += 6;
-    doc.text(`Casillas Vencidas: ${resumenEstados.vencidas}`, 14, y); y += 6;
-    doc.text(`Casillas Reservadas: ${resumenEstados.reservadas}`, 14, y); y += 8;
+    const leftX  = 14;
+    const rightX = 160;
 
-    doc.text(`Total de ingresos por alquiler de casillas: Bs. ${totalPrecio.toFixed(2)}`, 14, y); y += 6;
-    doc.text(`Total Llaves Extra: Bs. ${totalLlavesExtra.toFixed(2)}`, 14, y); y += 6;
-    doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, 14, y); y += 6;
-    doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, 14, y); y += 6;
-    doc.text(`Total generado: Bs. ${granTotal.toFixed(2)}`, 14, y);
+    let yLeft  = 30;
+    let yRight = 30;
+
+    // IZQUIERDA
+    doc.setFontSize(13);
+    doc.text('Estado actual de las casillas', leftX, yLeft);
+    yLeft += 8;
+
+    doc.setFontSize(11);
+    doc.text(`Casillas Alquiladas: ${resumenEstados.alquiladas}`, leftX, yLeft); yLeft += 6;
+    doc.text(`Casillas Libres: ${resumenEstados.libres}`, leftX, yLeft); yLeft += 6;
+    doc.text(`Con Correspondencia: ${resumenEstados.correspondencia}`, leftX, yLeft); yLeft += 6;
+    doc.text(`En Mantenimiento: ${resumenEstados.mantenimiento}`, leftX, yLeft); yLeft += 6;
+    doc.text(`Casillas Vencidas: ${resumenEstados.vencidas}`, leftX, yLeft); yLeft += 6;
+    doc.text(`Casillas Reservadas: ${resumenEstados.reservadas}`, leftX, yLeft);
+
+    // DERECHA
+    doc.setFontSize(13);
+    doc.text('Casillas alquiladas durante el tiempo elegido', rightX, yRight);
+    yRight += 8;
+
+    doc.setFontSize(11);
+    doc.text(`Total casillas alquiladas: ${totalCasillasAlquiladas}`, rightX, yRight); yRight += 6;
+    doc.text(`Total ingresos por alquiler: Bs. ${totalPrecio.toFixed(2)}`, rightX, yRight); yRight += 6;
+    doc.text(`Total Llaves Extra: Bs. ${totalLlavesExtra.toFixed(2)}`, rightX, yRight); yRight += 6;
+    doc.text(`Total Habilitación: Bs. ${totalHabilitacion.toFixed(2)}`, rightX, yRight); yRight += 6;
+    doc.text(`Total Multas: Bs. ${totalMultas.toFixed(2)}`, rightX, yRight); yRight += 6;
+
+    doc.setFontSize(12);
+    doc.text(`TOTAL GENERADO: Bs. ${granTotal.toFixed(2)}`, rightX, yRight);
 
     /* =====================================================
      * 7️⃣ TABLA
      * ===================================================== */
+    const startTableY = Math.max(yLeft, yRight) + 10;
+
     doc.autoTable({
       head: [headers],
       body,
-      startY: y + 8,
+      startY: startTableY,
       theme: 'grid',
       styles: { fontSize: 10, cellPadding: 4 },
       headStyles: { fillColor: '#344767', textColor: '#ffffff' },
@@ -1463,6 +1485,7 @@ export default {
     this.load = false;
   }
 }
+
 
 
 
