@@ -289,9 +289,16 @@ export default {
       let user = localStorage.getItem('userAuth');//recuperar usuario
       this.user = JSON.parse(user);//recuperar usuario
       try {
-        await Promise.all([this.GET_DATA(this.apiUrl)]).then((v) => {
-          this.list = v[0];
-        });
+        const dep = this.user?.cajero?.departamento || this.user?.departamento;
+
+const url = dep
+  ? `${this.apiUrl}?departamento=${encodeURIComponent(dep)}`
+  : this.apiUrl;
+
+await Promise.all([this.GET_DATA(url)]).then((v) => {
+  this.list = v[0];
+});
+
       } catch (e) {
         console.log(e);
       } finally {

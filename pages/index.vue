@@ -803,57 +803,92 @@ export default {
       return ' ' + match;
     }).trim();
   },
-  mounted() {
-    this.$nextTick(async () => {
-      try {
-        const data = await this.GET_DATA('/dashboard');
-        this.dashboard.alquileres = data.alquileres;
-        this.dashboard.users = data.users;
-        this.dashboard.clientes = data.clientes;
-        this.dashboard.casillas = data.casillas;
-        this.dashboard.precios = data.precios;
-        this.dashboard.pequeñas = data.pequeñas;
-        this.dashboard.medianas = data.medianas;
-        this.dashboard.cajones = data.cajones;
-        this.dashboard.gabetas = data.gabetas;
-        this.dashboard.pequeñaslibres1 = data.pequeñaslibres1;
-        this.dashboard.medianaslibres = data.medianaslibres;
-        this.dashboard.gabetaslibres = data.gabetaslibres;
-        this.dashboard.cajoneslibres = data.cajoneslibres;
-        this.dashboard.categorias = data.categorias;
-        this.dashboard.pequeñasocupadas = data.pequeñasocupadas;
-        this.dashboard.medianasocupadas = data.medianasocupadas;
-        this.dashboard.gabetaocupadas = data.gabetaocupadas;
-        this.dashboard.cajonocupadas = data.cajonocupadas;
-        this.dashboard.alquileresHoy = data.alquileresHoy;
-        this.dashboard.pequeñasHoy = data.pequeñasHoy;
-        this.dashboard.medianasHoy = data.medianasHoy;
-        this.dashboard.gabetasHoy = data.gabetasHoy;
-        this.dashboard.cajonesHoy = data.cajonesHoy;
-        this.dashboard.total_multas_pequenas = data.total_multas_pequenas;
-        this.dashboard.total_multas_medianas = data.total_multas_medianas;
-        this.dashboard.total_multas_gabeta = data.total_multas_gabeta;
-        this.dashboard.total_multas_cajon = data.total_multas_cajon;
-        this.dashboard.casillasMantenimientoPequenas = data.casillas_mantenimiento_pequenas;
-        this.dashboard.casillasMantenimientoMedianas = data.casillas_mantenimiento_medianas;
-        this.dashboard.casillasMantenimientoGabeta = data.casillas_mantenimiento_gabeta;
-        this.dashboard.casillasMantenimientoCajon = data.casillas_mantenimiento_cajon;
-        this.dashboard.casillasVencidoPequenas = data.casillas_vencido_pequenas;
-        this.dashboard.casillasVencidoMedianas = data.casillas_vencido_medianas;
-        this.dashboard.casillasVencidoGabeta = data.casillas_vencido_gabeta;
-        this.dashboard.casillasVencidoCajon = data.casillas_vencido_cajon;
-        this.dashboard.casillasConCorrespondenciaPequenas = data.casillas_con_correspondencia_pequenas;
-        this.dashboard.casillasConCorrespondenciaMedianas = data.casillas_con_correspondencia_medianas;
-        this.dashboard.casillasConCorrespondenciaGabeta = data.casillas_con_correspondencia_gabeta;
-        this.dashboard.casillasConCorrespondenciaCajon = data.casillas_con_correspondencia_cajon;
-        this.dashboard.total_multas = data.total_multas;
-        const totalCasillas = data.pequeñas + data.medianas + data.cajones + data.gabetas;
-        this.dashboard.casillas = totalCasillas;
-      } catch (error) {
-        console.error("Error al obtener datos del servidor:", error);
+ mounted() {
+  this.$nextTick(async () => {
+    this.load = true;
+
+    try {
+      // 1️⃣ Obtener usuario logueado desde localStorage
+      const userStr = localStorage.getItem('userAuth');
+      if (!userStr) {
+        console.error('No existe userAuth en localStorage');
+        return;
       }
-    });
-  },
+
+      this.user = JSON.parse(userStr);
+
+      // 2️⃣ Obtener departamento del cajero
+      const departamentoUsuario = this.user?.cajero?.departamento;
+
+      if (!departamentoUsuario) {
+        console.error('El usuario no tiene departamento asignado');
+        return;
+      }
+
+      // 3️⃣ Llamar al backend filtrando por departamento
+      const data = await this.GET_DATA(
+        `/dashboard?departamento=${encodeURIComponent(departamentoUsuario)}`
+      );
+
+      // 4️⃣ Asignar datos normalmente (YA vienen filtrados)
+      this.dashboard.alquileres = data.alquileres;
+      this.dashboard.users = data.users;
+      this.dashboard.clientes = data.clientes;
+
+      this.dashboard.pequeñas = data.pequeñas;
+      this.dashboard.medianas = data.medianas;
+      this.dashboard.gabetas = data.gabetas;
+      this.dashboard.cajones = data.cajones;
+
+      this.dashboard.pequeñasocupadas = data.pequeñasocupadas;
+      this.dashboard.medianasocupadas = data.medianasocupadas;
+      this.dashboard.gabetaocupadas = data.gabetaocupadas;
+      this.dashboard.cajonocupadas = data.cajonocupadas;
+
+      this.dashboard.pequeñaslibres1 = data.pequeñaslibres1;
+      this.dashboard.medianaslibres = data.medianaslibres;
+      this.dashboard.gabetaslibres = data.gabetaslibres;
+      this.dashboard.cajoneslibres = data.cajoneslibres;
+
+      this.dashboard.alquileresHoy = data.alquileresHoy;
+      this.dashboard.pequeñasHoy = data.pequeñasHoy;
+      this.dashboard.medianasHoy = data.medianasHoy;
+      this.dashboard.gabetasHoy = data.gabetasHoy;
+      this.dashboard.cajonesHoy = data.cajonesHoy;
+
+      this.dashboard.total_multas_pequenas = data.total_multas_pequenas;
+      this.dashboard.total_multas_medianas = data.total_multas_medianas;
+      this.dashboard.total_multas_gabeta = data.total_multas_gabeta;
+      this.dashboard.total_multas_cajon = data.total_multas_cajon;
+      this.dashboard.total_multas = data.total_multas;
+
+      this.dashboard.casillasMantenimientoPequenas = data.casillas_mantenimiento_pequenas;
+      this.dashboard.casillasMantenimientoMedianas = data.casillas_mantenimiento_medianas;
+      this.dashboard.casillasMantenimientoGabeta = data.casillas_mantenimiento_gabeta;
+      this.dashboard.casillasMantenimientoCajon = data.casillas_mantenimiento_cajon;
+
+      this.dashboard.casillasVencidoPequenas = data.casillas_vencido_pequenas;
+      this.dashboard.casillasVencidoMedianas = data.casillas_vencido_medianas;
+      this.dashboard.casillasVencidoGabeta = data.casillas_vencido_gabeta;
+      this.dashboard.casillasVencidoCajon = data.casillas_vencido_cajon;
+
+      this.dashboard.casillasConCorrespondenciaPequenas = data.casillas_con_correspondencia_pequenas;
+      this.dashboard.casillasConCorrespondenciaMedianas = data.casillas_con_correspondencia_medianas;
+      this.dashboard.casillasConCorrespondenciaGabeta = data.casillas_con_correspondencia_gabeta;
+      this.dashboard.casillasConCorrespondenciaCajon = data.casillas_con_correspondencia_cajon;
+
+      // 5️⃣ Total casillas
+      this.dashboard.casillas =
+        data.pequeñas + data.medianas + data.gabetas + data.cajones;
+
+    } catch (error) {
+      console.error('Error al cargar dashboard:', error);
+    } finally {
+      this.load = false;
+    }
+  });
+},
+
 };
 </script>
 
